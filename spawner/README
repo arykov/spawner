@@ -1,4 +1,4 @@
-Spawner v0.1.3
+Spawner v0.1.4
 Seth Grover
 2008-01-23
 
@@ -29,7 +29,8 @@ It can currently generate the following types of data:
    - street address
    - city
    - state
-   - ZIP code
+   - ZIP code (US)
+   - Postcode (UK)
    - country
    - phone number
    - email address
