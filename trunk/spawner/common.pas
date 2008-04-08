@@ -183,6 +183,12 @@ type
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
+  TPostcodeField = class(TField)
+  public
+    function GetField(const quoteChar : string = '') : string; override;
+    constructor Create(const name : string; const theType : string; const theSubType : string);
+  end;
+  
   TAddressField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
@@ -311,7 +317,8 @@ const
   SUBTYPE_PHONE_NAME = 'Phone Number (###-###-####)';
   SUBTYPE_ADDRESS_NAME = 'Street Address';
   SUBTYPE_CITY_NAME = 'City';
-  SUBTYPE_ZIP_NAME = 'ZIP (#####)';
+  SUBTYPE_ZIP_NAME = 'US ZIP Code (#####)';
+  SUBTYPE_POSTCODE_NAME = 'UK Postcode';
   SUBTYPE_STATE_NAME = 'State';
   SUBTYPE_COUNTRY_NAME = 'Country';
   SUBTYPE_DATE_NAME = 'Date (yyyy-mm-dd)';
@@ -632,6 +639,24 @@ end;
 function TZipField.GetField(const quoteChar : string = '') : string;
 begin
   result := SysUtils.Format('%.*d', [5, RandomRange(0, 99999)]) ;
+  if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+// -Postcode Code--------------------------------------------------------------------
+constructor TPostcodeField.Create(const name : string; const theType : string; const theSubType : string);
+begin
+  Inherited Create(name, theType, theSubType);
+end;
+
+// UK postcodes take, in the main, the format
+// ccnn ncc
+// Where c is an upper case character, and n is a digit
+function TPostcodeField.GetField(const quoteChar : string = '') : string;
+begin
+  result := chr(ord('A') + RandomRange(0, 25)) + chr(ord('A') + RandomRange(0, 25)) +
+            SysUtils.Format('%d',[RandomRange(0, 99)]) + ' ' +
+            SysUtils.Format('%d',[RandomRange(0, 9)]) +
+           chr(ord('A') + RandomRange(0, 25)) + chr(ord('A') + RandomRange(0, 25));
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 

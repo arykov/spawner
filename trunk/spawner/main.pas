@@ -633,6 +633,8 @@ begin
       theNewField := TCityField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
     end else if( FieldSubTypeComboBox.Text = SUBTYPE_ZIP_NAME) then begin
       theNewField := TZipField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
+    end else if( FieldSubTypeComboBox.Text = SUBTYPE_POSTCODE_NAME) then begin
+      theNewField := TPostcodeField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
     end else if( FieldSubTypeComboBox.Text = SUBTYPE_COUNTRY_NAME) then begin
       theNewField := TCountryField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
     end else if( FieldSubTypeComboBox.Text = SUBTYPE_SS_NAME) then begin
@@ -756,6 +758,7 @@ begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_CITY_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_STATE_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_ZIP_NAME, nil);
+    FieldSubTypeComboBox.AddItem(SUBTYPE_POSTCODE_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_COUNTRY_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_SS_NAME, nil);
   end else if (FieldTypeComboBox.Text = TYPE_TEXT_NAME) then begin
@@ -1377,6 +1380,7 @@ begin
                       (fieldSubType = SUBTYPE_ADDRESS_NAME) or
                       (fieldSubType = SUBTYPE_CITY_NAME) or
                       (fieldSubType = SUBTYPE_ZIP_NAME) or
+                      (fieldSubType = SUBTYPE_POSTCODE_NAME) or
                       (fieldSubType = SUBTYPE_COUNTRY_NAME) or
                       (fieldSubType = SUBTYPE_SS_NAME) or
                       (fieldSubType = SUBTYPE_IP_NAME) or
