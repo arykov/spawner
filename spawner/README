@@ -1,4 +1,4 @@
-Spawner v0.1.4
+Spawner v0.1.5
 Seth Grover
 2008-01-23
 
@@ -35,10 +35,11 @@ It can currently generate the following types of data:
    - phone number
    - email address
    - social security number
-   - random time in a specified range
-   - random date in a specified range
-   - random date/time in a specified range
-   - current time, date, or date/time
+   - date, time, or date/time values
+     * random in a specified range
+     * incrementing within a specified range
+     * decrementing within a specified range
+     * current time
    - GUID
 
 Spawner will currently generate data in the following formats:
