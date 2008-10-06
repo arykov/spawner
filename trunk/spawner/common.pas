@@ -37,13 +37,14 @@ type
     FName : string;
     FType : string;
     FSubType : string;
+    FTotalRequest : longint;
   public
     property Name : string read FName;
     property ItemType : string read FType;
     property ItemSubType : string read FSubType;
     function GetField(const quoteChar : string = '') : string; virtual;
     function GetAsString : string; virtual;
-    procedure Reset; virtual;
+    procedure Reset(const TotalRequest : longint = 0); virtual;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   PField = ^TField;
@@ -79,27 +80,35 @@ type
                        const decimalPlaces : byte);
   end;
   
+  TTimeSequence = (tsNow, tsIncrementing, tsDecrementing, tsRandom);
+  
   TDateTimeRangeField = class(TField)
   private
     FLow : TDateTime;
     FHigh : TDateTime;
     FIncludeDate : boolean;
     FIncludeTime : boolean;
-    FCurrentOnly : boolean;
+    FDisplayUnix : boolean;
+    FTimeType : TTimeSequence;
+    FTimeStep : TDateTime;
+    FLastTIme : TDateTime;
   public
     property LowVal : TDateTime read FLow;
     property HighVal : TDateTime read FHigh;
     property IncludeDate : boolean read FIncludeDate;
     property IncludeTime: boolean read FIncludeTime;
-    property CurrentOnly: boolean read FCurrentOnly;
+    property DisplayUnix: boolean read FDisplayUnix;
+    property TimeType: TTimeSequence read FTimeType;
     function GetField(const quoteChar : string = '') : string; override;
     function GetAsString : string; override;
+    procedure Reset(const TotalRequest : longint = 0); override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const low : TDateTime;
                        const high : TDateTime;
                        const includeDate : boolean;
                        const includeTime : boolean;
-                       const currentOnly : boolean);
+                       const timeType : TTimeSequence;
+                       const unixFormat : boolean);
   end;
   
   TSetField = class(TField)
@@ -127,7 +136,7 @@ type
     property Stride : longint read FStride;
     function GetField(const quoteChar : string = '') : string; override;
     function GetAsString : string; override;
-    procedure Reset; override;
+    procedure Reset(const TotalRequest : longint = 0); override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const start : longint;
                        const duplicate : longint;
@@ -340,6 +349,9 @@ const
 
 implementation
 
+uses
+  DateUtils;
+
 // -Field classes---------------------------------------------------------------
 
 constructor TField.Create(const name : string; const theType : string; const theSubType : string);
@@ -347,6 +359,7 @@ begin
   FName := name;
   FType := theType;
   FSubType := theSubType;
+  FTotalRequest := 0;
   Randomize;
 end;
 
@@ -361,9 +374,9 @@ begin
   result := FName + ',' + FType + ',' + FSubType;
 end;
 
-procedure TField.Reset;
+procedure TField.Reset(const TotalRequest : longint = 0);
 begin
-  // do nothing (stateless field)
+  FTotalRequest := TotalRequest;
 end;
 
 // -Integer range --------------------------------------------------------------
@@ -400,8 +413,6 @@ begin
 end;
 
 function TRealRangeField.GetField(const quoteChar : string = '') : string;
-var
-  theNumber : double;
 begin
   result := FloatToStrF(FRandomRange(FLow, FHigh), ffFixed, 15, FDecimalPlaces);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
@@ -418,39 +429,94 @@ constructor TDateTimeRangeField.Create(const name : string; const theType : stri
                                        const high : TDateTime;
                                        const includeDate : boolean;
                                        const includeTime : boolean;
-                                       const currentOnly : boolean);
+                                       const timeType : TTimeSequence;
+                                       const unixFormat : boolean);
 begin
   Inherited Create(name, theType, theSubType);
   FLow := low;
   FHigh := high;
-  FCurrentOnly := currentOnly;
+  FTimeType := timeType;
+  FTimeStep := 0.0;  // will be calculated on first request
+  FLastTime := 0.0;  // will be calculated on first request
   FIncludeDate := includeDate;
   FIncludeTime := includeTime;
+  FDisplayUnix := unixFormat;
 end;
 
 function TDateTimeRangeField.GetField(const quoteChar : string = '') : string;
 var
   theDateTime : TDateTime;
+  oneMSec : TDateTime;
 begin
   result := '';
-  if (FCurrentOnly) then begin
+  
+  if (FTimeStep = 0.0) and (FTotalRequest > 0) then begin
+    oneMSec := EncodeTime(0, 0, 0, 1);
+    FTimeStep := (FHigh - FLow) / FTotalRequest;
+    if (FTimeStep < oneMSec) then FTimeStep := oneMSec;
+    if (FTimeType = tsDecrementing) then begin
+      FLastTime := FHigh;
+    end else begin
+      FLastTime := FLow;
+    end;
+  end else if (FTotalRequest = 0) then begin
+    FTimeStep := 0.0;
+    FLastTime := 0.0;
+  end;
+
+  if (FTimeType = tsNow) then begin
     theDateTime := now;
-  end else begin
+  end else if (FTimeType in [tsIncrementing, tsDecrementing]) and
+              (FLastTime > 0.0) and (FTimeStep > 0.0) then begin
+    if (FTimeType = tsIncrementing) then
+      theDateTime := FLastTime + FTimeStep
+    else
+      theDateTime := FLastTime - FTimeStep;
+    if (theDateTime > FHigh) then begin
+      theDateTime := FHigh;
+    end else if (theDateTime < FLow) then begin
+      theDateTime := FLow;
+    end;
+    FLastTime := theDateTime;
+  end else begin // default to random
     theDateTime := FRandomRange(FLow, FHigh);
   end;
-  if (FIncludeDate) then begin
-    result := FormatDateTime('yyyy-mm-dd', theDateTime);
+  
+  if FDisplayUnix then begin
+    result := IntToStr(DateTimeToUnix(theDateTime));
+  end else begin
+    if (FIncludeDate) then begin
+      result := FormatDateTime('yyyy-mm-dd', theDateTime)
+    end;
+    if (FIncludeTime) then begin
+      if result <> '' then result := result + ' ';
+      result := result + FormatDateTime('HH:nn:ss', theDateTime);
+    end;
   end;
-  if (FIncludeTime) then begin
-    if result <> '' then result := result + ' ';
-    result := result + FormatDateTime('HH:nn:ss', theDateTime);
-  end;
+  
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
 function TDateTimeRangeField.GetAsString : string;
+var
+  typeInt : integer;
 begin
-  result := Inherited GetAsString + ',' + FloatToStr(FLow) + '|' + FloatToStr(FHigh) + '|' + BoolToStr(FCurrentOnly);
+  if (FTimeType = tsNow) then
+    typeInt := 0
+  else if (FTimeType = tsIncrementing) then
+    typeInt := 1
+  else if (FTimeType = tsDecrementing) then
+    typeInt := 2
+  else
+    typeInt := 3;
+  result := Inherited GetAsString + ',' + FloatToStr(FLow) + '|' + FloatToStr(FHigh) + '|' + IntToStr(typeInt) + '|' + BoolToStr(FDisplayUnix);
+end;
+
+procedure TDateTimeRangeField.Reset(const TotalRequest : longint = 0);
+begin
+  Inherited Reset(TotalRequest);
+  FTimeStep := 0.0;
+  FLastTime := 0.0;
 end;
 
 // -Set ------------------------------------------------------------------------
@@ -510,8 +576,9 @@ begin
   Reset;
 end;
 
-procedure TSequenceField.Reset;
+procedure TSequenceField.Reset(const TotalRequest : longint = 0);
 begin
+  Inherited Reset(TotalRequest);
   if (FDuplicate = 0) then begin
     FLastNumber := FStart - FStride;
   end else begin
@@ -839,7 +906,6 @@ function TStringField.GetField(const quoteChar : string = '') : string;
 var
   i : integer;
   numChars : integer;
-  chosen : integer;
   index : longint;
 begin
   result := '';

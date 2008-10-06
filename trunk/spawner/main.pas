@@ -49,13 +49,14 @@ type
     FieldNameLabel: TLabel;
     MySQLSleepCheckbox: TCheckBox;
     ExitButton: TBitBtn;
-    FieldOptionDateTimeCurrentCheckBox: TCheckBox;
+    FieldOptionDateTimeUnixCheckBox: TCheckBox;
     GenerateButton: TBitBtn;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     LoadMenuItem: TMenuItem;
     BottomPanel: TPanel;
     ExecutionProgressPanel: TPanel;
+    FieldOptionStepRadioGroup: TRadioGroup;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -190,7 +191,6 @@ type
     procedure FieldDownButtonClick(Sender: TObject);
     procedure FieldListBoxClick(Sender: TObject);
     procedure FieldListBoxDblClick(Sender: TObject);
-    procedure FieldOptionDateTimeCurrentCheckBoxClick(Sender: TObject);
     procedure FieldOptionSetAddItemButtonClick(Sender: TObject);
     procedure FieldOptionSetRemoveItemButtonClick(Sender: TObject);
     procedure FieldRemoveButtonClick(Sender: TObject);
@@ -358,8 +358,16 @@ begin
     end else if (theField is TStateField) then begin
       FieldOptionStateFullRadioButton.Checked := (theField as TStateField).Full;
     end else if (theField is TDateTimeRangeField) then begin
-      FieldOptionDateTimeCurrentCheckBox.Checked := (theField as TDateTimeRangeField).CurrentOnly;
-      if (FieldOptionDateTimeCurrentCheckBox.Checked) then begin
+      FieldOptionDateTimeUnixCheckBox.Checked := (theField as TDateTimeRangeField).DisplayUnix;
+      if ((theField as TDateTimeRangeField).TimeType = tsNow) then
+        FieldOptionStepRadioGroup.ItemIndex := 0
+      else if ((theField as TDateTimeRangeField).TimeType = tsIncrementing) then
+        FieldOptionStepRadioGroup.ItemIndex := 1
+      else if ((theField as TDateTimeRangeField).TimeType = tsDecrementing) then
+        FieldOptionStepRadioGroup.ItemIndex := 2
+      else
+        FieldOptionStepRadioGroup.ItemIndex := 3;
+      if (FieldOptionStepRadioGroup.ItemIndex = 0) then begin
         FieldOptionDateLowCalendar.Date := now-7;
         FieldOptionDateHighCalendar.Date := now;
         FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', now);
@@ -414,17 +422,6 @@ begin
     end;
   end;
 end;
-
-procedure TMainForm.FieldOptionDateTimeCurrentCheckBoxClick(Sender: TObject);
-begin
-  if FieldOptionDateTimeCurrentCheckBox.Checked then begin
-    FieldOptionDateLowCalendar.Date := now-7;
-    FieldOptionDateHighCalendar.Date := now;
-    FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', now);
-    FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', now);
-  end;
-end;
-
 
 procedure TMainForm.FieldOptionSetAddItemButtonClick(Sender: TObject);
 var
@@ -483,6 +480,7 @@ var
   theNewField : TField;
   theObject : TObject;
   lowTime, highTime : TDateTime;
+  timeType : TTimeSequence;
   oldPosition : integer;
 begin
   { check the input and save the field }
@@ -540,12 +538,21 @@ begin
       try
         lowTime := trunc(FieldOptionDateLowCalendar.Date);
         highTime := trunc(FieldOptionDateHighCalendar.Date);
+        if (FieldOptionStepRadioGroup.ItemIndex = 0) then
+          timeType := tsNow
+        else if (FieldOptionStepRadioGroup.ItemIndex = 1) then
+          timeType := tsIncrementing
+        else if (FieldOptionStepRadioGroup.ItemIndex = 2) then
+          timeType := tsDecrementing
+        else
+          timeType := tsRandom;
         theNewField := TDateTimeRangeField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
                                                   lowTime,
                                                   highTime,
                                                   true,
                                                   false,
-                                                  FieldOptionDateTimeCurrentCheckBox.Checked);
+                                                  timeType,
+                                                  FieldOptionDateTimeUnixCheckBox.Checked);
       except
         on E : Exception do begin
           errMsg := E.Message;
@@ -555,12 +562,21 @@ begin
       try
         lowTime := trunc(now) + Frac(StrToTime(FieldOptionTimeLowEdit.Text));
         highTime := trunc(now) + Frac(StrToTime(FieldOptionTimeHighEdit.Text));
+        if (FieldOptionStepRadioGroup.ItemIndex = 0) then
+          timeType := tsNow
+        else if (FieldOptionStepRadioGroup.ItemIndex = 1) then
+          timeType := tsIncrementing
+        else if (FieldOptionStepRadioGroup.ItemIndex = 2) then
+          timeType := tsDecrementing
+        else
+          timeType := tsRandom;
         theNewField := TDateTimeRangeField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
                                                   lowTime,
                                                   highTime,
                                                   false,
                                                   true,
-                                                  FieldOptionDateTimeCurrentCheckBox.Checked);
+                                                  timeType,
+                                                  FieldOptionDateTimeUnixCheckBox.Checked);
       except
         on E : Exception do begin
           errMsg := E.Message;
@@ -570,12 +586,21 @@ begin
       try
         lowTime := trunc(FieldOptionDateLowCalendar.Date) + Frac(StrToTime(FieldOptionTimeLowEdit.Text));
         highTime := trunc(FieldOptionDateHighCalendar.Date) + Frac(StrToTime(FieldOptionTimeHighEdit.Text));
+        if (FieldOptionStepRadioGroup.ItemIndex = 0) then
+          timeType := tsNow
+        else if (FieldOptionStepRadioGroup.ItemIndex = 1) then
+          timeType := tsIncrementing
+        else if (FieldOptionStepRadioGroup.ItemIndex = 2) then
+          timeType := tsDecrementing
+        else
+          timeType := tsRandom;
         theNewField := TDateTimeRangeField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
                                                   lowTime,
                                                   highTime,
                                                   true,
                                                   true,
-                                                  FieldOptionDateTimeCurrentCheckBox.Checked);
+                                                  timeType,
+                                                  FieldOptionDateTimeUnixCheckBox.Checked);
       except
         on E : Exception do begin
           errMsg := E.Message;
@@ -942,7 +967,7 @@ begin
       // reset the fields if needed
       for j := 0 to FieldListBox.Items.Count-1 do begin
         theField := TField(FieldListBox.Items.Objects[j]);
-        theField.Reset;
+        theField.Reset(totalRecords);
       end;
 
       // iterate for the number of records to generate
@@ -1323,7 +1348,8 @@ begin
               FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
               FieldOptionTimeLowEdit.Text := '00:00:00';
               FieldOptionTimeHighEdit.Text := '00:00:00';
-              FieldOptionDateTimeCurrentCheckBox.Checked := StrToBoolDef(otherStringList.Strings[2], false);
+              FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
+              FieldOptionDateTimeUnixCheckBox.Checked := StrToBoolDef(otherStringList.Strings[3], false);
             end;
           end else if (fieldSubType = SUBTYPE_TIME_NAME) then begin
             if (otherStringList.Count >= 3) then begin
@@ -1331,7 +1357,8 @@ begin
               FieldOptionDateHighCalendar.Date := trunc(now);
               FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[0], 0));
               FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[1], 0));
-              FieldOptionDateTimeCurrentCheckBox.Checked := StrToBoolDef(otherStringList.Strings[2], false);
+              FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
+              FieldOptionDateTimeUnixCheckBox.Checked := StrToBoolDef(otherStringList.Strings[3], false);
             end;
           end else if (fieldSubType = SUBTYPE_DATETIME_NAME) then begin
             if (otherStringList.Count >= 3) then begin
@@ -1339,7 +1366,8 @@ begin
               FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
               FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[0], 0));
               FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[1], 0));
-              FieldOptionDateTimeCurrentCheckBox.Checked := StrToBoolDef(otherStringList.Strings[2], false);
+              FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
+              FieldOptionDateTimeUnixCheckBox.Checked := StrToBoolDef(otherStringList.Strings[3], false);
             end;
           end else if (fieldSubType = SUBTYPE_FIXEDWORDS_NAME) then begin
             if (otherStringList.Count >= 1) then begin
