@@ -277,12 +277,20 @@ type
   end;
   
   TGuidField = class(TField)
-  private
-    u : TGUID;
-    tmp : string;
   public
     function GetField(const quoteChar : string = '') : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
+  end;
+
+  TMaskField = class(TField)
+  private
+    FMask : string;
+  public
+    property Mask : string read FMask;
+    function GetAsString : string; override;
+    function GetField(const quoteChar : string = '') : string; override;
+    constructor Create(const name : string; const theType : string; const theSubType : string;
+                       const mask : string);
   end;
 
 // -Utility Routines -----------------------------------------------------------
@@ -339,6 +347,7 @@ const
   SUBTYPE_RANDOMWORDS_NAME = 'Random Number of Words';
   SUBTYPE_FIXEDALPHA_NAME = 'Fixed-length String';
   SUBTYPE_RANDOMALPHA_NAME = 'Random-length String';
+  SUBTYPE_MASK_NAME = 'Masked String';
 
   SUBTYPE_INTEGERRANGE_NAME = 'Integer';
   SUBTYPE_REALRANGE_NAME = 'Real';
@@ -960,6 +969,62 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+// -Masked field --------------------------------------------------------------
+constructor TMaskField.Create(const name : string; const theType : string; const theSubType : string;
+                              const mask : string);
+begin
+  FMask := mask;
+  Inherited Create(name, theType, theSubType);
+end;
+
+function TMaskField.GetField(const quoteChar : string = '') : string;
+const
+  { Mask Type }
+  cMask_AllChars    = '*'; // a char from CHR(32) to CHR(126)
+  cMask_LetterAny   = 'a'; // a letter (any case)
+  cMask_LetterLower = 'l'; // a letter (lower case)
+  cMask_LetterUpper = 'L'; // a letter (upper case)
+  cMask_Number      = '9'; // a number
+  cMask_SpecialChar = '\'; // any character can follow this
+var
+  i : integer;
+  escaped : boolean;
+begin
+  result := '';
+  i := 1;
+  while (i <= Length(FMask)) do begin
+    Case FMask[i] of
+     cMask_AllChars    : result := result + CHR(RandomRange(ORD(' '), ORD('~')));
+     cMask_LetterAny   :
+      begin
+        if (RandomRange(0,1) = 0) then
+          result := result + CHR(RandomRange(ORD('A'), ORD('Z')))
+        else
+          result := result + CHR(RandomRange(ORD('a'), ORD('z')));
+       end;
+     cMask_LetterLower : result := result + CHR(RandomRange(ORD('a'), ORD('z')));
+     cMask_LetterUpper : result := result + CHR(RandomRange(ORD('A'), ORD('Z')));
+     cMask_Number      : result := result + CHR(RandomRange(ORD('0'), ORD('9')));
+     cMask_SpecialChar :
+      begin
+        if (i < Length(FMask)) then begin
+          inc(i);
+          result := result + FMask[i];
+        end;
+      end;
+    else
+      result := result + FMask[i];
+    end;
+    inc(i);
+  end;
+  if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TMaskField.GetAsString : string;
+begin
+  result := Inherited GetAsString + ',' + FMask;
+end;
+
 // -GUID ------- ---------------------------------------------------------------
 constructor TGUIDField.Create(const name : string; const theType : string; const theSubType : string);
 begin
@@ -967,9 +1032,12 @@ begin
 end;
 
 function TGUIDField.GetField(const quoteChar : string = '') : string;
+var
+  uid : TGUID;
+  tmp : string;
 begin
-  CreateGuid(u);
-  tmp := GuidToString(u);
+  CreateGuid(uid);
+  tmp := GuidToString(uid);
   result := Copy(tmp, 2, 8) +
             Copy(tmp, 11, 4) +
             Copy(tmp, 16, 4) +

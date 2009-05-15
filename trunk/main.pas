@@ -47,6 +47,7 @@ type
     Label1: TLabel;
     Label2: TLabel;
     FieldNameLabel: TLabel;
+    FieldOptionsMaskEdit : TLabeledEdit;
     MySQLSleepCheckbox: TCheckBox;
     ExitButton: TBitBtn;
     FieldOptionDateTimeUnixCheckBox: TCheckBox;
@@ -57,6 +58,7 @@ type
     BottomPanel: TPanel;
     ExecutionProgressPanel: TPanel;
     FieldOptionStepRadioGroup: TRadioGroup;
+    FieldOptionsMaskPage : TPage;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -181,6 +183,7 @@ type
     OutputSqlRecordsPerInsertSpinEdit: TSpinEdit;
     MySQLSleepMsSpinEdit: TSpinEdit;
     MySQLSleepRecordsSpinEdit: TSpinEdit;
+    FieldOptionsMaskHelpText : TStaticText;
     StatusBar: TStatusBar;
     MessagesMemo: TSynMemo;
     FieldsTabSheet: TTabSheet;
@@ -397,6 +400,8 @@ begin
     end else if (theField is TNameField) then begin
       FieldOptionNameSexCheckGroup.Checked[SEX_FEMALE] := (theField as TNameField).Female;
       FieldOptionNameSexCheckGroup.Checked[SEX_MALE] := (theField as TNameField).Male;
+    end else if (theField is TMaskField) then begin
+      FieldOptionsMaskEdit.Text := (theField as TMaskField).Mask;
     end;
   end;
 end;
@@ -630,6 +635,8 @@ begin
                                          FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_NUMBER],
                                          FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_SPACE],
                                          FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_OTHER]);
+    end else if( FieldSubTypeComboBox.Text = SUBTYPE_MASK_NAME) then begin
+      theNewField := TMaskField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, FieldOptionsMaskEdit.Text);
     end else if (FieldSubTypeComboBox.Text = SUBTYPE_NAME_NAME) then begin
       theNewField := TNameField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
                                        true,
@@ -750,6 +757,9 @@ begin
     for i := 0 to FieldOptionRandomStringAllowedCheckGroup.Items.Count-1 do begin
       FieldOptionRandomStringAllowedCheckGroup.Checked[i] := true;
     end;
+  end else if (FieldSubTypeComboBox.Text = SUBTYPE_MASK_NAME) then begin
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsMaskPage;
+    FieldOptionsMaskEdit.Text := '';
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_NAME_NAME) or
               (FieldSubTypeComboBox.Text = SUBTYPE_FIRSTNAME_NAME) then begin
     FieldOptionsNotebook.ActivePageComponent := FieldOptionsNamePage;
@@ -791,6 +801,7 @@ begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_RANDOMWORDS_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_FIXEDALPHA_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_RANDOMALPHA_NAME, nil);
+    FieldSubTypeComboBox.AddItem(SUBTYPE_MASK_NAME, nil);
   end else if (FieldTypeComboBox.Text = TYPE_SET_NAME) then begin
     FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetPage;
   end else if (FieldTypeComboBox.Text = TYPE_NET_NAME) then begin
@@ -1395,6 +1406,10 @@ begin
               FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_SPACE] := StrToBoolDef(otherStringList.Strings[4], true);
               FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_OTHER] := StrToBoolDef(otherStringList.Strings[5], true);
             end
+          end else if (fieldSubType = SUBTYPE_MASK_NAME) then begin
+            if (otherStringList.Count >= 1) then begin
+              FieldOptionsMaskEdit.Text := otherStringList.Strings[0];
+            end;
           end else if (fieldSubType = SUBTYPE_NAME_NAME) or
                       (fieldSubType = SUBTYPE_FIRSTNAME_NAME) then begin
             if (otherStringList.Count >= 2) then begin
