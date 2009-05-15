@@ -1,4 +1,4 @@
-Spawner v0.1.5
+Spawner v0.1.6
 Seth Grover
 2008-01-23
 
@@ -21,6 +21,7 @@ It can currently generate the following types of data:
      other characters), including:
      * fixed length string (ie., 10 characters)
      * random-length string (ie., 4-10 characters)
+     * random string matching a specified mask
    - IPv4-formatted IP addresses
    - MAC addresses
    - full name
@@ -108,4 +109,3 @@ Known Limitations
     field, a state field, a ZIP code field, and a country field, the generator
     is not going to pick city, state, ZIP code, and country values that match.
     You might get something like "New York City, Nebraska, 12345, Egypt".
-hey

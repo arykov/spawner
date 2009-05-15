@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 488
+  Left = 696
   Height = 623
-  Top = 228
+  Top = 406
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
@@ -12,11 +12,12 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  ParentFont = False
   Position = poDefaultPosOnly
-  LCLVersion = '0.9.26'
+  LCLVersion = '0.9.26.3'
   object MainPageControl: TPageControl
+    Left = 0
     Height = 512
+    Top = 0
     Width = 792
     ActivePage = FieldsTabSheet
     Align = alClient
@@ -27,7 +28,9 @@ object MainForm: TMainForm
       ClientHeight = 480
       ClientWidth = 788
       object SpacerPanel2: TPanel
+        Left = 0
         Height = 480
+        Top = 0
         Width = 788
         Align = alClient
         BevelOuter = bvNone
@@ -409,6 +412,7 @@ object MainForm: TMainForm
           Top = 32
           Width = 196
           Anchors = [akTop, akLeft, akBottom]
+          ItemHeight = 0
           OnClick = FieldListBoxClick
           OnDblClick = FieldListBoxDblClick
           ParentShowHint = False
@@ -425,6 +429,7 @@ object MainForm: TMainForm
           Caption = 'Details'
           ClientHeight = 431
           ClientWidth = 549
+          Ctl3D = False
           TabOrder = 5
           object FieldNameLabel: TLabel
             Left = 12
@@ -522,6 +527,7 @@ object MainForm: TMainForm
             TabOrder = 0
           end
           object SpacerPanel3: TPanel
+            Left = 0
             Height = 386
             Top = 45
             Width = 549
@@ -532,12 +538,15 @@ object MainForm: TMainForm
             ClientWidth = 549
             TabOrder = 1
             object FieldTypeGroupBox: TGroupBox
+              Left = 0
               Height = 88
+              Top = 0
               Width = 549
               Align = alTop
               Caption = 'Field Type'
               ClientHeight = 69
               ClientWidth = 545
+              Ctl3D = False
               TabOrder = 0
               object FieldTypeLabel: TLabel
                 Left = 14
@@ -560,6 +569,10 @@ object MainForm: TMainForm
                 Height = 21
                 Top = 30
                 Width = 184
+                AutoComplete = False
+                Ctl3D = False
+                ItemHeight = 0
+                ItemWidth = 0
                 MaxLength = 65535
                 OnSelect = FieldTypeComboBoxSelect
                 Style = csDropDownList
@@ -570,6 +583,10 @@ object MainForm: TMainForm
                 Height = 21
                 Top = 30
                 Width = 288
+                AutoComplete = False
+                Ctl3D = False
+                ItemHeight = 0
+                ItemWidth = 0
                 MaxLength = 65535
                 OnSelect = FieldSubTypeComboBoxSelect
                 Style = csDropDownList
@@ -577,6 +594,7 @@ object MainForm: TMainForm
               end
             end
             object FieldOptionsGroupBox: TGroupBox
+              Left = 0
               Height = 290
               Top = 96
               Width = 549
@@ -585,12 +603,15 @@ object MainForm: TMainForm
               Caption = 'Field Options'
               ClientHeight = 271
               ClientWidth = 545
+              Ctl3D = False
               TabOrder = 1
               object FieldOptionsNotebook: TNotebook
+                Left = 0
                 Height = 271
+                Top = 0
                 Width = 545
                 Align = alClient
-                PageIndex = 3
+                PageIndex = 12
                 ShowTabs = False
                 TabOrder = 0
                 object FieldOptionsNonePage: TPage
@@ -683,6 +704,7 @@ object MainForm: TMainForm
                     MaxValue = 1000000000
                     MinValue = -1000000000
                     TabOrder = 0
+                    Value = 0
                   end
                   object FieldOptionRealRangeHighSpinEdit: TFloatSpinEdit
                     Left = 146
@@ -709,17 +731,18 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsDateTimePage: TPage
                   Caption = 'Date and Time'
-                  ClientWidth = 541
-                  ClientHeight = 267
+                  ClientWidth = 545
+                  ClientHeight = 271
                   object FieldOptionTimeLowGroupBox: TGroupBox
                     Left = 10
                     Height = 88
                     Top = 9
-                    Width = 248
+                    Width = 252
                     Anchors = [akTop, akLeft, akRight]
                     Caption = 'Low'
-                    ClientHeight = 69
-                    ClientWidth = 244
+                    ClientHeight = 67
+                    ClientWidth = 248
+                    Ctl3D = False
                     TabOrder = 0
                     object FieldOptionTimeLowLabel: TLabel
                       Left = 14
@@ -788,11 +811,12 @@ object MainForm: TMainForm
                     Left = 274
                     Height = 88
                     Top = 9
-                    Width = 248
+                    Width = 252
                     Anchors = [akTop, akLeft, akRight]
                     Caption = 'High'
-                    ClientHeight = 69
-                    ClientWidth = 244
+                    ClientHeight = 67
+                    ClientWidth = 248
+                    Ctl3D = False
                     TabOrder = 1
                     object FieldOptionTimeHighLabel: TLabel
                       Left = 14
@@ -869,7 +893,7 @@ object MainForm: TMainForm
                     Left = 10
                     Height = 48
                     Top = 104
-                    Width = 512
+                    Width = 516
                     Anchors = [akTop, akLeft, akRight]
                     AutoFill = True
                     Caption = 'Step'
@@ -881,9 +905,10 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
-                    ClientHeight = 29
-                    ClientWidth = 508
+                    ClientHeight = 27
+                    ClientWidth = 512
                     Columns = 4
+                    Ctl3D = False
                     ItemIndex = 3
                     Items.Strings = (
                       'Current'
@@ -1005,6 +1030,7 @@ object MainForm: TMainForm
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
                     Columns = 4
+                    Ctl3D = False
                     Items.Strings = (
                       'Letter'
                       'Numbers'
@@ -1082,6 +1108,7 @@ object MainForm: TMainForm
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
                     Columns = 4
+                    Ctl3D = False
                     Items.Strings = (
                       'Letter'
                       'Numbers'
@@ -1158,7 +1185,7 @@ object MainForm: TMainForm
                     Left = 26
                     Height = 22
                     Top = 19
-                    Width = 129
+                    Width = 126
                     Caption = 'Abbreviated (ID)'
                     Checked = True
                     State = cbChecked
@@ -1168,7 +1195,7 @@ object MainForm: TMainForm
                     Left = 26
                     Height = 22
                     Top = 59
-                    Width = 98
+                    Width = 95
                     Caption = 'Full (Idaho)'
                     TabOrder = 1
                   end
@@ -1190,6 +1217,7 @@ object MainForm: TMainForm
                     Height = 216
                     Top = 27
                     Width = 232
+                    ItemHeight = 0
                     Sorted = True
                     TabOrder = 0
                     TopIndex = -1
@@ -1198,7 +1226,7 @@ object MainForm: TMainForm
                     Left = 258
                     Height = 34
                     Top = 71
-                    Width = 41
+                    Width = 33
                     Anchors = [akLeft, akBottom]
                     AutoSize = True
                     Glyph.Data = {
@@ -1285,7 +1313,7 @@ object MainForm: TMainForm
                     Left = 258
                     Height = 34
                     Top = 25
-                    Width = 41
+                    Width = 33
                     Anchors = [akLeft, akBottom]
                     AutoSize = True
                     Glyph.Data = {
@@ -1389,6 +1417,7 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 1
+                    Ctl3D = False
                     Items.Strings = (
                       'Male'
                       'Female'
@@ -1397,6 +1426,38 @@ object MainForm: TMainForm
                     Data = {
                       020000000202
                     }
+                  end
+                end
+                object FieldOptionsMaskPage: TPage
+                  Caption = 'FieldOptionsMaskPage'
+                  ClientWidth = 541
+                  ClientHeight = 267
+                  object FieldOptionsMaskEdit: TLabeledEdit
+                    Left = 18
+                    Height = 23
+                    Top = 32
+                    Width = 496
+                    Anchors = [akTop, akLeft, akRight]
+                    EditLabel.AnchorSideLeft.Control = FieldOptionsMaskEdit
+                    EditLabel.AnchorSideBottom.Control = FieldOptionsMaskEdit
+                    EditLabel.Left = 18
+                    EditLabel.Height = 15
+                    EditLabel.Top = 14
+                    EditLabel.Width = 35
+                    EditLabel.Caption = 'Mask'
+                    EditLabel.ParentColor = False
+                    TabOrder = 0
+                  end
+                  object FieldOptionsMaskHelpText: TStaticText
+                    Left = 18
+                    Height = 136
+                    Top = 73
+                    Width = 497
+                    Anchors = [akTop, akLeft, akRight]
+                    Caption = '* - any printable character'#10'a - a letter (any case)'#10'l - a letter (lower case)'#10'L - a letter (upper case)'#10'9 - a number'#10'\ - the following character as-is'
+                    Font.Name = 'courier [adobe]'
+                    ParentFont = False
+                    TabOrder = 1
                   end
                 end
               end
@@ -1418,7 +1479,9 @@ object MainForm: TMainForm
       ClientHeight = 512
       ClientWidth = 792
       object SpacerPanel1: TPanel
+        Left = 0
         Height = 512
+        Top = 0
         Width = 792
         Align = alClient
         BevelOuter = bvNone
@@ -1459,6 +1522,7 @@ object MainForm: TMainForm
           ClientHeight = 61
           ClientWidth = 424
           Columns = 4
+          Ctl3D = False
           ItemIndex = 0
           Items.Strings = (
             'Delimited'
@@ -1477,9 +1541,12 @@ object MainForm: TMainForm
           Caption = 'Output Options'
           ClientHeight = 309
           ClientWidth = 760
+          Ctl3D = False
           TabOrder = 1
           object OutputOptionsNotebook: TNotebook
+            Left = 0
             Height = 309
+            Top = 0
             Width = 760
             Align = alClient
             PageIndex = 3
@@ -1487,8 +1554,8 @@ object MainForm: TMainForm
             TabOrder = 0
             object OutputDelimitedPage: TPage
               Caption = 'Delmited'
-              ClientWidth = 764
-              ClientHeight = 324
+              ClientWidth = 760
+              ClientHeight = 309
               object OutputDelimiterEdit: TLabeledEdit
                 Left = 100
                 Height = 25
@@ -1509,7 +1576,6 @@ object MainForm: TMainForm
                 LabelPosition = lpLeft
                 LabelSpacing = 20
                 MaxLength = 5
-                ParentColor = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -1535,7 +1601,6 @@ object MainForm: TMainForm
                 LabelPosition = lpLeft
                 LabelSpacing = 20
                 MaxLength = 5
-                ParentColor = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -1543,8 +1608,8 @@ object MainForm: TMainForm
             end
             object OutputSqlPage: TPage
               Caption = 'OutputSqlPage'
-              ClientWidth = 764
-              ClientHeight = 324
+              ClientWidth = 760
+              ClientHeight = 309
               object OutputSqlRecordsPerInsertLabel: TLabel
                 Left = 16
                 Height = 15
@@ -1572,7 +1637,6 @@ object MainForm: TMainForm
                 EditLabel.ParentColor = False
                 LabelPosition = lpLeft
                 LabelSpacing = 65
-                ParentColor = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -1595,6 +1659,7 @@ object MainForm: TMainForm
                 ChildSizing.ControlsPerLine = 1
                 ClientHeight = 126
                 ClientWidth = 316
+                Ctl3D = False
                 ItemIndex = 0
                 Items.Strings = (
                   'INSERT'
@@ -1627,8 +1692,8 @@ object MainForm: TMainForm
             end
             object OutputNotImplementedPage: TPage
               Caption = 'Not Implemented'
-              ClientWidth = 764
-              ClientHeight = 324
+              ClientWidth = 760
+              ClientHeight = 309
               object OutputNotImplementedLabel: TLabel
                 Left = 28
                 Height = 15
@@ -1640,8 +1705,8 @@ object MainForm: TMainForm
             end
             object OutputMySQLPage: TPage
               Caption = 'OutputMySQLPage'
-              ClientWidth = 756
-              ClientHeight = 305
+              ClientWidth = 760
+              ClientHeight = 309
               object OutputSqlRecordsPerInsertLabel1: TLabel
                 Left = 12
                 Height = 15
@@ -1683,6 +1748,7 @@ object MainForm: TMainForm
                 ChildSizing.ControlsPerLine = 1
                 ClientHeight = 118
                 ClientWidth = 280
+                Ctl3D = False
                 ItemIndex = 0
                 Items.Strings = (
                   'INSERT'
@@ -1714,7 +1780,6 @@ object MainForm: TMainForm
                 EditLabel.Width = 30
                 EditLabel.Caption = 'Host'
                 EditLabel.ParentColor = False
-                ParentColor = False
                 TabOrder = 2
               end
               object MySQLUserEdit: TLabeledEdit
@@ -1730,7 +1795,6 @@ object MainForm: TMainForm
                 EditLabel.Width = 31
                 EditLabel.Caption = 'User'
                 EditLabel.ParentColor = False
-                ParentColor = False
                 TabOrder = 3
               end
               object MySQLPasswordEdit: TLabeledEdit
@@ -1747,7 +1811,6 @@ object MainForm: TMainForm
                 EditLabel.Width = 63
                 EditLabel.Caption = 'Password'
                 EditLabel.ParentColor = False
-                ParentColor = False
                 PasswordChar = '*'
                 TabOrder = 4
               end
@@ -1764,7 +1827,6 @@ object MainForm: TMainForm
                 EditLabel.Width = 61
                 EditLabel.Caption = 'Database'
                 EditLabel.ParentColor = False
-                ParentColor = False
                 TabOrder = 5
               end
               object OutputMySQLTableEdit: TLabeledEdit
@@ -1780,7 +1842,6 @@ object MainForm: TMainForm
                 EditLabel.Width = 36
                 EditLabel.Caption = 'Table'
                 EditLabel.ParentColor = False
-                ParentColor = False
                 TabOrder = 6
               end
               object OutputMySQLErrorHaltCheckbox: TCheckBox
@@ -1973,17 +2034,25 @@ object MainForm: TMainForm
         Width = 788
         Align = alClient
         BorderSpacing.Around = 2
+        Ctl3D = False
         Font.Height = -12
         Font.Name = 'courier'
         Font.Pitch = fpFixed
+        Font.Quality = fqNonAntialiased
         ParentColor = False
         ParentFont = False
         PopupMenu = MemoPopupMenu
         TabOrder = 0
         BookMarkOptions.Xoffset = 23
         Gutter.AutoSize = True
-        Gutter.DigitCount = 3
+        Gutter.RightOffset = 0
+        Gutter.LeftOffset = 0
+        Gutter.ShowCodeFolding = True
+        Gutter.CodeFoldingWidth = 10
+        Gutter.ShowChanges = True
         Gutter.ShowLineNumbers = True
+        Gutter.ZeroStart = False
+        Gutter.DigitCount = 3
         Keystrokes = <        
           item
             Command = 3
@@ -2308,16 +2377,20 @@ object MainForm: TMainForm
         Options = [eoGroupUndo, eoShowScrollHint, eoShowSpecialChars, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces, eoBracketHighlight]
         ReadOnly = True
         RightEdge = 0
+        SelectedColor.StartX = 0
+        SelectedColor.EndX = 0
       end
     end
   end
   object StatusBar: TStatusBar
+    Left = 0
     Height = 22
     Top = 575
     Width = 792
     Panels = <>
   end
   object BottomPanel: TPanel
+    Left = 0
     Height = 63
     Top = 512
     Width = 792
@@ -2619,7 +2692,9 @@ object MainForm: TMainForm
       TabOrder = 1
     end
     object ExecutionProgressPanel: TPanel
+      Left = 0
       Height = 63
+      Top = 0
       Width = 528
       Align = alLeft
       Anchors = [akTop, akLeft, akRight, akBottom]
@@ -2633,7 +2708,6 @@ object MainForm: TMainForm
         Top = 24
         Width = 448
         Anchors = [akTop, akLeft, akRight]
-        Max = 100
         Smooth = True
         TabOrder = 1
         Visible = False
