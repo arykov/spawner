@@ -1,0 +1,111 @@
+Spawner v0.1.6
+Seth Grover
+2008-01-23
+
+Description
+------------------------------------------------------------------------------
+
+Spawner is a tool for generating test data suitable for populating databases.
+
+It can currently generate the following types of data:
+   - random integer in a specified range
+   - random floating point number in a specified range
+   - a sequence of integers (with the ability to specify starting location,
+     number of times to duplicate an entry before moving on to the next one,
+     and the stride or increment value)
+   - randomly chosen value from a set (enumerated type)
+   - words (randomly chosen from a bank of 100 or so Latin words), including:
+     * fixed number of words (ie., 10 words)
+     * random number of words (ie., 4 to 8 words)
+   - strings (with the ability to allow/disallow alpha, numeric, spaces, and
+     other characters), including:
+     * fixed length string (ie., 10 characters)
+     * random-length string (ie., 4-10 characters)
+     * random string matching a specified mask
+   - IPv4-formatted IP addresses
+   - MAC addresses
+   - full name
+   - first name
+   - last name
+   - street address
+   - city
+   - state
+   - ZIP code (US)
+   - Postcode (UK)
+   - country
+   - phone number
+   - email address
+   - social security number
+   - date, time, or date/time values
+     * random in a specified range
+     * incrementing within a specified range
+     * decrementing within a specified range
+     * current time
+   - GUID
+
+Spawner will currently generate data in the following formats:
+   - delimited text
+     * delimiting character(s) can be specified
+     * optional quote characters(s) can be specified
+   - SQL insert statements
+     * INSERT, INSERT IGNORE, or REPLACE statements
+     * table name can be specified
+     * field names can be either specified or not
+     * number of records per insert can be specified
+   - direct inserts into a MySQL database
+ 
+Fields can be named and field order can be specified.
+ 
+Compiling
+------------------------------------------------------------------------------
+In order to be 100% cross-platform, Spawner was written with Lazarus v0.9.24
+on top of FreePascal v2.2.0. Compilation is as easy as downloading and
+installing Lazarus and FreePascal. Lazarus and FreePascal are available
+by navigating to http://www.lazarus.freepascal.org, then clicking on
+"Download Lazarus".
+
+Once Lazarus and FreePascal are installed and set up, the file program.lpr
+can be opened and compiled, which should create Spawner's executable.
+
+Usage
+------------------------------------------------------------------------------
+Fields can be added on the "Fields" tab. Click the button with the circular
+green icon just below the "Fields" list to reset the field options and
+prepare a "New Field" for creation. Selecting from the Type and Subtype
+lists will change what is configurable in the Field Options. Once you have
+set the field options as desired, clicking "Save" will add the field to the
+field list. If another field exists with the same name, or if you are changing
+the settings of an existing field, you will be prompted to overwrite the
+existing settings.
+
+Fields can be removed by clicking the red X below the field list. Field
+order can be changed by clicking the up and down arrows below the
+field list. Selecting a field from the field list will cause the
+field type and subtype combos and field options to be populated with the
+settings for the selected field. Double-clicking on a field in the field
+list will show in the status bar an example of the data which would be
+generated from the current saved field settings.
+
+Once your fields have been defined, click the "Output" tab. Specify the
+number of records to generate, from 1 to a billion. Specify the output
+filename as well. Select the output type. For delimited records,
+you may specify the delimiter (from 1 to 5 characters) and the quote
+character, if desired. For SQL, you may specify the table name, the
+number of records per insert statement, the insert operation (INSERT,
+INSERT IGNORE, or REPLACE) and whether or not to include field names
+in the insert statements.
+
+Once output settings are configured, click "Spawn" to generate the
+data. Data generation can be cancelled by clicking the X button to the
+left of the progress bar during generation.
+
+You can save and load schema definitions by through the "File" menu.
+
+The "Log" tab contains a log of actions performed and error messages.
+
+Known Limitations
+------------------------------------------------------------------------------
+  - Data is not correlated across fields. in other words, if you have a city
+    field, a state field, a ZIP code field, and a country field, the generator
+    is not going to pick city, state, ZIP code, and country values that match.
+    You might get something like "New York City, Nebraska, 12345, Egypt".
