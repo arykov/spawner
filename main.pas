@@ -42,12 +42,14 @@ type
     FieldOptionDateHighCalendar: TDateEdit;
     FieldOptionDateLowLabel: TLabel;
     FieldOptionDateHighLabel: TLabel;
+    FieldOptionsSetFileEdit: TFileNameEdit;
     GenerationCancelButton: TBitBtn;
     GenerationProgressBar: TProgressBar;
     Label1: TLabel;
     Label2: TLabel;
     FieldNameLabel: TLabel;
     FieldOptionsMaskEdit : TLabeledEdit;
+    FieldOptionsSetFileNameLabel: TLabel;
     MySQLSleepCheckbox: TCheckBox;
     ExitButton: TBitBtn;
     FieldOptionDateTimeUnixCheckBox: TCheckBox;
@@ -59,6 +61,7 @@ type
     ExecutionProgressPanel: TPanel;
     FieldOptionStepRadioGroup: TRadioGroup;
     FieldOptionsMaskPage : TPage;
+    FieldOptionsSetFilePage: TPage;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -167,7 +170,7 @@ type
     FieldOptionsStatePage: TPage;
     FieldOptionStateAbbrRadioButton: TRadioButton;
     FieldOptionStateFullRadioButton: TRadioButton;
-    FieldOptionsSetPage: TPage;
+    FieldOptionsSetFixedPage: TPage;
     FieldOptionsNamePage: TPage;
     PasteMenuItem1: TMenuItem;
     SpacerPanel3: TPanel;
@@ -346,7 +349,13 @@ begin
     
     // set up whatever controls need to be set up
     if (theField is TSetField) then begin
-      FieldOptionSetListBox.Items.Text := (theField as TSetField).GetSetString;
+      FieldOptionSetListBox.Items.Clear;
+      FieldOptionsSetFileEdit.Clear;
+      if ((theField as TSetField).FileName = '') then begin
+        FieldOptionSetListBox.Items.Text := (theField as TSetField).GetSetString;
+      end else begin
+        FieldOptionsSetFileEdit.FileName := (theField as TSetField).FileName;
+      end;
     end else if (theField is TIntegerRangeField) then begin
       FieldOptionIntegerRangeLowSpinEdit.Value := (theField as TIntegerRangeField).LowVal;
       FieldOptionIntegerRangeHighSpinEdit.Value := (theField as TIntegerRangeField).HighVal;
@@ -514,11 +523,17 @@ begin
   errMsg := '';
   theNewField := nil;
   try
-    if (FieldTypeComboBox.Text = TYPE_SET_NAME) then begin
+    if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FIXED) then begin
       if (FieldOptionSetListBox.Items.Count <= 0) then begin
         errMsg := 'A set must contain at least one item';
       end else begin
-        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, FieldOptionSetListBox.Items.Text);
+        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, false, FieldOptionSetListBox.Items.Text);
+      end;
+    end else if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FILE) then begin
+      if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
+        errMsg := 'Could not create set: file does not exist';
+      end else begin
+        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, true, FieldOptionsSetFileEdit.FileName);
       end;
     end else if (FieldTypeComboBox.Text = TYPE_GUID_NAME) then begin
       theNewField := TGuidField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
@@ -703,8 +718,10 @@ procedure TMainForm.FieldSubTypeComboBoxSelect(Sender: TObject);
 var
   i : integer;
 begin
-  if (FieldTypeComboBox.Text = TYPE_SET_NAME) then begin
-    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetPage;
+  if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FIXED) then begin
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetFixedPage;
+  end else if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FILE) then begin
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetFilePage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_INTEGERRANGE_NAME) then begin
     FieldOptionsNotebook.ActivePageComponent := FieldOptionsRangeIntPage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_REALRANGE_NAME) then begin
@@ -803,7 +820,8 @@ begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_RANDOMALPHA_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_MASK_NAME, nil);
   end else if (FieldTypeComboBox.Text = TYPE_SET_NAME) then begin
-    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetPage;
+    FieldSubTypeComboBox.AddItem(SUBTYPE_SET_FIXED, nil);
+    FieldSubTypeComboBox.AddItem(SUBTYPE_SET_FILE, nil);
   end else if (FieldTypeComboBox.Text = TYPE_NET_NAME) then begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_IP_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_MAC_NAME, nil);
@@ -1272,7 +1290,7 @@ end;
 procedure TMainForm.LoadFields;
 var
   loadContents : TStringList;
-    overwriteReply : integer;
+  overwriteReply : integer;
   i : integer;
   name : string;
   fieldType : string;
@@ -1330,8 +1348,16 @@ begin
           fieldNameEdit.Text := name;
           
           (* populate the gui from the current line *)
-          if (fieldType = TYPE_SET_NAME) then begin
+          if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FIXED) then begin
             FieldOptionSetListBox.Items.Text := otherStringList.Text;
+          end else if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FILE) then begin
+            if (otherStringList.Count >= 1) then begin
+              FieldOptionsSetFileEdit.FileName := otherStringList.Strings[0];
+              if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
+                ShowString(FieldOptionsSetFileEdit.FileName + ' does not exist, skipping field ' + name);
+                continue;
+              end;
+            end;
           end else if (fieldSubType = SUBTYPE_INTEGERRANGE_NAME) then begin
             if (otherStringList.Count >= 2) then begin
               FieldOptionIntegerRangeLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);

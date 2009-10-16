@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
-    <PathDelim Value="/"/>
     <Version Value="7"/>
     <General>
       <Flags>
@@ -11,6 +10,9 @@
       <MainUnit Value="0"/>
       <TargetFileExt Value=""/>
       <Title Value="Spawner Data Generator"/>
+      <UseAppBundle Value="False"/>
+      <Icon Value="0"/>
+      <UseXPManifest Value="True"/>
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
@@ -43,8 +45,8 @@
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
-        <ComponentName Value="MainForm"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="main"/>
       </Unit1>

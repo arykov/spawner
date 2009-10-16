@@ -114,12 +114,15 @@ type
   TSetField = class(TField)
   private
     FSet : TStringList;
+    FFileName : string;
   public
+    property FileName : string read FFileName;
     function GetSetString : string;
     function GetField(const quoteChar : string = '') : string; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
-                       const text : string);
+                       const fromFile : boolean;
+                       const textOrFileName : string);
     destructor Destroy; override;
   end;
   
@@ -356,6 +359,9 @@ const
   SUBTYPE_IP_NAME = 'IPv4 Address';
   SUBTYPE_MAC_NAME = 'MAC Address';
 
+  SUBTYPE_SET_FIXED = 'From Fixed List';
+  SUBTYPE_SET_FILE = 'From File';
+
 implementation
 
 uses
@@ -530,11 +536,18 @@ end;
 
 // -Set ------------------------------------------------------------------------
 constructor TSetField.Create(const name : string; const theType : string; const theSubType : string;
-                             const text : string );
+                             const fromFile : boolean;
+                             const textOrFileName : string);
 begin
   Inherited Create(name, theType, theSubType);
   FSet := TStringList.Create;
-  FSet.Text := text;
+  if fromFile then begin
+    FFileName := ExpandFileName(textOrFileName);
+    FSet.LoadFromFile(textOrFileName);
+  end else begin
+    FSet.Text := textOrFileName;
+    FFileName := '';
+  end;
 end;
 
 destructor TSetField.Destroy;
@@ -564,12 +577,16 @@ var
   otherPart : string;
 begin
   result := Inherited GetAsString + ',';
-  otherPart := '';
-  for i := 0 to FSet.Count-1 do begin
-    otherPart := otherPart + FSet.Strings[i];
-    if (i < FSet.Count-1) then otherPart := otherPart + '|';
+  if (FFileName = '') then begin
+    otherPart := '';
+    for i := 0 to FSet.Count-1 do begin
+      otherPart := otherPart + FSet.Strings[i];
+      if (i < FSet.Count-1) then otherPart := otherPart + '|';
+    end;
+    result := result + otherPart;
+  end else begin
+    result := result + FFileName;
   end;
-  result := result + otherPart;
 end;
 
 // -Sequence--------------------------------------------------------------------
@@ -860,7 +877,7 @@ constructor TStringField.Create(const name : string; const theType : string; con
                                 const space : boolean;
                                 const other : boolean);
 var
-  i : byte;
+  i : ptruint;
 begin
   Inherited Create(name, theType, theSubType);
   FLow := low;
@@ -988,7 +1005,6 @@ const
   cMask_SpecialChar = '\'; // any character can follow this
 var
   i : integer;
-  escaped : boolean;
 begin
   result := '';
   i := 1;
