@@ -1,6 +1,6 @@
-Spawner v0.1.6
+Spawner v0.1.7
 Seth Grover
-2008-01-23
+2009-10-16
 
 Description
 ------------------------------------------------------------------------------
@@ -13,7 +13,8 @@ It can currently generate the following types of data:
    - a sequence of integers (with the ability to specify starting location,
      number of times to duplicate an entry before moving on to the next one,
      and the stride or increment value)
-   - randomly chosen value from a set (enumerated type)
+   - randomly chosen value from a fixed set (enumerated type)
+   - randomly chosen line from a file
    - words (randomly chosen from a bank of 100 or so Latin words), including:
      * fixed number of words (ie., 10 words)
      * random number of words (ie., 4 to 8 words)
@@ -58,8 +59,8 @@ Fields can be named and field order can be specified.
  
 Compiling
 ------------------------------------------------------------------------------
-In order to be 100% cross-platform, Spawner was written with Lazarus v0.9.24
-on top of FreePascal v2.2.0. Compilation is as easy as downloading and
+In order to be 100% cross-platform, Spawner was written with Lazarus v0.9.28
+on top of FreePascal v2.4.0. Compilation is as easy as downloading and
 installing Lazarus and FreePascal. Lazarus and FreePascal are available
 by navigating to http://www.lazarus.freepascal.org, then clicking on
 "Download Lazarus".
@@ -109,4 +110,3 @@ Known Limitations
     field, a state field, a ZIP code field, and a country field, the generator
     is not going to pick city, state, ZIP code, and country values that match.
     You might get something like "New York City, Nebraska, 12345, Egypt".
-

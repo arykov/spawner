@@ -1,22 +1,23 @@
 object MainForm: TMainForm
-  Left = 696
+  Left = 647
   Height = 623
-  Top = 406
+  Top = 309
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
   ClientHeight = 597
   ClientWidth = 792
+  Color = clForm
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
   Menu = MainMenu1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poDefaultPosOnly
-  LCLVersion = '0.9.26.3'
+  LCLVersion = '0.9.28.1'
   object MainPageControl: TPageControl
     Left = 0
-    Height = 512
+    Height = 510
     Top = 0
     Width = 792
     ActivePage = FieldsTabSheet
@@ -25,23 +26,23 @@ object MainForm: TMainForm
     TabOrder = 0
     object FieldsTabSheet: TTabSheet
       Caption = 'Fields'
-      ClientHeight = 480
-      ClientWidth = 788
+      ClientHeight = 476
+      ClientWidth = 786
       object SpacerPanel2: TPanel
         Left = 0
-        Height = 480
+        Height = 476
         Top = 0
-        Width = 788
+        Width = 786
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 480
-        ClientWidth = 788
+        ClientHeight = 476
+        ClientWidth = 786
         TabOrder = 0
         object FieldsLabel: TLabel
           Left = 14
-          Height = 15
+          Height = 19
           Top = 16
-          Width = 38
+          Width = 41
           Caption = 'Fields'
           ParentColor = False
         end
@@ -49,8 +50,8 @@ object MainForm: TMainForm
           Left = 14
           Height = 34
           Hint = 'Create a new field'
-          Top = 432
-          Width = 33
+          Top = 428
+          Width = 34
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -139,8 +140,8 @@ object MainForm: TMainForm
           Left = 65
           Height = 34
           Hint = 'Remove the selected field'
-          Top = 432
-          Width = 33
+          Top = 428
+          Width = 34
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -229,8 +230,8 @@ object MainForm: TMainForm
           Left = 116
           Height = 34
           Hint = 'Move the selected field up'
-          Top = 432
-          Width = 33
+          Top = 428
+          Width = 34
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -319,8 +320,8 @@ object MainForm: TMainForm
           Left = 167
           Height = 34
           Hint = 'Move the selected hint down'
-          Top = 432
-          Width = 33
+          Top = 428
+          Width = 34
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -407,7 +408,7 @@ object MainForm: TMainForm
         end
         object FieldListBox: TListBox
           Left = 14
-          Height = 394
+          Height = 390
           Hint = 'Select to view or edit options, double click to generate example data'
           Top = 32
           Width = 196
@@ -422,27 +423,26 @@ object MainForm: TMainForm
         end
         object FieldsDetailsGroupBox: TGroupBox
           Left = 222
-          Height = 450
+          Height = 446
           Top = 16
-          Width = 553
+          Width = 551
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Details'
-          ClientHeight = 431
+          ClientHeight = 427
           ClientWidth = 549
-          Ctl3D = False
           TabOrder = 5
           object FieldNameLabel: TLabel
             Left = 12
-            Height = 15
+            Height = 19
             Top = 18
-            Width = 72
+            Width = 82
             Caption = 'Field Name'
             ParentColor = False
           end
           object FieldSaveButton: TBitBtn
-            Left = 382
+            Left = 383
             Height = 30
-            Top = 3
+            Top = 7
             Width = 140
             Anchors = [akTop, akRight]
             Caption = 'Save Field'
@@ -528,13 +528,13 @@ object MainForm: TMainForm
           end
           object SpacerPanel3: TPanel
             Left = 0
-            Height = 386
+            Height = 382
             Top = 45
             Width = 549
             Align = alBottom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BevelOuter = bvNone
-            ClientHeight = 386
+            ClientHeight = 382
             ClientWidth = 549
             TabOrder = 1
             object FieldTypeGroupBox: TGroupBox
@@ -545,34 +545,30 @@ object MainForm: TMainForm
               Align = alTop
               Caption = 'Field Type'
               ClientHeight = 69
-              ClientWidth = 545
-              Ctl3D = False
+              ClientWidth = 547
               TabOrder = 0
               object FieldTypeLabel: TLabel
-                Left = 14
-                Height = 15
+                Left = 13
+                Height = 19
                 Top = 10
-                Width = 33
+                Width = 34
                 Caption = 'Type'
                 ParentColor = False
               end
               object FieldSubtypeLabel: TLabel
                 Left = 222
-                Height = 15
+                Height = 19
                 Top = 10
-                Width = 51
+                Width = 61
                 Caption = 'Subtype'
                 ParentColor = False
               end
               object FieldTypeComboBox: TComboBox
-                Left = 14
-                Height = 21
+                Left = 13
+                Height = 32
                 Top = 30
                 Width = 184
-                AutoComplete = False
-                Ctl3D = False
                 ItemHeight = 0
-                ItemWidth = 0
                 MaxLength = 65535
                 OnSelect = FieldTypeComboBoxSelect
                 Style = csDropDownList
@@ -580,13 +576,10 @@ object MainForm: TMainForm
               end
               object FieldSubTypeComboBox: TComboBox
                 Left = 222
-                Height = 21
+                Height = 32
                 Top = 30
                 Width = 288
-                AutoComplete = False
-                Ctl3D = False
                 ItemHeight = 0
-                ItemWidth = 0
                 MaxLength = 65535
                 OnSelect = FieldSubTypeComboBoxSelect
                 Style = csDropDownList
@@ -595,62 +588,61 @@ object MainForm: TMainForm
             end
             object FieldOptionsGroupBox: TGroupBox
               Left = 0
-              Height = 290
+              Height = 286
               Top = 96
               Width = 549
               Align = alBottom
               Anchors = [akTop, akLeft, akRight, akBottom]
               Caption = 'Field Options'
-              ClientHeight = 271
-              ClientWidth = 545
-              Ctl3D = False
+              ClientHeight = 267
+              ClientWidth = 547
               TabOrder = 1
               object FieldOptionsNotebook: TNotebook
                 Left = 0
-                Height = 271
+                Height = 267
                 Top = 0
-                Width = 545
+                Width = 547
                 Align = alClient
-                PageIndex = 12
+                PageIndex = 13
                 ShowTabs = False
                 TabOrder = 0
                 object FieldOptionsNonePage: TPage
                   Caption = 'No Options Available'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionsNoneLabel: TLabel
                     Left = 20
-                    Height = 17
+                    Height = 19
                     Top = 21
-                    Width = 307
+                    Width = 314
                     Caption = 'There are no options for this type/subtype.'
                     ParentColor = False
                   end
                 end
                 object FieldOptionsRangeIntPage: TPage
                   Caption = 'Integer Range'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionIntegerRangeLowLabel: TLabel
                     Left = 14
-                    Height = 15
+                    Height = 19
                     Top = 27
-                    Width = 27
+                    Width = 31
                     Caption = 'Low'
                     ParentColor = False
                   end
                   object FieldOptionIntegerRangeHighLabel: TLabel
                     Left = 14
-                    Height = 15
+                    Height = 19
                     Top = 67
-                    Width = 30
+                    Width = 33
                     Caption = 'High'
                     ParentColor = False
                   end
                   object FieldOptionIntegerRangeLowSpinEdit: TSpinEdit
                     Left = 68
-                    Height = 23
-                    Top = 21
+                    Height = 28
+                    Top = 18
                     Width = 152
                     MaxValue = 1000000000
                     MinValue = -1000000000
@@ -658,8 +650,8 @@ object MainForm: TMainForm
                   end
                   object FieldOptionIntegerRangeHighSpinEdit: TSpinEdit
                     Left = 68
-                    Height = 23
-                    Top = 61
+                    Height = 28
+                    Top = 58
                     Width = 152
                     MaxValue = 1000000000
                     MinValue = -1000000000
@@ -669,36 +661,36 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsRangeRealPage: TPage
                   Caption = 'Real Range'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionRealRangeLowLabel1: TLabel
                     Left = 14
-                    Height = 15
+                    Height = 19
                     Top = 27
-                    Width = 27
+                    Width = 31
                     Caption = 'Low'
                     ParentColor = False
                   end
                   object FieldOptionRealRangeHighLabel1: TLabel
                     Left = 14
-                    Height = 15
+                    Height = 19
                     Top = 67
-                    Width = 30
+                    Width = 33
                     Caption = 'High'
                     ParentColor = False
                   end
                   object FieldOptionRealRangeHighLabel2: TLabel
                     Left = 14
-                    Height = 15
+                    Height = 19
                     Top = 107
-                    Width = 97
+                    Width = 110
                     Caption = 'Decimal Places'
                     ParentColor = False
                   end
                   object FieldOptionRealRangeLowSpinEdit: TFloatSpinEdit
                     Left = 146
-                    Height = 23
-                    Top = 21
+                    Height = 28
+                    Top = 18
                     Width = 160
                     Increment = 1
                     MaxValue = 1000000000
@@ -708,8 +700,8 @@ object MainForm: TMainForm
                   end
                   object FieldOptionRealRangeHighSpinEdit: TFloatSpinEdit
                     Left = 146
-                    Height = 23
-                    Top = 61
+                    Height = 28
+                    Top = 58
                     Width = 160
                     Increment = 1
                     MaxValue = 1000000000
@@ -719,8 +711,8 @@ object MainForm: TMainForm
                   end
                   object FieldOptionRealRangeDecimalSpinEdit: TSpinEdit
                     Left = 146
-                    Height = 23
-                    Top = 101
+                    Height = 28
+                    Top = 98
                     Width = 66
                     MaxValue = 5
                     MinValue = 1
@@ -731,52 +723,52 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsDateTimePage: TPage
                   Caption = 'Date and Time'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionTimeLowGroupBox: TGroupBox
                     Left = 10
                     Height = 88
                     Top = 9
-                    Width = 252
+                    Width = 248
                     Anchors = [akTop, akLeft, akRight]
                     Caption = 'Low'
-                    ClientHeight = 67
-                    ClientWidth = 248
-                    Ctl3D = False
+                    ClientHeight = 69
+                    ClientWidth = 246
                     TabOrder = 0
                     object FieldOptionTimeLowLabel: TLabel
                       Left = 14
-                      Height = 15
+                      Height = 19
                       Top = 45
-                      Width = 32
+                      Width = 37
                       Caption = 'Time'
                       ParentColor = False
                     end
                     object FieldOptionDateLowLabel: TLabel
                       Left = 14
-                      Height = 15
+                      Height = 19
                       Top = 15
-                      Width = 31
+                      Width = 36
                       Caption = 'Date'
                       ParentColor = False
                     end
                     object FieldOptionTimeLowEdit: TEdit
                       Left = 70
-                      Height = 23
-                      Top = 39
-                      Width = 80
+                      Height = 28
+                      Top = 36
+                      Width = 145
                       MaxLength = 8
                       TabOrder = 0
                       Text = 'HH:nn:ss'
                     end
                     object FieldOptionDateLowCalendar: TDateEdit
                       Left = 70
-                      Height = 23
-                      Top = 7
+                      Height = 28
+                      Top = 6
                       Width = 145
                       CalendarDisplaySettings = [dsShowHeadings]
                       OKCaption = 'OK'
                       CancelCaption = 'False'
+                      DateOrder = doNone
                       ButtonWidth = 23
                       Glyph.Data = {
                         D6020000424DD60200000000000036000000280000000E0000000C0000000100
@@ -811,46 +803,46 @@ object MainForm: TMainForm
                     Left = 274
                     Height = 88
                     Top = 9
-                    Width = 252
+                    Width = 248
                     Anchors = [akTop, akLeft, akRight]
                     Caption = 'High'
-                    ClientHeight = 67
-                    ClientWidth = 248
-                    Ctl3D = False
+                    ClientHeight = 69
+                    ClientWidth = 246
                     TabOrder = 1
                     object FieldOptionTimeHighLabel: TLabel
                       Left = 14
-                      Height = 15
+                      Height = 19
                       Top = 45
-                      Width = 32
+                      Width = 37
                       Caption = 'Time'
                       ParentColor = False
                     end
                     object FieldOptionDateHighLabel: TLabel
                       Left = 14
-                      Height = 15
+                      Height = 19
                       Top = 15
-                      Width = 31
+                      Width = 36
                       Caption = 'Date'
                       ParentColor = False
                     end
                     object FieldOptionTimeHighEdit: TEdit
                       Left = 70
-                      Height = 23
-                      Top = 39
-                      Width = 80
+                      Height = 28
+                      Top = 36
+                      Width = 145
                       MaxLength = 8
                       TabOrder = 0
                       Text = 'HH:nn:ss'
                     end
                     object FieldOptionDateHighCalendar: TDateEdit
                       Left = 70
-                      Height = 23
-                      Top = 7
+                      Height = 28
+                      Top = 6
                       Width = 145
                       CalendarDisplaySettings = [dsShowHeadings]
                       OKCaption = 'OK'
                       CancelCaption = 'Cancel'
+                      DateOrder = doNone
                       ButtonWidth = 23
                       Glyph.Data = {
                         D6020000424DD60200000000000036000000280000000E0000000C0000000100
@@ -883,17 +875,17 @@ object MainForm: TMainForm
                   end
                   object FieldOptionDateTimeUnixCheckBox: TCheckBox
                     Left = 10
-                    Height = 22
-                    Top = 160
-                    Width = 156
+                    Height = 20
+                    Top = 173
+                    Width = 172
                     Caption = 'Display as UNIX time'
                     TabOrder = 2
                   end
                   object FieldOptionStepRadioGroup: TRadioGroup
                     Left = 10
-                    Height = 48
+                    Height = 61
                     Top = 104
-                    Width = 516
+                    Width = 512
                     Anchors = [akTop, akLeft, akRight]
                     AutoFill = True
                     Caption = 'Step'
@@ -905,10 +897,9 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
-                    ClientHeight = 27
-                    ClientWidth = 512
+                    ClientHeight = 42
+                    ClientWidth = 510
                     Columns = 4
-                    Ctl3D = False
                     ItemIndex = 3
                     Items.Strings = (
                       'Current'
@@ -921,19 +912,19 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsFixedWordsPage: TPage
                   Caption = 'Fixed Number of Words'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionFixedWordLabel: TLabel
                     Left = 212
-                    Height = 15
-                    Top = 27
-                    Width = 39
+                    Height = 19
+                    Top = 30
+                    Width = 46
                     Caption = 'words'
                     ParentColor = False
                   end
                   object FieldOptionFixedWordSpinEdit: TSpinEdit
                     Left = 20
-                    Height = 23
+                    Height = 28
                     Top = 21
                     Width = 178
                     MaxValue = 10000
@@ -944,35 +935,35 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsRandomWordsPage: TPage
                   Caption = 'Random Number of Words'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionRandomWordToLabel: TLabel
                     Left = 220
-                    Height = 15
-                    Top = 27
-                    Width = 13
+                    Height = 19
+                    Top = 30
+                    Width = 16
                     Caption = 'to'
                     ParentColor = False
                   end
                   object FieldOptionRandomWordFromLabel: TLabel
                     Left = 12
-                    Height = 15
-                    Top = 27
-                    Width = 33
+                    Height = 19
+                    Top = 30
+                    Width = 39
                     Caption = 'From'
                     ParentColor = False
                   end
                   object FieldOptionRandomWordsLabel: TLabel
                     Left = 396
-                    Height = 15
-                    Top = 27
-                    Width = 39
+                    Height = 19
+                    Top = 30
+                    Width = 46
                     Caption = 'words'
                     ParentColor = False
                   end
                   object FieldOptionRandomWordLowSpinEdit: TSpinEdit
                     Left = 76
-                    Height = 23
+                    Height = 28
                     Top = 21
                     Width = 130
                     MaxValue = 10000
@@ -982,7 +973,7 @@ object MainForm: TMainForm
                   end
                   object FieldOptionRandomWordHighSpinEdit: TSpinEdit
                     Left = 252
-                    Height = 23
+                    Height = 28
                     Top = 21
                     Width = 130
                     MaxValue = 10000
@@ -993,19 +984,19 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsFixedAlphaPage: TPage
                   Caption = 'Fixed Alpha String'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionFixedStringLabel: TLabel
-                    Left = 210
-                    Height = 15
-                    Top = 27
-                    Width = 68
+                    Left = 186
+                    Height = 19
+                    Top = 30
+                    Width = 79
                     Caption = 'characters'
                     ParentColor = False
                   end
                   object FieldOptionFixedStringSpinEdit: TSpinEdit
                     Left = 20
-                    Height = 23
+                    Height = 28
                     Top = 21
                     Width = 148
                     MaxValue = 10000
@@ -1017,7 +1008,7 @@ object MainForm: TMainForm
                     Left = 20
                     Height = 80
                     Top = 61
-                    Width = 510
+                    Width = 506
                     Anchors = [akTop, akLeft, akRight]
                     AutoFill = True
                     Caption = 'Characters Allowed'
@@ -1030,7 +1021,6 @@ object MainForm: TMainForm
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
                     Columns = 4
-                    Ctl3D = False
                     Items.Strings = (
                       'Letter'
                       'Numbers'
@@ -1045,35 +1035,35 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsRandomAlphaPage: TPage
                   Caption = 'Random Alpha String'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionRandomStringFromLabel: TLabel
                     Left = 12
-                    Height = 15
-                    Top = 27
-                    Width = 33
+                    Height = 19
+                    Top = 30
+                    Width = 39
                     Caption = 'From'
                     ParentColor = False
                   end
                   object FieldOptionRandomStringToLabel: TLabel
                     Left = 220
-                    Height = 15
-                    Top = 27
-                    Width = 13
+                    Height = 19
+                    Top = 30
+                    Width = 16
                     Caption = 'to'
                     ParentColor = False
                   end
                   object FieldOptionRandomStringLabel: TLabel
                     Left = 396
-                    Height = 15
-                    Top = 27
-                    Width = 68
+                    Height = 19
+                    Top = 30
+                    Width = 79
                     Caption = 'characters'
                     ParentColor = False
                   end
                   object FieldOptionRandomStringLowSpinEdit: TSpinEdit
                     Left = 76
-                    Height = 23
+                    Height = 28
                     Top = 21
                     Width = 130
                     MaxValue = 10000
@@ -1083,7 +1073,7 @@ object MainForm: TMainForm
                   end
                   object FieldOptionRandomStringHighSpinEdit: TSpinEdit
                     Left = 252
-                    Height = 23
+                    Height = 28
                     Top = 21
                     Width = 130
                     MaxValue = 10000
@@ -1095,7 +1085,7 @@ object MainForm: TMainForm
                     Left = 12
                     Height = 80
                     Top = 61
-                    Width = 510
+                    Width = 506
                     Anchors = [akTop, akLeft, akRight]
                     AutoFill = True
                     Caption = 'Characters Allowed'
@@ -1108,7 +1098,6 @@ object MainForm: TMainForm
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
                     Columns = 4
-                    Ctl3D = False
                     Items.Strings = (
                       'Letter'
                       'Numbers'
@@ -1123,36 +1112,36 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsSequencePage: TPage
                   Caption = 'Sequence'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionSequenceStartLabel: TLabel
                     Left = 26
-                    Height = 15
+                    Height = 19
                     Top = 27
-                    Width = 47
+                    Width = 58
                     Caption = 'Start at'
                     ParentColor = False
                   end
                   object FieldOptionSequenceDupLabel: TLabel
                     Left = 26
-                    Height = 15
+                    Height = 19
                     Top = 67
-                    Width = 59
+                    Width = 68
                     Caption = 'Duplicate'
                     ParentColor = False
                   end
                   object FieldOptionSequenceStrideLabel: TLabel
                     Left = 26
-                    Height = 15
+                    Height = 19
                     Top = 107
-                    Width = 64
+                    Width = 75
                     Caption = 'Increment'
                     ParentColor = False
                   end
                   object FieldOptionSequenceStartSpinEdit: TSpinEdit
                     Left = 122
-                    Height = 23
-                    Top = 21
+                    Height = 28
+                    Top = 18
                     Width = 160
                     MaxValue = 1000000000
                     MinValue = -1000000000
@@ -1160,16 +1149,16 @@ object MainForm: TMainForm
                   end
                   object FieldOptionSequenceDupSpinEdit: TSpinEdit
                     Left = 122
-                    Height = 23
-                    Top = 61
+                    Height = 28
+                    Top = 58
                     Width = 160
                     MaxValue = 1000000000
                     TabOrder = 1
                   end
                   object FieldOptionSequenceStrideSpinEdit: TSpinEdit
                     Left = 122
-                    Height = 23
-                    Top = 101
+                    Height = 28
+                    Top = 98
                     Width = 160
                     MaxValue = 1000000
                     MinValue = -1000000
@@ -1179,13 +1168,13 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsStatePage: TPage
                   Caption = 'State'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionStateAbbrRadioButton: TRadioButton
                     Left = 26
-                    Height = 22
+                    Height = 20
                     Top = 19
-                    Width = 126
+                    Width = 140
                     Caption = 'Abbreviated (ID)'
                     Checked = True
                     State = cbChecked
@@ -1193,22 +1182,23 @@ object MainForm: TMainForm
                   end
                   object FieldOptionStateFullRadioButton: TRadioButton
                     Left = 26
-                    Height = 22
+                    Height = 20
                     Top = 59
-                    Width = 95
+                    Width = 101
                     Caption = 'Full (Idaho)'
                     TabOrder = 1
+                    TabStop = False
                   end
                 end
-                object FieldOptionsSetPage: TPage
+                object FieldOptionsSetFixedPage: TPage
                   Caption = 'Set'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionSetLabel: TLabel
                     Left = 18
-                    Height = 15
+                    Height = 19
                     Top = 11
-                    Width = 75
+                    Width = 89
                     Caption = 'Items in Set'
                     ParentColor = False
                   end
@@ -1225,8 +1215,8 @@ object MainForm: TMainForm
                   object FieldOptionSetRemoveItemButton: TBitBtn
                     Left = 258
                     Height = 34
-                    Top = 71
-                    Width = 33
+                    Top = 61
+                    Width = 34
                     Anchors = [akLeft, akBottom]
                     AutoSize = True
                     Glyph.Data = {
@@ -1312,8 +1302,8 @@ object MainForm: TMainForm
                   object FieldOptionSetAddItemButton: TBitBtn
                     Left = 258
                     Height = 34
-                    Top = 25
-                    Width = 33
+                    Top = 27
+                    Width = 34
                     Anchors = [akLeft, akBottom]
                     AutoSize = True
                     Glyph.Data = {
@@ -1399,13 +1389,13 @@ object MainForm: TMainForm
                 end
                 object FieldOptionsNamePage: TPage
                   Caption = 'Name'
-                  ClientWidth = 545
-                  ClientHeight = 271
+                  ClientWidth = 541
+                  ClientHeight = 261
                   object FieldOptionNameSexCheckGroup: TCheckGroup
                     Left = 18
                     Height = 100
                     Top = 11
-                    Width = 512
+                    Width = 508
                     Anchors = [akTop, akLeft, akRight]
                     AutoFill = True
                     Caption = 'Sex'
@@ -1417,7 +1407,6 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 1
-                    Ctl3D = False
                     Items.Strings = (
                       'Male'
                       'Female'
@@ -1431,19 +1420,19 @@ object MainForm: TMainForm
                 object FieldOptionsMaskPage: TPage
                   Caption = 'FieldOptionsMaskPage'
                   ClientWidth = 541
-                  ClientHeight = 267
+                  ClientHeight = 261
                   object FieldOptionsMaskEdit: TLabeledEdit
                     Left = 18
-                    Height = 23
+                    Height = 28
                     Top = 32
                     Width = 496
                     Anchors = [akTop, akLeft, akRight]
                     EditLabel.AnchorSideLeft.Control = FieldOptionsMaskEdit
                     EditLabel.AnchorSideBottom.Control = FieldOptionsMaskEdit
                     EditLabel.Left = 18
-                    EditLabel.Height = 15
-                    EditLabel.Top = 14
-                    EditLabel.Width = 35
+                    EditLabel.Height = 19
+                    EditLabel.Top = 10
+                    EditLabel.Width = 39
                     EditLabel.Caption = 'Mask'
                     EditLabel.ParentColor = False
                     TabOrder = 0
@@ -1460,13 +1449,39 @@ object MainForm: TMainForm
                     TabOrder = 1
                   end
                 end
+                object FieldOptionsSetFilePage: TPage
+                  Caption = 'FieldOptionsSetFilePage'
+                  ClientWidth = 541
+                  ClientHeight = 261
+                  object FieldOptionsSetFileNameLabel: TLabel
+                    Left = 10
+                    Height = 19
+                    Top = 13
+                    Width = 169
+                    Caption = 'File (one value per line)'
+                    ParentColor = False
+                  end
+                  object FieldOptionsSetFileEdit: TFileNameEdit
+                    Left = 10
+                    Height = 28
+                    Top = 37
+                    Width = 496
+                    DialogOptions = [ofFileMustExist, ofShareAware]
+                    FilterIndex = 0
+                    HideDirectories = False
+                    ButtonWidth = 23
+                    NumGlyphs = 0
+                    Anchors = [akTop, akLeft, akRight]
+                    TabOrder = 0
+                  end
+                end
               end
             end
           end
           object FieldNameEdit: TEdit
-            Left = 94
-            Height = 23
-            Top = 10
+            Left = 100
+            Height = 28
+            Top = 9
             Width = 280
             Anchors = [akTop, akLeft, akRight]
             TabOrder = 2
@@ -1476,31 +1491,31 @@ object MainForm: TMainForm
     end
     object OutputTabSheet: TTabSheet
       Caption = 'Output'
-      ClientHeight = 512
-      ClientWidth = 792
+      ClientHeight = 476
+      ClientWidth = 786
       object SpacerPanel1: TPanel
         Left = 0
-        Height = 512
+        Height = 476
         Top = 0
-        Width = 792
+        Width = 786
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 512
-        ClientWidth = 792
+        ClientHeight = 476
+        ClientWidth = 786
         TabOrder = 0
         object OutputNumLabel: TLabel
           Left = 454
-          Height = 15
+          Height = 19
           Top = 18
-          Width = 202
+          Width = 236
           Caption = 'Number of Records to Generate'
           ParentColor = False
         end
         object OutputFileLabel: TLabel
           Left = 14
-          Height = 15
+          Height = 19
           Top = 90
-          Width = 68
+          Width = 80
           Caption = 'Output File'
           ParentColor = False
         end
@@ -1519,10 +1534,9 @@ object MainForm: TMainForm
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 4
-          ClientHeight = 61
-          ClientWidth = 424
+          ClientHeight = 42
+          ClientWidth = 422
           Columns = 4
-          Ctl3D = False
           ItemIndex = 0
           Items.Strings = (
             'Delimited'
@@ -1534,28 +1548,27 @@ object MainForm: TMainForm
         end
         object OutputOptionsGroupBox: TGroupBox
           Left = 14
-          Height = 330
+          Height = 294
           Top = 159
-          Width = 764
+          Width = 758
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Output Options'
-          ClientHeight = 309
-          ClientWidth = 760
-          Ctl3D = False
+          ClientHeight = 275
+          ClientWidth = 756
           TabOrder = 1
           object OutputOptionsNotebook: TNotebook
             Left = 0
-            Height = 309
+            Height = 275
             Top = 0
-            Width = 760
+            Width = 756
             Align = alClient
             PageIndex = 3
             ShowTabs = False
             TabOrder = 0
             object OutputDelimitedPage: TPage
               Caption = 'Delmited'
-              ClientWidth = 760
-              ClientHeight = 309
+              ClientWidth = 754
+              ClientHeight = 275
               object OutputDelimiterEdit: TLabeledEdit
                 Left = 100
                 Height = 25
@@ -1608,8 +1621,8 @@ object MainForm: TMainForm
             end
             object OutputSqlPage: TPage
               Caption = 'OutputSqlPage'
-              ClientWidth = 760
-              ClientHeight = 309
+              ClientWidth = 754
+              ClientHeight = 275
               object OutputSqlRecordsPerInsertLabel: TLabel
                 Left = 16
                 Height = 15
@@ -1657,9 +1670,8 @@ object MainForm: TMainForm
                 ChildSizing.ShrinkVertical = crsScaleChilds
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 1
-                ClientHeight = 126
-                ClientWidth = 316
-                Ctl3D = False
+                ClientHeight = 107
+                ClientWidth = 314
                 ItemIndex = 0
                 Items.Strings = (
                   'INSERT'
@@ -1692,8 +1704,8 @@ object MainForm: TMainForm
             end
             object OutputNotImplementedPage: TPage
               Caption = 'Not Implemented'
-              ClientWidth = 760
-              ClientHeight = 309
+              ClientWidth = 754
+              ClientHeight = 275
               object OutputNotImplementedLabel: TLabel
                 Left = 28
                 Height = 15
@@ -1705,35 +1717,35 @@ object MainForm: TMainForm
             end
             object OutputMySQLPage: TPage
               Caption = 'OutputMySQLPage'
-              ClientWidth = 760
-              ClientHeight = 309
+              ClientWidth = 750
+              ClientHeight = 269
               object OutputSqlRecordsPerInsertLabel1: TLabel
                 Left = 12
-                Height = 15
+                Height = 19
                 Top = 200
-                Width = 118
+                Width = 134
                 Caption = 'Records per insert'
                 ParentColor = False
               end
               object Label1: TLabel
                 Left = 188
-                Height = 15
+                Height = 19
                 Top = 247
-                Width = 116
+                Width = 133
                 Caption = 'milliseconds every'
                 ParentColor = False
               end
               object Label2: TLabel
-                Left = 436
-                Height = 15
+                Left = 451
+                Height = 19
                 Top = 247
-                Width = 49
+                Width = 56
                 Caption = 'records'
                 ParentColor = False
               end
               object OutputMySqlInsertOperationRadioGroup: TRadioGroup
                 Left = 12
-                Height = 118
+                Height = 119
                 Top = 64
                 Width = 280
                 AutoFill = True
@@ -1746,9 +1758,8 @@ object MainForm: TMainForm
                 ChildSizing.ShrinkVertical = crsScaleChilds
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 1
-                ClientHeight = 118
-                ClientWidth = 280
-                Ctl3D = False
+                ClientHeight = 100
+                ClientWidth = 278
                 ItemIndex = 0
                 Items.Strings = (
                   'INSERT'
@@ -1758,9 +1769,9 @@ object MainForm: TMainForm
                 TabOrder = 0
               end
               object OutputMySqlRecordsPerInsertSpinEdit: TSpinEdit
-                Left = 144
-                Height = 23
-                Top = 192
+                Left = 155
+                Height = 28
+                Top = 191
                 Width = 146
                 MaxValue = 10000
                 MinValue = 1
@@ -1769,46 +1780,46 @@ object MainForm: TMainForm
               end
               object MySQLHostEdit: TLabeledEdit
                 Left = 12
-                Height = 25
+                Height = 28
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = MySQLHostEdit
                 EditLabel.AnchorSideBottom.Control = MySQLHostEdit
                 EditLabel.Left = 12
-                EditLabel.Height = 15
-                EditLabel.Top = 14
-                EditLabel.Width = 30
+                EditLabel.Height = 19
+                EditLabel.Top = 10
+                EditLabel.Width = 35
                 EditLabel.Caption = 'Host'
                 EditLabel.ParentColor = False
                 TabOrder = 2
               end
               object MySQLUserEdit: TLabeledEdit
                 Left = 156
-                Height = 25
+                Height = 28
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = MySQLUserEdit
                 EditLabel.AnchorSideBottom.Control = MySQLUserEdit
                 EditLabel.Left = 156
-                EditLabel.Height = 15
-                EditLabel.Top = 14
-                EditLabel.Width = 31
+                EditLabel.Height = 19
+                EditLabel.Top = 10
+                EditLabel.Width = 35
                 EditLabel.Caption = 'User'
                 EditLabel.ParentColor = False
                 TabOrder = 3
               end
               object MySQLPasswordEdit: TLabeledEdit
                 Left = 300
-                Height = 25
+                Height = 28
                 Top = 32
                 Width = 136
                 EchoMode = emPassword
                 EditLabel.AnchorSideLeft.Control = MySQLPasswordEdit
                 EditLabel.AnchorSideBottom.Control = MySQLPasswordEdit
                 EditLabel.Left = 300
-                EditLabel.Height = 15
-                EditLabel.Top = 14
-                EditLabel.Width = 63
+                EditLabel.Height = 19
+                EditLabel.Top = 10
+                EditLabel.Width = 71
                 EditLabel.Caption = 'Password'
                 EditLabel.ParentColor = False
                 PasswordChar = '*'
@@ -1816,48 +1827,48 @@ object MainForm: TMainForm
               end
               object MySQLDatabaseEdit: TLabeledEdit
                 Left = 444
-                Height = 25
+                Height = 28
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = MySQLDatabaseEdit
                 EditLabel.AnchorSideBottom.Control = MySQLDatabaseEdit
                 EditLabel.Left = 444
-                EditLabel.Height = 15
-                EditLabel.Top = 14
-                EditLabel.Width = 61
+                EditLabel.Height = 19
+                EditLabel.Top = 10
+                EditLabel.Width = 71
                 EditLabel.Caption = 'Database'
                 EditLabel.ParentColor = False
                 TabOrder = 5
               end
               object OutputMySQLTableEdit: TLabeledEdit
                 Left = 588
-                Height = 25
+                Height = 28
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = OutputMySQLTableEdit
                 EditLabel.AnchorSideBottom.Control = OutputMySQLTableEdit
                 EditLabel.Left = 588
-                EditLabel.Height = 15
-                EditLabel.Top = 14
-                EditLabel.Width = 36
+                EditLabel.Height = 19
+                EditLabel.Top = 10
+                EditLabel.Width = 38
                 EditLabel.Caption = 'Table'
                 EditLabel.ParentColor = False
                 TabOrder = 6
               end
               object OutputMySQLErrorHaltCheckbox: TCheckBox
                 Left = 300
-                Height = 22
+                Height = 20
                 Top = 104
-                Width = 238
+                Width = 267
                 Caption = 'Give up if an error is encountered'
                 TabOrder = 7
               end
               object OutputMySqlFieldNamesCheckbox: TCheckBox
                 Left = 300
-                Height = 22
+                Height = 20
                 Hint = 'Field names will be included in SQL statements'
                 Top = 72
-                Width = 236
+                Width = 269
                 Caption = 'Include field names in statements'
                 Checked = True
                 ParentShowHint = False
@@ -1867,26 +1878,26 @@ object MainForm: TMainForm
               end
               object OutputMySQLFileTooCheckBox: TCheckBox
                 Left = 300
-                Height = 22
+                Height = 20
                 Hint = 'Field names will be included in SQL statements'
                 Top = 136
-                Width = 200
+                Width = 228
                 Caption = 'Also write SQL to output file'
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 9
               end
               object MySQLSleepCheckbox: TCheckBox
-                Left = 12
-                Height = 22
-                Top = 240
-                Width = 84
+                Left = 11
+                Height = 20
+                Top = 246
+                Width = 87
                 Caption = 'Sleep for'
                 TabOrder = 10
               end
               object MySQLSleepMsSpinEdit: TSpinEdit
                 Left = 100
-                Height = 23
+                Height = 28
                 Top = 239
                 Width = 80
                 MaxValue = 10000
@@ -1895,8 +1906,8 @@ object MainForm: TMainForm
                 Value = 100
               end
               object MySQLSleepRecordsSpinEdit: TSpinEdit
-                Left = 316
-                Height = 23
+                Left = 331
+                Height = 28
                 Top = 239
                 Width = 112
                 MaxValue = 1000000
@@ -1909,9 +1920,9 @@ object MainForm: TMainForm
         end
         object OutputNumSpinEdit: TSpinEdit
           Left = 454
-          Height = 23
+          Height = 28
           Top = 48
-          Width = 294
+          Width = 288
           Anchors = [akTop, akLeft, akRight]
           MaxValue = 1000000000
           MinValue = 2
@@ -1922,16 +1933,16 @@ object MainForm: TMainForm
           Left = 14
           Height = 28
           Top = 110
-          Width = 676
+          Width = 670
           Anchors = [akTop, akLeft, akRight]
           TabOrder = 3
           Text = '/tmp/datagen.txt'
         end
         object OutputFileChooseButton: TBitBtn
-          Left = 714
+          Left = 685
           Height = 35
-          Top = 103
-          Width = 34
+          Top = 107
+          Width = 35
           Anchors = [akTop, akRight]
           AutoSize = True
           Glyph.Data = {
@@ -2024,18 +2035,17 @@ object MainForm: TMainForm
     end
     object MessagesTabSheet: TTabSheet
       Caption = 'Message Log'
-      ClientHeight = 512
-      ClientWidth = 792
+      ClientHeight = 476
+      ClientWidth = 786
       object MessagesMemo: TSynMemo
         Cursor = crIBeam
         Left = 2
-        Height = 508
+        Height = 472
         Top = 2
-        Width = 788
+        Width = 782
         Align = alClient
         BorderSpacing.Around = 2
-        Ctl3D = False
-        Font.Height = -12
+        Font.Height = 10
         Font.Name = 'courier'
         Font.Pitch = fpFixed
         Font.Quality = fqNonAntialiased
@@ -2044,355 +2054,599 @@ object MainForm: TMainForm
         PopupMenu = MemoPopupMenu
         TabOrder = 0
         BookMarkOptions.Xoffset = 23
-        Gutter.AutoSize = True
-        Gutter.RightOffset = 0
-        Gutter.LeftOffset = 0
-        Gutter.ShowCodeFolding = True
-        Gutter.CodeFoldingWidth = 10
-        Gutter.ShowChanges = True
-        Gutter.ShowLineNumbers = True
-        Gutter.ZeroStart = False
-        Gutter.DigitCount = 3
+        BookMarkOptions.OnChange = nil
+        Gutter.Width = 57
+        Gutter.MouseActions = <        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbLeft
+            ClickCount = ccAny
+            ClickDir = cdDown
+            Command = 13
+            MoveCaret = False
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbRight
+            ClickCount = ccSingle
+            ClickDir = cdUp
+            Command = 12
+            MoveCaret = False
+            Option = 0
+            Priority = 0
+          end>
         Keystrokes = <        
           item
-            Command = 3
+            Command = ecUp
             ShortCut = 38
           end        
           item
-            Command = 103
+            Command = ecSelUp
             ShortCut = 8230
           end        
           item
-            Command = 211
+            Command = ecScrollUp
             ShortCut = 16422
           end        
           item
-            Command = 4
+            Command = ecDown
             ShortCut = 40
           end        
           item
-            Command = 104
+            Command = ecSelDown
             ShortCut = 8232
           end        
           item
-            Command = 212
+            Command = ecScrollDown
             ShortCut = 16424
           end        
           item
-            Command = 1
+            Command = ecLeft
             ShortCut = 37
           end        
           item
-            Command = 101
+            Command = ecSelLeft
             ShortCut = 8229
           end        
           item
-            Command = 5
+            Command = ecWordLeft
             ShortCut = 16421
           end        
           item
-            Command = 105
+            Command = ecSelWordLeft
             ShortCut = 24613
           end        
           item
-            Command = 2
+            Command = ecRight
             ShortCut = 39
           end        
           item
-            Command = 102
+            Command = ecSelRight
             ShortCut = 8231
           end        
           item
-            Command = 6
+            Command = ecWordRight
             ShortCut = 16423
           end        
           item
-            Command = 106
+            Command = ecSelWordRight
             ShortCut = 24615
           end        
           item
-            Command = 10
+            Command = ecPageDown
             ShortCut = 34
           end        
           item
-            Command = 110
+            Command = ecSelPageDown
             ShortCut = 8226
           end        
           item
-            Command = 14
+            Command = ecPageBottom
             ShortCut = 16418
           end        
           item
-            Command = 114
+            Command = ecSelPageBottom
             ShortCut = 24610
           end        
           item
-            Command = 9
+            Command = ecPageUp
             ShortCut = 33
           end        
           item
-            Command = 109
+            Command = ecSelPageUp
             ShortCut = 8225
           end        
           item
-            Command = 13
+            Command = ecPageTop
             ShortCut = 16417
           end        
           item
-            Command = 113
+            Command = ecSelPageTop
             ShortCut = 24609
           end        
           item
-            Command = 7
+            Command = ecLineStart
             ShortCut = 36
           end        
           item
-            Command = 107
+            Command = ecSelLineStart
             ShortCut = 8228
           end        
           item
-            Command = 15
+            Command = ecEditorTop
             ShortCut = 16420
           end        
           item
-            Command = 115
+            Command = ecSelEditorTop
             ShortCut = 24612
           end        
           item
-            Command = 8
+            Command = ecLineEnd
             ShortCut = 35
           end        
           item
-            Command = 108
+            Command = ecSelLineEnd
             ShortCut = 8227
           end        
           item
-            Command = 16
+            Command = ecEditorBottom
             ShortCut = 16419
           end        
           item
-            Command = 116
+            Command = ecSelEditorBottom
             ShortCut = 24611
           end        
           item
-            Command = 223
+            Command = ecToggleMode
             ShortCut = 45
           end        
           item
-            Command = 201
+            Command = ecCopy
             ShortCut = 16429
           end        
           item
-            Command = 604
+            Command = ecPaste
             ShortCut = 8237
           end        
           item
-            Command = 502
+            Command = ecDeleteChar
             ShortCut = 46
           end        
           item
-            Command = 603
+            Command = ecCut
             ShortCut = 8238
           end        
           item
-            Command = 501
+            Command = ecDeleteLastChar
             ShortCut = 8
           end        
           item
-            Command = 501
+            Command = ecDeleteLastChar
             ShortCut = 8200
           end        
           item
-            Command = 504
+            Command = ecDeleteLastWord
             ShortCut = 16392
           end        
           item
-            Command = 601
+            Command = ecUndo
             ShortCut = 32776
           end        
           item
-            Command = 602
+            Command = ecRedo
             ShortCut = 40968
           end        
           item
-            Command = 509
+            Command = ecLineBreak
             ShortCut = 13
           end        
           item
-            Command = 199
+            Command = ecSelectAll
             ShortCut = 16449
           end        
           item
-            Command = 201
+            Command = ecCopy
             ShortCut = 16451
           end        
           item
-            Command = 610
+            Command = ecBlockIndent
             ShortCut = 24649
           end        
           item
-            Command = 509
+            Command = ecLineBreak
             ShortCut = 16461
           end        
           item
-            Command = 510
+            Command = ecInsertLine
             ShortCut = 16462
           end        
           item
-            Command = 503
+            Command = ecDeleteWord
             ShortCut = 16468
           end        
           item
-            Command = 611
+            Command = ecBlockUnindent
             ShortCut = 24661
           end        
           item
-            Command = 604
+            Command = ecPaste
             ShortCut = 16470
           end        
           item
-            Command = 603
+            Command = ecCut
             ShortCut = 16472
           end        
           item
-            Command = 507
+            Command = ecDeleteLine
             ShortCut = 16473
           end        
           item
-            Command = 506
+            Command = ecDeleteEOL
             ShortCut = 24665
           end        
           item
-            Command = 601
+            Command = ecUndo
             ShortCut = 16474
           end        
           item
-            Command = 602
+            Command = ecRedo
             ShortCut = 24666
           end        
           item
-            Command = 301
+            Command = ecGotoMarker0
             ShortCut = 16432
           end        
           item
-            Command = 302
+            Command = ecGotoMarker1
             ShortCut = 16433
           end        
           item
-            Command = 303
+            Command = ecGotoMarker2
             ShortCut = 16434
           end        
           item
-            Command = 304
+            Command = ecGotoMarker3
             ShortCut = 16435
           end        
           item
-            Command = 305
+            Command = ecGotoMarker4
             ShortCut = 16436
           end        
           item
-            Command = 306
+            Command = ecGotoMarker5
             ShortCut = 16437
           end        
           item
-            Command = 307
+            Command = ecGotoMarker6
             ShortCut = 16438
           end        
           item
-            Command = 308
+            Command = ecGotoMarker7
             ShortCut = 16439
           end        
           item
-            Command = 309
+            Command = ecGotoMarker8
             ShortCut = 16440
           end        
           item
-            Command = 310
+            Command = ecGotoMarker9
             ShortCut = 16441
           end        
           item
-            Command = 351
+            Command = ecSetMarker0
             ShortCut = 24624
           end        
           item
-            Command = 352
+            Command = ecSetMarker1
             ShortCut = 24625
           end        
           item
-            Command = 353
+            Command = ecSetMarker2
             ShortCut = 24626
           end        
           item
-            Command = 354
+            Command = ecSetMarker3
             ShortCut = 24627
           end        
           item
-            Command = 355
+            Command = ecSetMarker4
             ShortCut = 24628
           end        
           item
-            Command = 356
+            Command = ecSetMarker5
             ShortCut = 24629
           end        
           item
-            Command = 357
+            Command = ecSetMarker6
             ShortCut = 24630
           end        
           item
-            Command = 358
+            Command = ecSetMarker7
             ShortCut = 24631
           end        
           item
-            Command = 359
+            Command = ecSetMarker8
             ShortCut = 24632
           end        
           item
-            Command = 360
+            Command = ecSetMarker9
             ShortCut = 24633
           end        
           item
-            Command = 231
+            Command = ecNormalSelect
             ShortCut = 24654
           end        
           item
-            Command = 232
+            Command = ecColumnSelect
             ShortCut = 24643
           end        
           item
-            Command = 233
+            Command = ecLineSelect
             ShortCut = 24652
           end        
           item
-            Command = 612
+            Command = ecTab
             ShortCut = 9
           end        
           item
-            Command = 613
+            Command = ecShiftTab
             ShortCut = 8201
           end        
           item
-            Command = 250
+            Command = ecMatchBracket
             ShortCut = 24642
           end>
-        Options = [eoGroupUndo, eoShowScrollHint, eoShowSpecialChars, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces, eoBracketHighlight]
+        MouseActions = <        
+          item
+            Shift = []
+            ShiftMask = [ssShift, ssAlt]
+            Button = mbLeft
+            ClickCount = ccSingle
+            ClickDir = cdDown
+            Command = 1
+            MoveCaret = True
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = [ssShift]
+            ShiftMask = [ssShift, ssAlt]
+            Button = mbLeft
+            ClickCount = ccSingle
+            ClickDir = cdDown
+            Command = 1
+            MoveCaret = True
+            Option = 1
+            Priority = 0
+          end        
+          item
+            Shift = [ssAlt]
+            ShiftMask = [ssShift, ssAlt]
+            Button = mbLeft
+            ClickCount = ccSingle
+            ClickDir = cdDown
+            Command = 3
+            MoveCaret = True
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = [ssShift, ssAlt]
+            ShiftMask = [ssShift, ssAlt]
+            Button = mbLeft
+            ClickCount = ccSingle
+            ClickDir = cdDown
+            Command = 3
+            MoveCaret = True
+            Option = 1
+            Priority = 0
+          end        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbRight
+            ClickCount = ccSingle
+            ClickDir = cdUp
+            Command = 12
+            MoveCaret = False
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbLeft
+            ClickCount = ccDouble
+            ClickDir = cdDown
+            Command = 6
+            MoveCaret = True
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbLeft
+            ClickCount = ccTriple
+            ClickDir = cdDown
+            Command = 7
+            MoveCaret = True
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbLeft
+            ClickCount = ccQuad
+            ClickDir = cdDown
+            Command = 8
+            MoveCaret = True
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbMiddle
+            ClickCount = ccSingle
+            ClickDir = cdDown
+            Command = 10
+            MoveCaret = True
+            Option = 0
+            Priority = 0
+          end        
+          item
+            Shift = [ssCtrl]
+            ShiftMask = [ssShift, ssAlt, ssCtrl]
+            Button = mbLeft
+            ClickCount = ccSingle
+            ClickDir = cdUp
+            Command = 11
+            MoveCaret = False
+            Option = 0
+            Priority = 0
+          end>
+        MouseSelActions = <        
+          item
+            Shift = []
+            ShiftMask = []
+            Button = mbLeft
+            ClickCount = ccSingle
+            ClickDir = cdDown
+            Command = 9
+            MoveCaret = False
+            Option = 0
+            Priority = 0
+          end>
+        Options = [eoGroupUndo, eoShowSpecialChars, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces, eoBracketHighlight]
         ReadOnly = True
         RightEdge = 0
-        SelectedColor.StartX = 0
-        SelectedColor.EndX = 0
+        object TSynGutterPartList
+          object TSynGutterMarks
+            Width = 23
+          end
+          object TSynGutterLineNumber
+            Width = 17
+            MouseActions = <>
+            MarkupInfo.Background = clBtnFace
+            MarkupInfo.Foreground = clNone
+            DigitCount = 2
+            ShowOnlyLineNumbersMultiplesOf = 1
+            ZeroStart = False
+            LeadingZeros = False
+          end
+          object TSynGutterChanges
+            Width = 4
+            ModifiedColor = 59900
+            SavedColor = clGreen
+          end
+          object TSynGutterSeparator
+            Width = 2
+          end
+          object TSynGutterCodeFolding
+            MouseActions = <            
+              item
+                Shift = []
+                ShiftMask = []
+                Button = mbRight
+                ClickCount = ccSingle
+                ClickDir = cdUp
+                Command = 16
+                MoveCaret = False
+                Option = 0
+                Priority = 0
+              end            
+              item
+                Shift = []
+                ShiftMask = [ssShift]
+                Button = mbMiddle
+                ClickCount = ccAny
+                ClickDir = cdDown
+                Command = 14
+                MoveCaret = False
+                Option = 0
+                Priority = 0
+              end            
+              item
+                Shift = [ssShift]
+                ShiftMask = [ssShift]
+                Button = mbMiddle
+                ClickCount = ccAny
+                ClickDir = cdDown
+                Command = 14
+                MoveCaret = False
+                Option = 1
+                Priority = 0
+              end            
+              item
+                Shift = []
+                ShiftMask = []
+                Button = mbLeft
+                ClickCount = ccAny
+                ClickDir = cdDown
+                Command = 0
+                MoveCaret = False
+                Option = 0
+                Priority = 0
+              end>
+            MarkupInfo.Background = clNone
+            MarkupInfo.Foreground = clGray
+            MouseActionsExpanded = <            
+              item
+                Shift = []
+                ShiftMask = []
+                Button = mbLeft
+                ClickCount = ccAny
+                ClickDir = cdDown
+                Command = 14
+                MoveCaret = False
+                Option = 0
+                Priority = 0
+              end>
+            MouseActionsCollapsed = <            
+              item
+                Shift = [ssCtrl]
+                ShiftMask = [ssCtrl]
+                Button = mbLeft
+                ClickCount = ccAny
+                ClickDir = cdDown
+                Command = 15
+                MoveCaret = False
+                Option = 0
+                Priority = 0
+              end            
+              item
+                Shift = []
+                ShiftMask = [ssCtrl]
+                Button = mbLeft
+                ClickCount = ccAny
+                ClickDir = cdDown
+                Command = 15
+                MoveCaret = False
+                Option = 1
+                Priority = 0
+              end>
+          end
+        end
       end
     end
   end
   object StatusBar: TStatusBar
     Left = 0
-    Height = 22
-    Top = 575
+    Height = 24
+    Top = 573
     Width = 792
     Panels = <>
   end
   object BottomPanel: TPanel
     Left = 0
     Height = 63
-    Top = 512
+    Top = 510
     Width = 792
     Align = alBottom
     BevelOuter = bvNone
@@ -2717,7 +2971,7 @@ object MainForm: TMainForm
         Height = 34
         Hint = 'Cancel current data generation process'
         Top = 16
-        Width = 33
+        Width = 34
         AutoSize = True
         Glyph.Data = {
           36090000424D3609000000000000360000002800000018000000180000000100
@@ -2858,24 +3112,27 @@ object MainForm: TMainForm
     left = 317
   end
   object MainMenu1: TMainMenu
-    left = 381
-    top = 32
+    left = 360
     object MenuItem1: TMenuItem
       Caption = 'File'
       object LoadMenuItem: TMenuItem
         Caption = 'Open Table Definition'
+        ShortCut = 16463
         OnClick = FileMenuItemClick
       end
       object SaveMenuItem: TMenuItem
         Caption = 'Save Table Definition'
+        ShortCut = 16467
         OnClick = FileMenuItemClick
       end
       object ClearAllMenuItem: TMenuItem
         Caption = 'Clear All Fields'
+        ShortCut = 16460
         OnClick = FileMenuItemClick
       end
       object QuitMenuItem: TMenuItem
         Caption = 'Exit'
+        ShortCut = 16465
         OnClick = FileMenuItemClick
       end
     end
