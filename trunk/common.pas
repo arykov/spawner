@@ -26,7 +26,7 @@ unit common;
 interface
 
 uses
-  Classes, SysUtils, Forms, names, {$IFDEF WINDOWS}Windows{$ELSE}Libc{$ENDIF};
+  Classes, SysUtils, Forms, synaip, names {$IFDEF WINDOWS}, Windows{$ELSE}, systemlog{$ENDIF};
 
 type
 
@@ -268,9 +268,39 @@ type
   end;
   
   TIPv4Field = class(TField)
+  private
+    FAddress : longword;
+    FRangeMask : byte;
+    FIPMaskMin : byte;
+    FIPMaskMax : byte;
+    FShowIPMask : boolean;
+    FIPMaskBlocksOnly : boolean;
+    FAddressMin : longword;
+    FAddressMax : longword;
   public
+    function GetAsString : string; override;
     function GetField(const quoteChar : string = '') : string; override;
-    constructor Create(const name : string; const theType : string; const theSubType : string);
+    constructor Create(const name : string; const theType : string; const theSubType : string;
+                       const address : longword; const rangeMask : byte;
+                       const ipMaskMin : byte; const ipMaskMax : byte;
+                       const showIpMask : boolean; const ipMaskBlocksOnly : boolean);
+  end;
+
+  TIPv6Field = class(TField)
+  private
+    FAddress : synaip.TIp6Bytes;
+    FRangeMask : byte;
+    FIPMaskMin : byte;
+    FIPMaskMax : byte;
+    FShowIPMask : boolean;
+    FIPMaskBlocksOnly : boolean;
+  public
+    function GetAsString : string; override;
+    function GetField(const quoteChar : string = '') : string; override;
+    constructor Create(const name : string; const theType : string; const theSubType : string;
+                       const address : string; const rangeMask : byte;
+                       const ipMaskMin : byte; const ipMaskMax : byte;
+                       const showIpMask : boolean; const ipMaskBlocksOnly : boolean);
   end;
 
   TMacField = class(TField)
@@ -296,15 +326,23 @@ type
                        const mask : string);
   end;
 
+  function FieldObjectIsAlphaField(const fieldObj : TField) : boolean;
+
 // -Utility Routines -----------------------------------------------------------
 { return a random number from a range of integers }
-function RandomRange(const low : longint;
-                     const high : longint) : longint;
+function RandomRange(const low : int64;
+                     const high : int64) : int64;
 function FRandomRange(const low : double;
                       const high : double) : double;
 
+{ IP address string to integer }
+function IpStrToInt (Value: String): longword;
+{ converts ip integer to a dotted-decimal string }
+function IpIntToStr(const Value: longword): String;
+
 { Log a message to Syslog or to the Windows event log }
-procedure LogSystemMessage (S : string);
+procedure LogSystemMessage (S : string;
+                            T : string = '');
 
 const
   OUTPUT_TYPE_DELIMITED = 0;
@@ -357,6 +395,7 @@ const
   SUBTYPE_SEQUENCE_NAME = 'Sequence';
   
   SUBTYPE_IP_NAME = 'IPv4 Address';
+  SUBTYPE_IPV6_NAME = 'IPv6 Address';
   SUBTYPE_MAC_NAME = 'MAC Address';
 
   SUBTYPE_SET_FIXED = 'From Fixed List';
@@ -366,6 +405,62 @@ implementation
 
 uses
   DateUtils;
+
+function SetBit_8(const bitMap : byte;
+                  const bitIdx : integer;
+                  const bitVal : boolean) : byte;
+begin
+  if bitVal then begin
+    result := bitMap or (byte(1) shl byte(bitIdx));
+  end else begin
+    result := bitMap and (not (byte(1) shl byte(bitIdx)));
+  end;
+end;
+
+function ApplyMaskToIPv4(const IPAddress : longword;
+                         const mask : byte) : longword;
+begin
+  if (mask >= 32) then begin
+    result := IPAddress;
+  end else if (mask > 0) then begin
+    result := IPAddress AND ($FFFFFFFF SHL (32-mask));
+  end else begin
+    result := 0;
+  end;
+end;
+
+function ApplyMaskToIPv6(const IPAddress : synaip.TIp6Bytes;
+                         const mask : byte) : synaip.TIp6Bytes;
+var
+  ipMask : synaip.TIp6Bytes;
+  shiftBits : integer;
+begin
+  if (mask >= 128) then begin
+    result := IPAddress;
+  end else if (mask > 0) then begin
+    shiftBits := 128 - mask;
+    if shiftBits >= 64 then begin
+      {$IFDEF ENDIAN_BIG}
+      pqword(@ipMask[0])^ := high(qword) shl (shiftBits - 64);
+      {$ELSE}
+      pqword(@ipMask[0])^ := swapendian(high(qword) shl (shiftBits - 64));
+      {$ENDIF}
+      pqword(@ipMask[8])^ := 0;
+    end else begin
+      pqword(@ipMask[0])^ := high(qword);
+      {$IFDEF ENDIAN_BIG}
+      pqword(@ipMask[8])^ := high(qword) shl shiftBits;
+      {$ELSE}
+      pqword(@ipMask[8])^ := swapendian(high(qword) shl shiftBits);
+      {$ENDIF}
+    end;
+    pqword(@result[0])^ := pqword(@IPAddress[0])^ and pqword(@ipMask[0])^;
+    pqword(@result[8])^ := pqword(@IPAddress[8])^ and pqword(@ipMask[8])^;
+  end else begin
+    system.FillChar(result[0], length(result)*sizeof(result[0]), #0);
+  end;
+end;
+
 
 // -Field classes---------------------------------------------------------------
 
@@ -566,7 +661,7 @@ function TSetField.GetField(const quoteChar : string = '') : string;
 var
   index : longint;
 begin
-  index := RandomRange(0, FSet.Count-1);
+  index := RandomRange(0, int64(FSet.Count)-1);
   result := FSet.Strings[index];
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
@@ -919,6 +1014,8 @@ begin
     (* it's a pain to deal with these *)
     FAllowedSet.Delete(FAllowedSet.IndexOf(Pointer(Ord(''''))));
     FAllowedSet.Delete(FAllowedSet.IndexOf(Pointer(Ord('"'))));
+    FAllowedSet.Delete(FAllowedSet.IndexOf(Pointer(Ord('|'))));
+    FAllowedSet.Delete(FAllowedSet.IndexOf(Pointer(Ord(','))));
   end;
 end;
 
@@ -942,7 +1039,7 @@ begin
     numChars := RandomRange(FLow, FHigh);
     
   for i := 0 to numChars-1 do begin
-    index := RandomRange(0, FAllowedSet.Count-1);
+    index := RandomRange(0, int64(FAllowedSet.Count)-1);
     result := result + Chr(byte(FAllowedSet.Items[index]));
   end;
 
@@ -955,18 +1052,123 @@ begin
 end;
 
 // -IPv4 Address ---------------------------------------------------------------
-constructor TIPv4Field.Create(const name : string; const theType : string; const theSubType : string);
+constructor TIPv4Field.Create(const name : string; const theType : string; const theSubType : string;
+                              const address : longword; const rangeMask : byte;
+                              const ipMaskMin : byte; const ipMaskMax : byte;
+                              const showIpMask : boolean; const ipMaskBlocksOnly : boolean);
+var
+  tmpMask : word;
 begin
+  tmpMask := rangeMask;
+  if (tmpMask > 32) then tmpMask := 32;
+  if (tmpMask > 0) then begin
+    FAddressMin := address AND ($FFFFFFFF SHL (32-tmpMask));
+    FAddressMax := address OR ($FFFFFFFF SHR tmpMask);
+  end else begin
+    FAddressMin := 0;
+    FAddressMax := $FFFFFFFF;
+  end;
+  FAddress := address;
+  FRangeMask := tmpMask;
+  FIPMaskMin := ipMaskMin;
+  if (FIPMaskMin > 32) then FIPMaskMin := 32;
+  FIPMaskMax := ipMaskMax;
+  if (FIPMaskMax > 32) then FIPMaskMax := 32;
+  FShowIPMask := showIpMask;
+  FIPMaskBlocksOnly := ipMaskBlocksOnly;
+
   Inherited Create(name, theType, theSubType);
 end;
 
 function TIPv4Field.GetField(const quoteChar : string = '') : string;
+var
+  ipMask : byte;
+  remainder : integer;
 begin
-  result := IntToStr(RandomRange(0,255)) + '.' +
-            IntToStr(RandomRange(0,255)) + '.' +
-            IntToStr(RandomRange(0,255)) + '.' +
-            IntToStr(RandomRange(0,255));
+  ipMask := RandomRange(FIPMaskMin, FIPMaskMax);
+  remainder := ipMask mod 8;
+  if FIPMaskBlocksOnly and (remainder <> 0) then begin
+    ipMask := ipMask + 8 - remainder;
+    if (ipMask > FIPMaskMax) then ipMask := ipMask - 8;
+  end;
+  result := IpIntToStr(ApplyMaskToIPv4(RandomRange(FAddressMin,FAddressMax), ipMask));
+  if FShowIPMask then result := result + '/' + IntToStr(ipMask);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TIPv4Field.GetAsString : string;
+begin
+  result := Inherited GetAsString + ',' + IntToStr(FAddress) + '|' + IntToStr(FRangeMask) + '|' +
+              IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask) + '|' +
+              BoolToStr(FIPMaskBlocksOnly);
+end;
+
+// -IPv6 Address ---------------------------------------------------------------
+constructor TIPv6Field.Create(const name : string; const theType : string; const theSubType : string;
+                              const address : string; const rangeMask : byte;
+                              const ipMaskMin : byte; const ipMaskMax : byte;
+                              const showIpMask : boolean; const ipMaskBlocksOnly : boolean);
+var
+  tmpMask : word;
+begin
+  tmpMask := rangeMask;
+  if (tmpMask > 128) then tmpMask := 128;
+  FAddress := synaip.StrToIp6(address);
+  FRangeMask := tmpMask;
+  FIPMaskMin := ipMaskMin;
+  if (FIPMaskMin > 128) then FIPMaskMin := 128;
+  FIPMaskMax := ipMaskMax;
+  if (FIPMaskMax > 128) then FIPMaskMax := 128;
+  FShowIPMask := showIpMask;
+  FIPMaskBlocksOnly := ipMaskBlocksOnly;
+
+  Inherited Create(name, theType, theSubType);
+end;
+
+function TIPv6Field.GetField(const quoteChar : string = '') : string;
+var
+  touchedBits : integer;
+  touchedWholeBytes : integer;
+  touchedRemBits : integer;
+  bytePos : integer;
+  bitPos : integer;
+  resultAddr : synaip.TIp6Bytes;
+  ipMask : byte;
+  remainder : integer;
+begin
+  ipMask := RandomRange(FIPMaskMin, FIPMaskMax);
+  remainder := ipMask mod 16;
+  if FIPMaskBlocksOnly and (remainder <> 0) then begin
+    ipMask := ipMask + 16 - remainder;
+    if (ipMask > FIPMaskMax) then ipMask := ipMask - 16;
+  end;
+  resultAddr := FAddress;
+  touchedBits := length(resultAddr)*8 - FRangeMask;
+  touchedWholeBytes := touchedBits div 8;
+  touchedRemBits := touchedBits - (touchedWholeBytes * 8);
+  bytePos := high(resultAddr);
+  bitPos := 0;
+  if (touchedWholeBytes > 0) then begin
+    while (bytePos > high(resultAddr)-touchedWholeBytes) do begin
+      resultAddr[bytePos] := byte(RandomRange(low(byte), high(byte)));
+      dec(bytePos);
+    end;
+  end;
+  while (touchedRemBits > 0) do begin
+    resultAddr[bytePos] := SetBit_8(resultAddr[bytePos], bitPos, RandomRange(0, 1) = 0);
+    dec(touchedRemBits);
+    inc(bitPos);
+  end;
+  result := synaip.Ip6ToStr(ApplyMaskToIPv6(resultAddr, ipMask));
+  if FShowIPMask then result := result + '/' + IntToStr(ipMask);
+  if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TIPv6Field.GetAsString : string;
+begin
+  result := Inherited GetAsString + ',' + synaip.Ip6ToStr(FAddress) + '|' + IntToStr(FRangeMask) + '|' +
+              IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask) + '|' +
+              BoolToStr(FIPMaskBlocksOnly);
 end;
 
 // -MAC Address ---------------------------------------------------------------
@@ -1062,9 +1264,21 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function FieldObjectIsAlphaField(const fieldObj : TField) : boolean;
+begin
+  if (fieldObj is TIntegerRangeField) or
+     (fieldObj is TRealRangeField) or
+     (fieldObj is TSequenceField)
+  then begin
+    result := false;
+  end else begin
+    result := true;
+  end;
+end;
+
 // -Utility Routines -----------------------------------------------------------
-function RandomRange(const low : longint;
-                     const high : longint) : longint;
+function RandomRange(const low : int64;
+                     const high : int64) : int64;
 begin
   if (high < low) then
     result := high + random(low - high + 1)
@@ -1081,15 +1295,38 @@ begin
     Result := low + Random * (high - low);
 end;
 
-procedure LogSystemMessage (S : string);
+function IpStrToInt (Value: string) : longword;
 var
-  T : string;
+  iEnd, i: Integer;
+begin
+  Result := 0;
+  if (Value <> '') then begin
+    for i := 3 downto 0 do begin
+      iEnd := Pos('.', Value);
+      if (iEnd = 0) then iEnd := Length(Value) + 1;
+      Result := Result + (Byte(StrToIntDef(Copy(Value, 1, iEnd - 1), 0)) shl (i * 8));
+      Value := Copy(Value, iEnd + 1, Length(Value) - iEnd);
+      if (Length(Value) = 0) then break;
+    end;
+  end;
+end;
+
+function IpIntToStr(const Value: cardinal): String;
+begin
+  Result := IntToStr(Byte(Value shr 24)) + '.'
+          + IntToStr(Byte(Value shr 16)) + '.'
+          + IntToStr(Byte(Value shr 8)) + '.'
+          + IntToStr(Byte(Value))
+end;
+
+procedure LogSystemMessage (S : string;
+                            T : string);
 {$IFDEF MSWINDOWS}
+var
   szStrings: Array[0..0] Of PChar;
   LogHandle : THandle;
 begin
   try
-    T := ExtractFileName(Application.ExeName);
     S := #$D#$A#$D#$A+S+#0;
     szStrings[0] := @S[1];
     LogHandle:= OpenEventLog(nil,PAnsiChar(T));
@@ -1102,18 +1339,15 @@ begin
 {$ELSE}
 begin
   try
-    T := ExtractFileName(Application.ExeName);
-    Libc.openlog(PChar(T),LOG_PID,LOG_LOCAL5);
-    {$IFNDEF FPC}
-    Libc.syslog(LOG_INFO,PChar(S));
-    {$ELSE}
-    Libc.syslog(LOG_INFO,PChar(S), []);
-    {$ENDIF}
-    Libc.closelog;
+    if (T = '') then T := ExtractFileName(ParamStr(0));
+    systemlog.openlog(PChar(T), LOG_PID, LOG_LOCAL5);
+    systemlog.syslog(LOG_INFO, PChar(S), []);
+    systemlog.closelog;
   except
   end;
 {$ENDIF}
 end;
+
 
 end.
 

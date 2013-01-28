@@ -28,13 +28,14 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, LResources,
+  Forms,
   main, common, names;
 
 {$IFDEF WINDOWS}{$R program.rc}{$ENDIF}
 
+{$R *.res}
+
 begin
-  {$I program.lrs}
   Application.Title := 'Spawner Data Generator';
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);
