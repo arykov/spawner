@@ -1,0 +1,8 @@
+Changelog
+
+0.1.7
+--------------------------------------------------------------------------------
+- default widget set for Linux platforms is now GTK2
+- added ability for "Set" field type to read from a file
+- added changelog
+
