@@ -1,6 +1,6 @@
-Spawner v0.1.8
+Spawner v0.1.7
 Seth Grover
-2012-01-28
+2009-10-16
 
 Description
 ------------------------------------------------------------------------------
@@ -59,15 +59,14 @@ Fields can be named and field order can be specified.
  
 Compiling
 ------------------------------------------------------------------------------
-In order to be 100% cross-platform, Spawner was written with Lazarus v1.0.4
-on top of FreePascal v2.6.0. Compilation is as easy as downloading and
+In order to be 100% cross-platform, Spawner was written with Lazarus v0.9.28
+on top of FreePascal v2.4.0. Compilation is as easy as downloading and
 installing Lazarus and FreePascal. Lazarus and FreePascal are available
 by navigating to http://www.lazarus.freepascal.org, then clicking on
 "Download Lazarus".
 
-Once Lazarus and FreePascal are installed and set up, the project file
-program.lpi can be opened and compiled, which should create Spawner's
-executable.
+Once Lazarus and FreePascal are installed and set up, the file program.lpr
+can be opened and compiled, which should create Spawner's executable.
 
 Usage
 ------------------------------------------------------------------------------

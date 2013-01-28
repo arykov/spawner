@@ -27,9 +27,9 @@ interface
 
 uses
   Classes, SysUtils, LResources, LCLType, Forms, Controls,
-  Graphics, Dialogs, ComCtrls, strutils,
+  Graphics, Dialogs, ComCtrls,
   StdCtrls, Menus, mysql50conn, sqldb,
-  Clipbrd, SynEdit, SynMemo, Buttons, ExtCtrls, Spin, regexpr,
+  Clipbrd, SynEdit, SynMemo, Buttons, ExtCtrls, Spin, RegExpr,
   EditBtn, common;
 
 type
@@ -37,28 +37,11 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
-    OutputQuoteAlphaOnlyCheckbox : TCheckBox;
-    FieldOptionsIPv4AddressEdit : TEdit;
-    FieldOptionsIPv4AddressLabel : TLabel;
-    FieldOptionsIPv4MaskPrettyCheckBox : TCheckBox;
-    FieldOptionsIPv6MaskPrettyCheckBox : TCheckBox;
-    FieldOptionsIPv6MaskCheckBox : TCheckBox;
     FieldNameEdit: TEdit;
     FieldOptionDateLowCalendar: TDateEdit;
     FieldOptionDateHighCalendar: TDateEdit;
     FieldOptionDateLowLabel: TLabel;
     FieldOptionDateHighLabel: TLabel;
-    FieldOptionsIPv6AddressEdit : TEdit;
-    FieldOptionsIPv6AddressLabel : TLabel;
-    FieldOptionsIPv4MaskCheckBox : TCheckBox;
-    FieldOptionsIPv4MaskLabel : TLabel;
-    FieldOptionsIPv4MaskMaxSpinEdit : TSpinEdit;
-    FieldOptionsIPv4MaskMinSpinEdit : TSpinEdit;
-    FieldOptionsIPv4MaskToLabel : TLabel;
-    FieldOptionsIPv6RangeMaskLabel : TLabel;
-    FieldOptionsIPv6MaskLabel : TLabel;
-    FieldOptionsIPv4RangeMaskLabel : TLabel;
-    FieldOptionsIPv4RangeMaskSpinEdit : TSpinEdit;
     FieldOptionsSetFileEdit: TFileNameEdit;
     GenerationCancelButton: TBitBtn;
     GenerationProgressBar: TProgressBar;
@@ -67,7 +50,6 @@ type
     FieldNameLabel: TLabel;
     FieldOptionsMaskEdit : TLabeledEdit;
     FieldOptionsSetFileNameLabel: TLabel;
-    FieldOptionsIPv6MaskToLabel : TLabel;
     MySQLSleepCheckbox: TCheckBox;
     ExitButton: TBitBtn;
     FieldOptionDateTimeUnixCheckBox: TCheckBox;
@@ -80,9 +62,6 @@ type
     FieldOptionStepRadioGroup: TRadioGroup;
     FieldOptionsMaskPage : TPage;
     FieldOptionsSetFilePage: TPage;
-    FieldOptionsIPPage: TPage;
-    FieldOptionsIPv6Page : TPage;
-    OuptutSqlQuoteOutputOnlyCheckbox : TCheckBox;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -208,9 +187,6 @@ type
     MySQLSleepMsSpinEdit: TSpinEdit;
     MySQLSleepRecordsSpinEdit: TSpinEdit;
     FieldOptionsMaskHelpText : TStaticText;
-    FieldOptionsIPv6RangeMaskSpinEdit : TSpinEdit;
-    FieldOptionsIPv6MaskMinSpinEdit : TSpinEdit;
-    FieldOptionsIPv6MaskMaxSpinEdit : TSpinEdit;
     StatusBar: TStatusBar;
     MessagesMemo: TSynMemo;
     FieldsTabSheet: TTabSheet;
@@ -255,26 +231,6 @@ var
 
 
 implementation
-
-{$R *.lfm}
-
-const
-  FIELD_OPTIONS_PAGE_IDX_NONE = 0;
-  FIELD_OPTIONS_PAGE_IDX_INT = 1;
-  FIELD_OPTIONS_PAGE_IDX_REAL = 2;
-  FIELD_OPTIONS_PAGE_IDX_TIME = 3;
-  FIELD_OPTIONS_PAGE_IDX_WORDS = 4;
-  FIELD_OPTIONS_PAGE_IDX_WORDS_RANGE = 5;
-  FIELD_OPTIONS_PAGE_IDX_CHARS = 6;
-  FIELD_OPTIONS_PAGE_IDX_CHARS_RANGE = 7;
-  FIELD_OPTIONS_PAGE_IDX_INT_SEQ = 8;
-  FIELD_OPTIONS_PAGE_IDX_STATE = 9;
-  FIELD_OPTIONS_PAGE_IDX_SET = 10;
-  FIELD_OPTIONS_PAGE_IDX_NAME = 11;
-  FIELD_OPTIONS_PAGE_IDX_MASK = 12;
-  FIELD_OPTIONS_PAGE_IDX_FROMFILE = 13;
-  FIELD_OPTIONS_PAGE_IDX_IP4 = 14;
-  FIELD_OPTIONS_PAGE_IDX_IP6 = 15;
 
 { TMainForm }
 
@@ -731,13 +687,7 @@ begin
     end else if( FieldSubTypeComboBox.Text = SUBTYPE_SS_NAME) then begin
       theNewField := TSocSecField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
     end else if( FieldSubTypeComboBox.Text = SUBTYPE_IP_NAME) then begin
-      theNewField := TIPv4Field.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, IpStrToInt(trim(FieldOptionsIPv4AddressEdit.Text)),
-                                        FieldOptionsIPv4RangeMaskSpinEdit.Value, FieldOptionsIPv4MaskMinSpinEdit.Value, FieldOptionsIPv4MaskMaxSpinEdit.Value,
-                                        FieldOptionsIPv4MaskCheckBox.Checked, FieldOptionsIPv4MaskPrettyCheckBox.Checked);
-    end else if( FieldSubTypeComboBox.Text = SUBTYPE_IPV6_NAME) then begin
-      theNewField := TIPv6Field.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, trim(FieldOptionsIPv6AddressEdit.Text),
-                                        FieldOptionsIPv6RangeMaskSpinEdit.Value, FieldOptionsIPv6MaskMinSpinEdit.Value, FieldOptionsIPv6MaskMaxSpinEdit.Value,
-                                        FieldOptionsIPv6MaskCheckBox.Checked, FieldOptionsIPv6MaskPrettyCheckBox.Checked);
+      theNewField := TIPv4Field.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
     end else if( FieldSubTypeComboBox.Text = SUBTYPE_MAC_NAME) then begin
       theNewField := TMacField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
     end else begin
@@ -769,19 +719,19 @@ var
   i : integer;
 begin
   if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FIXED) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_SET;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetFixedPage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FILE) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_FROMFILE;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSetFilePage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_INTEGERRANGE_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_INT;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsRangeIntPage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_REALRANGE_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_REAL;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsRangeRealPage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_SEQUENCE_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_INT_SEQ;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsSequencePage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_STATE_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_STATE;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsStatePage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_DATE_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_TIME;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsDateTimePage;
     FieldOptionDateLowCalendar.Enabled := true;
     FieldOptionDateHighCalendar.Enabled := true;
     FieldOptionDateLowCalendar.Date := now-7;
@@ -791,7 +741,7 @@ begin
     FieldOptionTimeLowEdit.Text := '';
     FieldOptionTimeHighEdit.Text := '';
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_TIME_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_TIME;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsDateTimePage;
     FieldOptionDateLowCalendar.Enabled := false;
     FieldOptionDateHighCalendar.Enabled := false;
     FieldOptionDateLowCalendar.Date := now-7;
@@ -801,7 +751,7 @@ begin
     FieldOptionTimeLowEdit.Text := '00:00:00';
     FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', now);
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_DATETIME_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_TIME;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsDateTimePage;
     FieldOptionDateLowCalendar.Enabled := true;
     FieldOptionDateHighCalendar.Enabled := true;
     FieldOptionDateLowCalendar.Date := now-7;
@@ -811,41 +761,37 @@ begin
     FieldOptionTimeLowEdit.Text := '00:00:00';
     FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', now);
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_FIXEDWORDS_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_WORDS;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsFixedWordsPage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_RANDOMWORDS_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_WORDS_RANGE;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsRandomWordsPage;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_FIXEDALPHA_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_CHARS;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsFixedAlphaPage;
     for i := 0 to FieldOptionFixedStringAllowedCheckGroup.Items.Count-1 do begin
       FieldOptionFixedStringAllowedCheckGroup.Checked[i] := true;
     end;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_RANDOMALPHA_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_CHARS_RANGE;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsRandomAlphaPage;
     for i := 0 to FieldOptionRandomStringAllowedCheckGroup.Items.Count-1 do begin
       FieldOptionRandomStringAllowedCheckGroup.Checked[i] := true;
     end;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_MASK_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_MASK;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsMaskPage;
     FieldOptionsMaskEdit.Text := '';
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_NAME_NAME) or
               (FieldSubTypeComboBox.Text = SUBTYPE_FIRSTNAME_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_NAME;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsNamePage;
     for i := 0 to FieldOptionNameSexCheckGroup.Items.Count-1 do begin
       FieldOptionNameSexCheckGroup.Checked[i] := true;
     end;
-  end else if (FieldSubTypeComboBox.Text = SUBTYPE_IP_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_IP4;
-  end else if (FieldSubTypeComboBox.Text = SUBTYPE_IPV6_NAME) then begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_IP6;
   end else begin
-    FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_NONE;
+    FieldOptionsNotebook.ActivePageComponent := FieldOptionsNonePage;
   end;
 end;
 
 procedure TMainForm.FieldTypeComboBoxSelect(Sender: TObject);
 begin
   FieldSubTypeComboBox.Clear;
-  FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_NONE;
+  FieldOptionsNotebook.ActivePageComponent := FieldOptionsNonePage;
   if (FieldTypeComboBox.Text = TYPE_RANGE_NAME) then begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_INTEGERRANGE_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_REALRANGE_NAME, nil);
@@ -878,7 +824,6 @@ begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_SET_FILE, nil);
   end else if (FieldTypeComboBox.Text = TYPE_NET_NAME) then begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_IP_NAME, nil);
-    FieldSubTypeComboBox.AddItem(SUBTYPE_IPV6_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_MAC_NAME, nil);
   end;
   if (FieldSubTypeComboBox.Items.Count > 0) then FieldSubTypeComboBox.ItemIndex := 0;
@@ -985,7 +930,7 @@ begin
       sqlBeginLine := sqlBeginLine + ' (';
       for j := 0 to FieldListBox.Items.Count-1 do begin
         theField := TField(FieldListBox.Items.Objects[j]);
-        sqlBeginLine := sqlBeginLine + '`' + theField.Name + '`';
+        sqlBeginLine := sqlBeginLine + theField.Name;
         if (j < FieldListBox.Items.Count-1) then sqlBeginLine := sqlBeginLine + ',';
       end;
       sqlBeginLine := sqlBeginLine + ')';
@@ -1078,21 +1023,13 @@ begin
 
           if (outputType = OUTPUT_TYPE_DELIMITED) then begin
             // regular character-delimited output
-            if OutputQuoteAlphaOnlyCheckbox.Checked then begin
-              currentLine := currentLine + theField.GetField(ifthen(FieldObjectIsAlphaField(theField), OutputQuoteCharEdit.Text, ''));
-            end else begin
-              currentLine := currentLine + theField.GetField(OutputQuoteCharEdit.Text);
-            end;
+            currentLine := currentLine + theField.GetField(OutputQuoteCharEdit.Text);
             if (j < FieldListBox.Items.Count-1) then currentLine := currentLine + delimiter;
 
           end else if (outputType = OUTPUT_TYPE_SQL) or (outputType = OUTPUT_TYPE_MYSQL) then begin
             // sql insert statement formatted output (each value enclosed in
             // single quotes and comma-separated)
-            if OuptutSqlQuoteOutputOnlyCheckbox.Checked then begin
-              currentLine := currentLine + theField.GetField(ifthen(FieldObjectIsAlphaField(theField), '''', ''));
-            end else begin
-              currentLine := currentLine + theField.GetField('''');
-            end;
+            currentLine := currentLine + theField.GetField('''');
             if (j < FieldListBox.Items.Count-1) then currentLine := currentLine + ',';
 
           end; // end output type checks
@@ -1278,20 +1215,15 @@ begin
 end;
 
 procedure TMainForm.OutputTypeRadioGroupClick(Sender: TObject);
-const
-  OUTPUT_OPTIONS_PAGE_IDX_DELIMITED = 0;
-  OUTPUT_OPTIONS_PAGE_IDX_SQL = 1;
-  OUTPUT_OPTIONS_PAGE_IDX_NOT_IMPLEMENTED = 2;
-  OUTPUT_OPTIONS_PAGE_IDX_MYSQL = 3;
 begin
   if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_DELIMITED) then begin
-    OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_DELIMITED;
+    OutputOptionsNotebook.ActivePageComponent := OutputDelimitedPage;
   end else if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_SQL) then begin
-    OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_SQL;
+    OutputOptionsNotebook.ActivePageComponent := OutputSqlPage;
   end else if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_MYSQL) then begin
-    OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_MYSQL;
+    OutputOptionsNotebook.ActivePageComponent := OutputMySqlPage;
   end else begin
-    OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_NOT_IMPLEMENTED;
+    OutputOptionsNotebook.ActivePageComponent := OutputNotImplementedPage;
   end;
 end;
 
@@ -1510,24 +1442,6 @@ begin
               FieldOptionNameSexCheckGroup.Checked[SEX_FEMALE] := StrToBoolDef(otherStringList.Strings[0], true);
               FieldOptionNameSexCheckGroup.Checked[SEX_MALE] := StrToBoolDef(otherStringList.Strings[1], true);
             end;
-          end else if (fieldSubType = SUBTYPE_IP_NAME) then begin
-            if (otherStringList.Count >= 6) then begin
-              FieldOptionsIPv4AddressEdit.Text := IpIntToStr(StrToIntDef(otherStringList.Strings[0], 0));
-              FieldOptionsIPv4RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 24);
-              FieldOptionsIPv4MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 32);
-              FieldOptionsIPv4MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 32);
-              FieldOptionsIPv4MaskCheckBox.Checked := StrToBoolDef(otherStringList.Strings[4], false);
-              FieldOptionsIPv4MaskPrettyCheckBox.Checked := StrToBoolDef(otherStringList.Strings[5], false);
-            end;
-          end else if (fieldSubType = SUBTYPE_IPV6_NAME) then begin
-            if (otherStringList.Count >= 6) then begin
-              FieldOptionsIPv6AddressEdit.Text := trim(otherStringList.Strings[0]);
-              FieldOptionsIPv6RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 112);
-              FieldOptionsIPv6MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 128);
-              FieldOptionsIPv6MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 128);
-              FieldOptionsIPv6MaskCheckBox.Checked := StrToBoolDef(otherStringList.Strings[4], false);
-              FieldOptionsIPv6MaskPrettyCheckBox.Checked := StrToBoolDef(otherStringList.Strings[5], false);
-            end;
           end else if (fieldType =    TYPE_GUID_NAME) or
                       (fieldSubType = SUBTYPE_LASTNAME_NAME) or
                       (fieldSubType = SUBTYPE_EMAIL_NAME) or
@@ -1538,6 +1452,7 @@ begin
                       (fieldSubType = SUBTYPE_POSTCODE_NAME) or
                       (fieldSubType = SUBTYPE_COUNTRY_NAME) or
                       (fieldSubType = SUBTYPE_SS_NAME) or
+                      (fieldSubType = SUBTYPE_IP_NAME) or
                       (fieldSubType = SUBTYPE_MAC_NAME) then begin
             (* no configuration, do nothing *)
           end else begin
@@ -1582,6 +1497,9 @@ begin
   StatusBar.SimpleText := S;
   Application.ProcessMessages;
 end;
+
+initialization
+  {$I main.lrs}
 
 end.
 
