@@ -31,8 +31,6 @@ uses
   Forms,
   main, common, names;
 
-{$IFDEF WINDOWS}{$R program.rc}{$ENDIF}
-
 {$R *.res}
 
 begin
