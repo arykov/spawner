@@ -1,5 +1,14 @@
 Changelog
 
+0.1.8
+--------------------------------------------------------------------------------
+- encapsulation of columns in '`', which protects from errors during
+  INSERTs into databases with strange field names (thanks  to Krzysztof Kowalski)
+- added IPv6 type
+- added CIDR masking options for IPv4 and IPv6 addresses
+- added option to optionally enclose only "alpha" fields in quotes
+- updates for newest FPC / Lazarus
+
 0.1.7
 --------------------------------------------------------------------------------
 - default widget set for Linux platforms is now GTK2
