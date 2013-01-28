@@ -23,7 +23,8 @@ It can currently generate the following types of data:
      * fixed length string (ie., 10 characters)
      * random-length string (ie., 4-10 characters)
      * random string matching a specified mask
-   - IPv4-formatted IP addresses
+   - IPv4-formatted IP addresses (with optional CIDR mask)
+   - IPv6-formatted IP addresses (with optional CIDR mask)
    - MAC addresses
    - full name
    - first name
