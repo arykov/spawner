@@ -508,7 +508,7 @@ end;
 
 function TField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := length(GetField(quoteChar));
+  result := length(GetField(quoteChar)) + 1;
 end;
 
 function TField.GetAsString : string;
@@ -539,7 +539,7 @@ end;
 
 function TIntegerRangeField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := (Length(quoteChar) * 2) + length(IntToStr(FHigh)) + 1;
+  result := (Length(quoteChar) * 2) + length(IntToStr(FHigh)) + 2;
 end;
 
 function TIntegerRangeField.GetAsString : string;
@@ -567,7 +567,7 @@ end;
 
 function TRealRangeField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := (Length(quoteChar) * 2) + length(FloatToStrF(FHigh, ffFixed, 15, FDecimalPlaces)) + 1;
+  result := (Length(quoteChar) * 2) + length(FloatToStrF(FHigh, ffFixed, 15, FDecimalPlaces)) + 2;
 end;
 
 function TRealRangeField.GetAsString : string;
@@ -672,6 +672,7 @@ begin
     tmpLen := Length(GetField(quoteChar));
     if (tmpLen > result) then result := tmpLen;
   end;
+  result := result + 1;
 end;
 
 function TDateTimeRangeField.GetAsString : string;
@@ -743,7 +744,7 @@ begin
     tmpLen := Length(FSet.Strings[index]);
     if (tmpLen > result) then result := tmpLen;
   end;
-  result := result + (Length(quoteChar)*2);
+  result := result + (Length(quoteChar)*2) + 1;
 end;
 
 function TSetField.GetAsString : string;
@@ -806,7 +807,7 @@ end;
 
 function TSequenceField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := (Length(quoteChar) * 2) + length(IntToStr(high(FLastNumber))) + 1;
+  result := (Length(quoteChar) * 2) + length(IntToStr(high(FLastNumber))) + 2;
 end;
 
 function TSequenceField.GetAsString : string;
@@ -880,7 +881,7 @@ begin
   end;
   tmpLen := firstResult + lastResult;
   if (tmpLen > result) then result := tmpLen;
-  result := result + (Length(quoteChar)*2);
+  result := result + (Length(quoteChar)*2) + 1;
 end;
 
 function TNameField.GetAsString : string;
@@ -910,7 +911,7 @@ begin
     tmpLen := Length(CityNames[index]);
     if (tmpLen > result) then result := tmpLen;
   end;
-  result := result + (Length(quoteChar)*2);
+  result := result + (Length(quoteChar)*2) + 1;
 end;
 
 // -State ----------------------------------------------------------------------
@@ -947,7 +948,7 @@ begin
       if (tmpLen > result) then result := tmpLen;
     end;
   end;
-  result := result + (Length(quoteChar)*2);
+  result := result + (Length(quoteChar)*2) + 1;
 end;
 
 function TStateField.GetAsString : string;
@@ -977,7 +978,7 @@ begin
     tmpLen := Length(CountryNames[index]);
     if (tmpLen > result) then result := tmpLen;
   end;
-  result := result + (Length(quoteChar)*2);
+  result := result + (Length(quoteChar)*2) + 1
 end;
 
 // -ZIP Code--------------------------------------------------------------------
@@ -994,7 +995,7 @@ end;
 
 function TZipField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := Length(GetField(quoteChar));
+  result := Length(GetField(quoteChar)) + 1;
 end;
 
 // -Postcode Code--------------------------------------------------------------------
@@ -1017,7 +1018,7 @@ end;
 
 function TPostcodeField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := 8 + (Length(quoteChar)*2);
+  result := 9 + (Length(quoteChar)*2);
 end;
 
 // -Address --------------------------------------------------------------------
@@ -1059,7 +1060,7 @@ begin
     tmpLen := Length(GetField(quoteChar));
     if (tmpLen > result) then result := tmpLen;
   end;
-  result := trunc(result * 1.25);
+  result := trunc(result * 1.3);
 end;
 
 // -Email Address --------------------------------------------------------------
@@ -1121,7 +1122,7 @@ begin
   tmpLen := nameResult + domainResult + tldResult + 2;
   if (tmpLen > result) then result := tmpLen;
 
-  result := result + (Length(quoteChar)*2);
+  result := result + (Length(quoteChar)*2) + 1;
 end;
 
 // -Phone Number ---------------------------------------------------------------
@@ -1140,7 +1141,7 @@ end;
 
 function TPhoneField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := 12 + (Length(quoteChar)*2);
+  result := 12 + (Length(quoteChar)*2) + 1;
 end;
 
 // -Social Security Number -----------------------------------------------------
@@ -1159,7 +1160,7 @@ end;
 
 function TSocSecField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := 11 + (Length(quoteChar)*2);
+  result := 11 + (Length(quoteChar)*2) + 1;
 end;
 
 // - Words ---------------------------------------------------------------------
@@ -1203,7 +1204,7 @@ begin
     tmpLen := Length(LatinWords[index]);
     if (tmpLen > result) then result := tmpLen;
   end;
-  result := (result * FHigh) + FHigh + (Length(quoteChar)*2);
+  result := (result * FHigh) + FHigh + (Length(quoteChar)*2) + 1;
 end;
 
 function TWordsField.GetAsString : string;
@@ -1296,7 +1297,7 @@ end;
 
 function TStringField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := FHigh + (Length(quoteChar)*2);
+  result := FHigh + (Length(quoteChar)*2) + 1;
 end;
 
 function TStringField.GetAsString : string;
@@ -1508,7 +1509,7 @@ end;
 
 function TMaskField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := Length(FMask) + (Length(quoteChar)*2);
+  result := Length(FMask) + (Length(quoteChar)*2) + 1;
 end;
 
 function TMaskField.GetAsString : string;
@@ -1539,7 +1540,7 @@ end;
 
 function TGUIDField.GetMaxWidth(const quoteChar : string = '') : integer;
 begin
-  result := Length(GetField(quoteChar));
+  result := Length(GetField(quoteChar)) + 1;
 end;
 
 function FieldObjectIsAlphaField(const fieldObj : TField) : boolean;
