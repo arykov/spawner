@@ -43,6 +43,7 @@ type
     property ItemType : string read FType;
     property ItemSubType : string read FSubType;
     function GetField(const quoteChar : string = '') : string; virtual;
+    function GetMaxWidth(const quoteChar : string = '') : integer; virtual;
     function GetAsString : string; virtual;
     procedure Reset(const TotalRequest : longint = 0); virtual;
     constructor Create(const name : string; const theType : string; const theSubType : string);
@@ -57,6 +58,7 @@ type
     property LowVal : longint read FLow;
     property HighVal : longint read FHigh;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const low : longint;
@@ -73,6 +75,7 @@ type
     property HighVal : Double read FHigh;
     property DecimalPlaces : byte read FDecimalPlaces;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const low : Double;
@@ -104,6 +107,7 @@ type
     property TimeFormat : string read FTimeFormat;
     property TimeType: TTimeSequence read FTimeType;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     procedure Reset(const TotalRequest : longint = 0); override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
@@ -125,6 +129,7 @@ type
     property FileName : string read FFileName;
     function GetSetString : string;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const fromFile : boolean;
@@ -144,6 +149,7 @@ type
     property Duplicate : longint read FDuplicate;
     property Stride : longint read FStride;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     procedure Reset(const TotalRequest : longint = 0); override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
@@ -164,6 +170,7 @@ type
     property Female : boolean read FFemale;
     property Male : boolean read FMale;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const first : boolean;
@@ -175,6 +182,7 @@ type
   TCityField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
@@ -184,6 +192,7 @@ type
   public
     property Full : boolean read FFull;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const full : boolean);
@@ -192,42 +201,49 @@ type
   TCountryField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
   TZipField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
   TPostcodeField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
   TAddressField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
 
   TEmailAddressField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
   TPhoneField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
   TSocSecField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
@@ -239,6 +255,7 @@ type
     property LowVal : longint read FLow;
     property HighVal : longint read FHigh;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const low : longint;
@@ -262,6 +279,7 @@ type
     property AllowSpace : boolean read FAllowSpace;
     property AllowOther : boolean read FAllowOther;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const low : longint;
@@ -286,6 +304,7 @@ type
   public
     function GetAsString : string; override;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const address : longword; const rangeMask : byte;
                        const ipMaskMin : byte; const ipMaskMax : byte;
@@ -303,6 +322,7 @@ type
   public
     function GetAsString : string; override;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const address : string; const rangeMask : byte;
                        const ipMaskMin : byte; const ipMaskMax : byte;
@@ -312,12 +332,14 @@ type
   TMacField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
   
   TGuidField = class(TField)
   public
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string);
   end;
 
@@ -328,6 +350,7 @@ type
     property Mask : string read FMask;
     function GetAsString : string; override;
     function GetField(const quoteChar : string = '') : string; override;
+    function GetMaxWidth(const quoteChar : string = '') : integer; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const mask : string);
   end;
@@ -352,8 +375,9 @@ procedure LogSystemMessage (S : string;
 
 const
   OUTPUT_TYPE_DELIMITED = 0;
-  OUTPUT_TYPE_SQL = 1;
-  OUTPUT_TYPE_MYSQL = 2;
+  OUTPUT_TYPE_FIXED = 1;
+  OUTPUT_TYPE_SQL = 2;
+  OUTPUT_TYPE_MYSQL = 3;
 
   STRING_ALPHA = 0;
   STRING_NUMBER = 1;
@@ -482,6 +506,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := length(GetField(quoteChar));
+end;
+
 function TField.GetAsString : string;
 begin
   result := FName + ',' + FType + ',' + FSubType;
@@ -508,6 +537,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TIntegerRangeField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := (Length(quoteChar) * 2) + length(IntToStr(FHigh)) + 1;
+end;
+
 function TIntegerRangeField.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + IntToStr(FLow) + '|' + IntToStr(FHigh);
@@ -529,6 +563,11 @@ function TRealRangeField.GetField(const quoteChar : string = '') : string;
 begin
   result := FloatToStrF(FRandomRange(FLow, FHigh), ffFixed, 15, FDecimalPlaces);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TRealRangeField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := (Length(quoteChar) * 2) + length(FloatToStrF(FHigh, ffFixed, 15, FDecimalPlaces)) + 1;
 end;
 
 function TRealRangeField.GetAsString : string;
@@ -622,6 +661,19 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TDateTimeRangeField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  { take a stab at it }
+  result := 2;
+  for index := 1 to 100 do begin
+    tmpLen := Length(GetField(quoteChar));
+    if (tmpLen > result) then result := tmpLen;
+  end;
+end;
+
 function TDateTimeRangeField.GetAsString : string;
 var
   typeInt : integer;
@@ -679,6 +731,19 @@ begin
   index := RandomRange(0, int64(FSet.Count)-1);
   result := FSet.Strings[index];
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TSetField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  result := 2;
+  for index := 0 to FSet.Count-1 do begin
+    tmpLen := Length(FSet.Strings[index]);
+    if (tmpLen > result) then result := tmpLen;
+  end;
+  result := result + (Length(quoteChar)*2);
 end;
 
 function TSetField.GetAsString : string;
@@ -739,6 +804,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TSequenceField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := (Length(quoteChar) * 2) + length(IntToStr(high(FLastNumber))) + 1;
+end;
+
 function TSequenceField.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + IntToStr(FStart) + '|' + IntToStr(FDuplicate) + '|' + IntToStr(FStride);
@@ -781,6 +851,38 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TNameField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+  firstResult : integer;
+  lastResult : integer;
+begin
+  result := 2;
+  firstResult := 0;
+  lastResult := 0;
+  if (FIncludeFirst) then begin
+    for index := low(FemaleNames) to high(FemaleNames) do begin
+      tmpLen := Length(FemaleNames[index]);
+      if (tmpLen > firstResult) then firstResult := tmpLen;
+    end;
+    for index := low(MaleNames) to high(MaleNames) do begin
+      tmpLen := Length(MaleNames[index]);
+      if (tmpLen > firstResult) then firstResult := tmpLen;
+    end;
+  end;
+  if (FIncludeLast) then begin
+    if (firstResult > 0) then inc(firstResult);
+    for index := low(LastNames) to high(LastNames) do begin
+      tmpLen := Length(LastNames[index]);
+      if (tmpLen > lastResult) then lastResult := tmpLen;
+    end;
+  end;
+  tmpLen := firstResult + lastResult;
+  if (tmpLen > result) then result := tmpLen;
+  result := result + (Length(quoteChar)*2);
+end;
+
 function TNameField.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + BoolToStr(FFemale) + '|' + BoolToStr(FMale);
@@ -798,6 +900,18 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TCityField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  result := 2;
+  for index := low(CityNames) to high(CityNames) do begin
+    tmpLen := Length(CityNames[index]);
+    if (tmpLen > result) then result := tmpLen;
+  end;
+  result := result + (Length(quoteChar)*2);
+end;
 
 // -State ----------------------------------------------------------------------
 constructor TStateField.Create(const name : string; const theType : string; const theSubType : string;
@@ -814,6 +928,26 @@ begin
   else
     result := StateAbbreviations[RandomRange(Low(StateAbbreviations), High(StateAbbreviations))];
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TStateField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  result := 2;
+  if FFull then begin
+    for index := low(StateNames) to high(StateNames) do begin
+      tmpLen := Length(StateNames[index]);
+      if (tmpLen > result) then result := tmpLen;
+    end;
+  end else begin
+    for index := low(StateAbbreviations) to high(StateAbbreviations) do begin
+      tmpLen := Length(StateAbbreviations[index]);
+      if (tmpLen > result) then result := tmpLen;
+    end;
+  end;
+  result := result + (Length(quoteChar)*2);
 end;
 
 function TStateField.GetAsString : string;
@@ -833,6 +967,19 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TCountryField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  result := 2;
+  for index := low(CountryNames) to high(CountryNames) do begin
+    tmpLen := Length(CountryNames[index]);
+    if (tmpLen > result) then result := tmpLen;
+  end;
+  result := result + (Length(quoteChar)*2);
+end;
+
 // -ZIP Code--------------------------------------------------------------------
 constructor TZipField.Create(const name : string; const theType : string; const theSubType : string);
 begin
@@ -843,6 +990,11 @@ function TZipField.GetField(const quoteChar : string = '') : string;
 begin
   result := SysUtils.Format('%.*d', [5, RandomRange(0, 99999)]) ;
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TZipField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := Length(GetField(quoteChar));
 end;
 
 // -Postcode Code--------------------------------------------------------------------
@@ -861,6 +1013,11 @@ begin
             SysUtils.Format('%d',[RandomRange(0, 9)]) +
            chr(ord('A') + RandomRange(0, 25)) + chr(ord('A') + RandomRange(0, 25));
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TPostcodeField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := 8 + (Length(quoteChar)*2);
 end;
 
 // -Address --------------------------------------------------------------------
@@ -891,6 +1048,20 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TAddressField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  { take a stab at it }
+  result := 2;
+  for index := 1 to 100 do begin
+    tmpLen := Length(GetField(quoteChar));
+    if (tmpLen > result) then result := tmpLen;
+  end;
+  result := trunc(result * 1.25);
+end;
+
 // -Email Address --------------------------------------------------------------
 constructor TEmailAddressField.Create(const name : string; const theType : string; const theSubType : string);
 begin
@@ -915,6 +1086,44 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TEmailAddressField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+  nameResult : integer;
+  domainResult : integer;
+  tldResult : integer;
+begin
+  result := 2;
+
+  nameResult := 0;
+  for index := low(FemaleNames) to high(FemaleNames) do begin
+    tmpLen := Length(FemaleNames[index]);
+    if (tmpLen > nameResult) then nameResult := tmpLen;
+  end;
+  for index := low(MaleNames) to high(MaleNames) do begin
+    tmpLen := Length(MaleNames[index]);
+    if (tmpLen > nameResult) then nameResult := tmpLen;
+  end;
+
+  domainResult := 0;
+  for index := low(LatinWords) to high(LatinWords) do begin
+    tmpLen := Length(LatinWords[index]);
+    if (tmpLen > domainResult) then domainResult := tmpLen;
+  end;
+
+  tldResult := 0;
+  for index := low(TopLevelDomains) to high(TopLevelDomains) do begin
+    tmpLen := Length(TopLevelDomains[index]);
+    if (tmpLen > tldResult) then tldResult := tmpLen;
+  end;
+
+  tmpLen := nameResult + domainResult + tldResult + 2;
+  if (tmpLen > result) then result := tmpLen;
+
+  result := result + (Length(quoteChar)*2);
+end;
+
 // -Phone Number ---------------------------------------------------------------
 constructor TPhoneField.Create(const name : string; const theType : string; const theSubType : string);
 begin
@@ -929,6 +1138,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TPhoneField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := 12 + (Length(quoteChar)*2);
+end;
+
 // -Social Security Number -----------------------------------------------------
 constructor TSocSecField.Create(const name : string; const theType : string; const theSubType : string);
 begin
@@ -941,6 +1155,11 @@ begin
             SysUtils.Format('%.*d', [2, RandomRange(0, 99)]) + '-' +
             SysUtils.Format('%.*d', [4, RandomRange(0, 9999)]);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TSocSecField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := 11 + (Length(quoteChar)*2);
 end;
 
 // - Words ---------------------------------------------------------------------
@@ -971,6 +1190,20 @@ begin
   end;
 
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TWordsField.GetMaxWidth(const quoteChar : string = '') : integer;
+var
+  index : integer;
+  tmpLen : integer;
+begin
+  result := 2;
+  tmpLen := 0;
+  for index := low(LatinWords) to high(LatinWords) do begin
+    tmpLen := Length(LatinWords[index]);
+    if (tmpLen > result) then result := tmpLen;
+  end;
+  result := (result * FHigh) + FHigh + (Length(quoteChar)*2);
 end;
 
 function TWordsField.GetAsString : string;
@@ -1061,6 +1294,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TStringField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := FHigh + (Length(quoteChar)*2);
+end;
+
 function TStringField.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + IntToStr(FLow) + '|' + IntToStr(FHigh) + '|' + BoolToStr(FAllowAlpha) + '|' + BoolToStr(FAllowNumber) + '|' + BoolToStr(FAllowSpace) + '|' + BoolToStr(FAllowOther);
@@ -1109,6 +1347,11 @@ begin
   result := IpIntToStr(ApplyMaskToIPv4(RandomRange(FAddressMin,FAddressMax), ipMask));
   if FShowIPMask then result := result + '/' + IntToStr(ipMask);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TIPv4Field.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := 20 + (Length(quoteChar)*2);
 end;
 
 function TIPv4Field.GetAsString : string;
@@ -1179,6 +1422,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TIPv6Field.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := 46 + (Length(quoteChar)*2);
+end;
+
 function TIPv6Field.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + synaip.Ip6ToStr(FAddress) + '|' + IntToStr(FRangeMask) + '|' +
@@ -1201,6 +1449,11 @@ begin
             IntToHex(RandomRange(0,255),2) + ':' +
             IntToHex(RandomRange(0,255),2);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TMacField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := 18 + (Length(quoteChar)*2);
 end;
 
 // -Masked field --------------------------------------------------------------
@@ -1253,6 +1506,11 @@ begin
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
+function TMaskField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := Length(FMask) + (Length(quoteChar)*2);
+end;
+
 function TMaskField.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + FMask;
@@ -1277,6 +1535,11 @@ begin
             Copy(tmp, 21, 4) +
             Copy(tmp, 26, 12);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+end;
+
+function TGUIDField.GetMaxWidth(const quoteChar : string = '') : integer;
+begin
+  result := Length(GetField(quoteChar));
 end;
 
 function FieldObjectIsAlphaField(const fieldObj : TField) : boolean;
