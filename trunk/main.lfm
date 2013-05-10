@@ -603,7 +603,7 @@ object MainForm: TMainForm
                 Height = 250
                 Top = 0
                 Width = 543
-                PageIndex = 3
+                PageIndex = 0
                 Align = alClient
                 TabOrder = 0
                 TabStop = True
@@ -1760,7 +1760,7 @@ object MainForm: TMainForm
             Height = 262
             Top = 0
             Width = 754
-            PageIndex = 4
+            PageIndex = 0
             Align = alClient
             TabOrder = 0
             TabStop = True
