@@ -1,5 +1,15 @@
 Changelog
 
+0.2.0
+--------------------------------------------------------------------------------
+- added fixed-with output option
+- added ability to specify time/date string format
+  (see http://www.freepascal.org/docs-html/rtl/sysutils/formatchars.html)
+- allow specifying a few default actions on the command line (definition file,
+  output file, number of records)
+- added ability to include field names as the first line of delimited and
+  fixed output formats
+
 0.1.8
 --------------------------------------------------------------------------------
 - encapsulation of columns in '`', which protects from errors during
