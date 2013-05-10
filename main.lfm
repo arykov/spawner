@@ -1738,6 +1738,7 @@ object MainForm: TMainForm
           ItemIndex = 0
           Items.Strings = (
             'Delimited'
+            'Fixed Width'
             'SQL'
             'MySQL Database'
           )
@@ -1759,7 +1760,7 @@ object MainForm: TMainForm
             Height = 262
             Top = 0
             Width = 754
-            PageIndex = 0
+            PageIndex = 4
             Align = alClient
             TabOrder = 0
             TabStop = True
@@ -2138,6 +2139,50 @@ object MainForm: TMainForm
                 MinValue = 1
                 TabOrder = 12
                 Value = 100
+              end
+            end
+            object OutputFixedPage: TPage
+              object OutputFixedQuoteCharEdit: TLabeledEdit
+                Left = 100
+                Height = 31
+                Hint = 'Each field will be enclosed in this'
+                Top = 59
+                Width = 72
+                EditLabel.AnchorSideTop.Control = OutputFixedQuoteCharEdit
+                EditLabel.AnchorSideTop.Side = asrCenter
+                EditLabel.AnchorSideRight.Control = OutputFixedQuoteCharEdit
+                EditLabel.AnchorSideBottom.Control = OutputFixedQuoteCharEdit
+                EditLabel.AnchorSideBottom.Side = asrBottom
+                EditLabel.Left = 37
+                EditLabel.Height = 22
+                EditLabel.Top = 63
+                EditLabel.Width = 43
+                EditLabel.Caption = 'Quote'
+                EditLabel.ParentColor = False
+                LabelPosition = lpLeft
+                LabelSpacing = 20
+                MaxLength = 5
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object OutputFixedQuoteAlphaOnlyCheckBox: TCheckBox
+                Left = 181
+                Height = 25
+                Top = 65
+                Width = 158
+                Caption = 'Only for alpha fields'
+                Checked = True
+                State = cbChecked
+                TabOrder = 1
+              end
+              object OutputFixedIncludeFieldNamesCheckBox: TCheckBox
+                Left = 17
+                Height = 25
+                Top = 104
+                Width = 331
+                Caption = 'Include field names as first row of fixed output'
+                TabOrder = 2
               end
             end
           end

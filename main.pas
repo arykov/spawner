@@ -43,6 +43,7 @@ type
     FieldOptionDateFormatLabel : TLabel;
     FieldOptionTimeFormatGroupBox : TGroupBox;
     FieldOptionTimeFormatLabel : TLabel;
+    OutputFixedIncludeFieldNamesCheckBox : TCheckBox;
     OutputQuoteAlphaOnlyCheckbox : TCheckBox;
     FieldOptionsIPv4AddressEdit : TEdit;
     FieldOptionsIPv4AddressLabel : TLabel;
@@ -90,6 +91,9 @@ type
     OuptutSqlQuoteOutputOnlyCheckbox : TCheckBox;
     FieldOptionTimeUnixRadioButton : TRadioButton;
     FieldOptionTimeFormatRadioButton : TRadioButton;
+    OutputFixedPage : TPage;
+    OutputFixedQuoteAlphaOnlyCheckBox : TCheckBox;
+    OutputFixedQuoteCharEdit : TLabeledEdit;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -1337,6 +1341,7 @@ const
   OUTPUT_OPTIONS_PAGE_IDX_SQL = 1;
   OUTPUT_OPTIONS_PAGE_IDX_NOT_IMPLEMENTED = 2;
   OUTPUT_OPTIONS_PAGE_IDX_MYSQL = 3;
+  OUTPUT_OPTIONS_PAGE_IDX_FIXED = 4;
 begin
   if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_DELIMITED) then begin
     OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_DELIMITED;
