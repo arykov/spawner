@@ -954,6 +954,7 @@ var
   j : longint;
   modvalue : longint;
   currentLine : string;
+  currentVal : string;
   outputFile : TextFile;
   outputType : integer;
   theField : TField;
@@ -974,6 +975,7 @@ var
   sleepEnabled : boolean;
   sleepMSecs : integer;
   sleepRecs : integer;
+  maxWidths : array of integer;
 begin
   { generate the data according to the specified parameters }
   if (FieldListBox.Items.Count <= 0) then begin
@@ -1088,12 +1090,34 @@ begin
         theField.Reset(totalRecords);
       end;
 
-      if (outputType = OUTPUT_TYPE_DELIMITED) and OutputIncludeFieldNamesCheckBox.Checked then begin
+      if (outputType = OUTPUT_TYPE_FIXED) then begin
+        // get the maximum widths for all of the fields
+        SetLength(maxWidths, FieldListBox.Items.Count);
+        for j := 0 to FieldListBox.Items.Count-1 do begin
+          theField := TField(FieldListBox.Items.Objects[j]);
+          if OutputQuoteAlphaOnlyCheckbox.Checked then begin
+            maxWidths[j] := theField.GetMaxWidth(ifthen(FieldObjectIsAlphaField(theField), OutputQuoteCharEdit.Text, ''));
+          end else begin
+            maxWidths[j] := theField.GetMaxWidth(OutputQuoteCharEdit.Text);
+          end;
+          if (maxWidths[j] < (length(theField.Name) + 1)) then maxWidths[j] := length(theField.Name) + 1;
+        end;
+      end;
+
+      if ((outputType = OUTPUT_TYPE_DELIMITED) and OutputIncludeFieldNamesCheckBox.Checked) or
+         ((outputType = OUTPUT_TYPE_FIXED) and OutputFixedIncludeFieldNamesCheckBox.Checked)
+      then begin
         currentLine := '';
         for j := 0 to FieldListBox.Items.Count-1 do begin
           theField := TField(FieldListBox.Items.Objects[j]);
-          currentLine := currentLine + theField.Name;
-          if (j < FieldListBox.Items.Count-1) then currentLine := currentLine + delimiter;
+          if (outputType = OUTPUT_TYPE_FIXED) then begin
+            currentVal := PadRight(theField.Name, maxWidths[j]+1);
+            if (Length(currentVal) > maxWidths[j]+1) then Delete(currentVal, maxWidths[j]+1, MaxInt);
+            currentLine := currentLine + currentVal;
+          end else begin
+            currentLine := currentLine + theField.Name;
+            if (j < FieldListBox.Items.Count-1) then currentLine := currentLine + delimiter;
+          end;
         end;
         writeln(outputFile, currentLine);
         currentLine := '';
@@ -1130,6 +1154,16 @@ begin
               currentLine := currentLine + theField.GetField(OutputQuoteCharEdit.Text);
             end;
             if (j < FieldListBox.Items.Count-1) then currentLine := currentLine + delimiter;
+
+          end else if (outputType = OUTPUT_TYPE_FIXED) then begin
+            // fixed-width output
+            if OutputQuoteAlphaOnlyCheckbox.Checked then begin
+              currentVal := PadRight(theField.GetField(ifthen(FieldObjectIsAlphaField(theField), OutputQuoteCharEdit.Text, '')), maxWidths[j]+1);
+            end else begin
+              currentVal := PadRight(theField.GetField(OutputQuoteCharEdit.Text), maxWidths[j]+1);
+            end;
+            if (Length(currentVal) > maxWidths[j]+1) then Delete(currentVal, maxWidths[j]+1, MaxInt);
+            currentLine := currentLine + currentVal;
 
           end else if (outputType = OUTPUT_TYPE_SQL) or (outputType = OUTPUT_TYPE_MYSQL) then begin
             // sql insert statement formatted output (each value enclosed in
@@ -1347,6 +1381,8 @@ begin
     OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_DELIMITED;
   end else if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_SQL) then begin
     OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_SQL;
+  end else if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_FIXED) then begin
+    OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_FIXED;
   end else if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_MYSQL) then begin
     OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_MYSQL;
   end else begin
