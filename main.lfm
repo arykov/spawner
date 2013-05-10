@@ -1823,6 +1823,14 @@ object MainForm: TMainForm
                 State = cbChecked
                 TabOrder = 2
               end
+              object OutputIncludeFieldNamesCheckBox: TCheckBox
+                Left = 17
+                Height = 25
+                Top = 104
+                Width = 359
+                Caption = 'Include field names as first row of delimited output'
+                TabOrder = 3
+              end
             end
             object OutputSqlPage: TPage
               object OutputSqlRecordsPerInsertLabel: TLabel
@@ -1908,7 +1916,7 @@ object MainForm: TMainForm
                 Height = 25
                 Top = 200
                 Width = 239
-                Caption = 'Only quotes only for alpha fields'
+                Caption = 'Use quotes only for alpha fields'
                 Checked = True
                 State = cbChecked
                 TabOrder = 4

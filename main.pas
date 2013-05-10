@@ -37,6 +37,7 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    OutputIncludeFieldNamesCheckBox : TCheckBox;
     FieldOptionDateFormatEdit : TEdit;
     FieldOptionTimeFormatEdit : TEdit;
     FieldOptionDateFormatLabel : TLabel;
@@ -1081,6 +1082,17 @@ begin
       for j := 0 to FieldListBox.Items.Count-1 do begin
         theField := TField(FieldListBox.Items.Objects[j]);
         theField.Reset(totalRecords);
+      end;
+
+      if (outputType = OUTPUT_TYPE_DELIMITED) and OutputIncludeFieldNamesCheckBox.Checked then begin
+        currentLine := '';
+        for j := 0 to FieldListBox.Items.Count-1 do begin
+          theField := TField(FieldListBox.Items.Objects[j]);
+          currentLine := currentLine + theField.Name;
+          if (j < FieldListBox.Items.Count-1) then currentLine := currentLine + delimiter;
+        end;
+        writeln(outputFile, currentLine);
+        currentLine := '';
       end;
 
       // iterate for the number of records to generate
