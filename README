@@ -1,6 +1,6 @@
-Spawner v0.1.8
+Spawner v0.2.0
 Seth Grover
-2012-01-28
+2013-05-10
 
 Description
 ------------------------------------------------------------------------------
@@ -43,12 +43,17 @@ It can currently generate the following types of data:
      * incrementing within a specified range
      * decrementing within a specified range
      * current time
+     * format configurable, see http://www.freepascal.org/docs-html/rtl/sysutils/formatchars.html
    - GUID
 
 Spawner will currently generate data in the following formats:
    - delimited text
      * delimiting character(s) can be specified
      * optional quote characters(s) can be specified
+     * field names can optionally be included on the first line
+   - fixed-width text
+     * optional quote characters(s) can be specified
+     * field names can optionally be included on the first line
    - SQL insert statements
      * INSERT, INSERT IGNORE, or REPLACE statements
      * table name can be specified
@@ -60,8 +65,8 @@ Fields can be named and field order can be specified.
  
 Compiling
 ------------------------------------------------------------------------------
-In order to be 100% cross-platform, Spawner was written with Lazarus v1.0.4
-on top of FreePascal v2.6.0. Compilation is as easy as downloading and
+In order to be cross-platform, Spawner was written with Lazarus v1.0.8
+on top of FreePascal v2.6.2. Compilation is as easy as downloading and
 installing Lazarus and FreePascal. Lazarus and FreePascal are available
 by navigating to http://www.lazarus.freepascal.org, then clicking on
 "Download Lazarus".
@@ -104,7 +109,11 @@ left of the progress bar during generation.
 
 You can save and load schema definitions by through the "File" menu.
 
-The "Log" tab contains a log of actions performed and error messages.
+The "Message Log" tab contains a log of actions performed and error messages.
+
+For convenience, if run from the command line, spawner takes up to
+three arguments, in the following order:
+  ./spawner <definition file to load> <output file> <number of records to generate>
 
 Known Limitations
 ------------------------------------------------------------------------------
