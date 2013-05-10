@@ -250,7 +250,7 @@ type
     procedure ShowString(const S : string; const Status : boolean = true);
     procedure SetStatus(const S : string);
     procedure SaveFields;
-    procedure LoadFields;
+    procedure LoadFields(const FileSpec : string);
     procedure ChangeComboBoxes(const theType : string;
                                const theSubType : string);
   public
@@ -1287,6 +1287,15 @@ begin
   OutputFileNameEdit.Text := '/tmp/datagen.txt';
 {$ENDIF}
 
+  if (ParamCount >= 1) and (trim(ParamStr(1)) <> '') and FileExists(trim(ParamStr(1))) then begin
+    LoadFields(trim(ParamStr(1)));
+  end;
+  if (ParamCount >= 2) and (trim(ParamStr(2)) <> '') then begin
+    OutputFileNameEdit.Text := trim(ParamStr(2));
+  end;
+  if (ParamCount >= 3) and (StrToIntDef(trim(ParamStr(3)), 0) > 0) then begin
+    OutputNumSpinEdit.Value := StrToIntDef(trim(ParamStr(3)), OutputNumSpinEdit.Value);
+  end;
 end;
 
 procedure TMainForm.GlobalExceptionHandler(Sender:Tobject; E:Exception);
@@ -1347,7 +1356,7 @@ begin
     if (TheItem = SaveMenuItem) then begin
       SaveFields;
     end else if (TheItem = LoadMenuItem) then begin
-      LoadFields;
+      LoadFields('');
     end else if (TheItem = ClearAllMenuItem) then begin
       { delete all fields from the list }
       deleteReply :=  Application.MessageBox (PChar('Remove all fields?'),
@@ -1388,7 +1397,7 @@ begin
   end;
 end;
 
-procedure TMainForm.LoadFields;
+procedure TMainForm.LoadFields(const FileSpec : string);
 var
   loadContents : TStringList;
   overwriteReply : integer;
@@ -1399,6 +1408,7 @@ var
   itemsStringList : TStringList;
   otherStringList : TStringList;
   otherRegEx : TRegExpr;
+  fileSpecToUse : string;
 begin
   if (FieldListBox.Count > 0) then begin
     overwriteReply :=  Application.MessageBox (PChar('This will replace all current fields. Continue?'),
@@ -1406,7 +1416,16 @@ begin
   end else begin
     overwriteReply := IDYES;
   end;
-  if (overwriteReply = IDYES) and FieldsLoadDialog.Execute then begin
+
+  if (FileSpec <> '') and FileExists(FileSpec) then begin
+    fileSpecToUse := FileSpec;
+  end else begin
+    fileSpecToUse := '';
+  end;
+  if (overwriteReply = IDYES) and ((fileSpecToUse <> '') or FieldsLoadDialog.Execute) then begin
+    if (fileSpecToUse = '') then begin
+      fileSpecToUse := FieldsLoadDialog.FileName;
+    end;
     while FieldListBox.Count > 0 do begin
       FieldListBox.ItemIndex := FieldListBox.Count-1;
       FieldRemoveButtonClick(ClearAllMenuItem);
@@ -1418,7 +1437,7 @@ begin
     itemsStringList := TStringList.Create;
     try
       otherRegEx.Expression := '|';
-      loadContents.LoadFromFile(FieldsLoadDialog.FileName);
+      loadContents.LoadFromFile(fileSpecToUse);
       for i := 0 to loadContents.Count-1 do begin
       
         otherRegEx.Expression := ',';
