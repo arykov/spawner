@@ -1096,9 +1096,9 @@ begin
         for j := 0 to FieldListBox.Items.Count-1 do begin
           theField := TField(FieldListBox.Items.Objects[j]);
           if OutputQuoteAlphaOnlyCheckbox.Checked then begin
-            maxWidths[j] := theField.GetMaxWidth(ifthen(FieldObjectIsAlphaField(theField), OutputQuoteCharEdit.Text, ''));
+            maxWidths[j] := theField.GetMaxWidth(ifthen(FieldObjectIsAlphaField(theField), OutputFixedQuoteCharEdit.Text, ''));
           end else begin
-            maxWidths[j] := theField.GetMaxWidth(OutputQuoteCharEdit.Text);
+            maxWidths[j] := theField.GetMaxWidth(OutputFixedQuoteCharEdit.Text);
           end;
           if (maxWidths[j] < (length(theField.Name) + 1)) then maxWidths[j] := length(theField.Name) + 1;
         end;
@@ -1158,9 +1158,9 @@ begin
           end else if (outputType = OUTPUT_TYPE_FIXED) then begin
             // fixed-width output
             if OutputQuoteAlphaOnlyCheckbox.Checked then begin
-              currentVal := PadRight(theField.GetField(ifthen(FieldObjectIsAlphaField(theField), OutputQuoteCharEdit.Text, '')), maxWidths[j]+1);
+              currentVal := PadRight(theField.GetField(ifthen(FieldObjectIsAlphaField(theField), OutputFixedQuoteCharEdit.Text, '')), maxWidths[j]+1);
             end else begin
-              currentVal := PadRight(theField.GetField(OutputQuoteCharEdit.Text), maxWidths[j]+1);
+              currentVal := PadRight(theField.GetField(OutputFixedQuoteCharEdit.Text), maxWidths[j]+1);
             end;
             if (Length(currentVal) > maxWidths[j]+1) then Delete(currentVal, maxWidths[j]+1, MaxInt);
             currentLine := currentLine + currentVal;
