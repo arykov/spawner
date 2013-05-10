@@ -92,12 +92,16 @@ type
     FTimeType : TTimeSequence;
     FTimeStep : TDateTime;
     FLastTIme : TDateTime;
+    FDateFormat : string;
+    FTimeFormat : string;
   public
     property LowVal : TDateTime read FLow;
     property HighVal : TDateTime read FHigh;
     property IncludeDate : boolean read FIncludeDate;
     property IncludeTime: boolean read FIncludeTime;
     property DisplayUnix: boolean read FDisplayUnix;
+    property DateFormat : string read FDateFormat;
+    property TimeFormat : string read FTimeFormat;
     property TimeType: TTimeSequence read FTimeType;
     function GetField(const quoteChar : string = '') : string; override;
     function GetAsString : string; override;
@@ -108,7 +112,9 @@ type
                        const includeDate : boolean;
                        const includeTime : boolean;
                        const timeType : TTimeSequence;
-                       const unixFormat : boolean);
+                       const unixFormat : boolean;
+                       const dateStrFormat : string;
+                       const timeStrFormat : string);
   end;
   
   TSetField = class(TField)
@@ -379,9 +385,9 @@ const
   SUBTYPE_POSTCODE_NAME = 'UK Postcode';
   SUBTYPE_STATE_NAME = 'State';
   SUBTYPE_COUNTRY_NAME = 'Country';
-  SUBTYPE_DATE_NAME = 'Date (yyyy-mm-dd)';
-  SUBTYPE_TIME_NAME = 'Time (HH:nn:ss)';
-  SUBTYPE_DATETIME_NAME = 'Date/Time (yyyy-mm-dd HH:nn:ss)';
+  SUBTYPE_DATE_NAME = 'Date';
+  SUBTYPE_TIME_NAME = 'Time';
+  SUBTYPE_DATETIME_NAME = 'Date/Time';
   SUBTYPE_SS_NAME = 'Social Security Number';
 
   SUBTYPE_FIXEDWORDS_NAME = 'Fixed Number of Words';
@@ -540,7 +546,9 @@ constructor TDateTimeRangeField.Create(const name : string; const theType : stri
                                        const includeDate : boolean;
                                        const includeTime : boolean;
                                        const timeType : TTimeSequence;
-                                       const unixFormat : boolean);
+                                       const unixFormat : boolean;
+                                       const dateStrFormat : string;
+                                       const timeStrFormat : string);
 begin
   Inherited Create(name, theType, theSubType);
   FLow := low;
@@ -551,6 +559,16 @@ begin
   FIncludeDate := includeDate;
   FIncludeTime := includeTime;
   FDisplayUnix := unixFormat;
+  if (dateStrFormat <> '') then begin
+    FDateFormat := dateStrFormat;
+  end else begin
+    FDateFormat := DefaultFormatSettings.ShortDateFormat;
+  end;
+  if (timeStrFormat <> '') then begin
+    FTimeFormat := timeStrFormat;
+  end else begin
+    FTimeFormat := DefaultFormatSettings.LongTimeFormat;
+  end;
 end;
 
 function TDateTimeRangeField.GetField(const quoteChar : string = '') : string;
@@ -596,11 +614,11 @@ begin
     result := IntToStr(DateTimeToUnix(theDateTime));
   end else begin
     if (FIncludeDate) then begin
-      result := FormatDateTime('yyyy-mm-dd', theDateTime)
+      result := FormatDateTime(FDateFormat, theDateTime)
     end;
     if (FIncludeTime) then begin
       if result <> '' then result := result + ' ';
-      result := result + FormatDateTime('HH:nn:ss', theDateTime);
+      result := result + FormatDateTime(FTimeFormat, theDateTime);
     end;
   end;
   
@@ -619,7 +637,7 @@ begin
     typeInt := 2
   else
     typeInt := 3;
-  result := Inherited GetAsString + ',' + FloatToStr(FLow) + '|' + FloatToStr(FHigh) + '|' + IntToStr(typeInt) + '|' + BoolToStr(FDisplayUnix);
+  result := Inherited GetAsString + ',' + FloatToStr(FLow) + '|' + FloatToStr(FHigh) + '|' + IntToStr(typeInt) + '|' + BoolToStr(FDisplayUnix) + '|' + FDateFormat + '|' + FTimeFormat;
 end;
 
 procedure TDateTimeRangeField.Reset(const TotalRequest : longint = 0);

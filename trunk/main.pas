@@ -37,6 +37,11 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    FieldOptionDateFormatEdit : TEdit;
+    FieldOptionTimeFormatEdit : TEdit;
+    FieldOptionDateFormatLabel : TLabel;
+    FieldOptionTimeFormatGroupBox : TGroupBox;
+    FieldOptionTimeFormatLabel : TLabel;
     OutputQuoteAlphaOnlyCheckbox : TCheckBox;
     FieldOptionsIPv4AddressEdit : TEdit;
     FieldOptionsIPv4AddressLabel : TLabel;
@@ -70,7 +75,6 @@ type
     FieldOptionsIPv6MaskToLabel : TLabel;
     MySQLSleepCheckbox: TCheckBox;
     ExitButton: TBitBtn;
-    FieldOptionDateTimeUnixCheckBox: TCheckBox;
     GenerateButton: TBitBtn;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
@@ -83,6 +87,8 @@ type
     FieldOptionsIPPage: TPage;
     FieldOptionsIPv6Page : TPage;
     OuptutSqlQuoteOutputOnlyCheckbox : TCheckBox;
+    FieldOptionTimeUnixRadioButton : TRadioButton;
+    FieldOptionTimeFormatRadioButton : TRadioButton;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -223,6 +229,7 @@ type
     procedure FieldListBoxDblClick(Sender: TObject);
     procedure FieldOptionSetAddItemButtonClick(Sender: TObject);
     procedure FieldOptionSetRemoveItemButtonClick(Sender: TObject);
+    procedure FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
     procedure FieldRemoveButtonClick(Sender: TObject);
     procedure FieldSaveButtonClick(Sender: TObject);
     procedure FieldSubTypeComboBoxSelect(Sender: TObject);
@@ -414,7 +421,11 @@ begin
     end else if (theField is TStateField) then begin
       FieldOptionStateFullRadioButton.Checked := (theField as TStateField).Full;
     end else if (theField is TDateTimeRangeField) then begin
-      FieldOptionDateTimeUnixCheckBox.Checked := (theField as TDateTimeRangeField).DisplayUnix;
+      FieldOptionTimeUnixRadioButton.Checked := (theField as TDateTimeRangeField).DisplayUnix;
+      FieldOptionDateFormatEdit.Text := (theField as TDateTimeRangeField).DateFormat;
+      FieldOptionTimeFormatEdit.Text := (theField as TDateTimeRangeField).TimeFormat;
+      if (FieldOptionDateFormatEdit.Text = '') then FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+      if (FieldOptionTimeFormatEdit.Text = '') then FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
       if ((theField as TDateTimeRangeField).TimeType = tsNow) then
         FieldOptionStepRadioGroup.ItemIndex := 0
       else if ((theField as TDateTimeRangeField).TimeType = tsIncrementing) then
@@ -426,13 +437,13 @@ begin
       if (FieldOptionStepRadioGroup.ItemIndex = 0) then begin
         FieldOptionDateLowCalendar.Date := now-7;
         FieldOptionDateHighCalendar.Date := now;
-        FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', now);
-        FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', now);
+        FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, now);
+        FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, now);
       end else begin
         FieldOptionDateLowCalendar.Date := (theField as TDateTimeRangeField).LowVal;
         FieldOptionDateHighCalendar.Date := (theField as TDateTimeRangeField).HighVal;
-        FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', (theField as TDateTimeRangeField).LowVal);
-        FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', (theField as TDateTimeRangeField).HighVal);
+        FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, (theField as TDateTimeRangeField).LowVal);
+        FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, (theField as TDateTimeRangeField).HighVal);
       end;
     end else if (theField is TWordsField) then begin
       FieldOptionFixedWordSpinEdit.Value := (theField as TWordsField).LowVal;
@@ -498,6 +509,12 @@ begin
   if (FieldOptionSetListBox.ItemIndex >= 0) then begin
     FieldOptionSetListBox.Items.Delete(FieldOptionSetListBox.ItemIndex);
   end;
+end;
+
+procedure TMainForm.FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
+begin
+  FieldOptionTimeFormatEdit.Enabled := not FieldOptionTimeUnixRadioButton.Checked;
+  FieldOptionDateFormatEdit.Enabled := not FieldOptionTimeUnixRadioButton.Checked;
 end;
 
 procedure TMainForm.FieldRemoveButtonClick(Sender: TObject);
@@ -616,7 +633,9 @@ begin
                                                   true,
                                                   false,
                                                   timeType,
-                                                  FieldOptionDateTimeUnixCheckBox.Checked);
+                                                  FieldOptionTimeUnixRadioButton.Checked,
+                                                  FieldOptionDateFormatEdit.Text,
+                                                  FieldOptionTimeFormatEdit.Text);
       except
         on E : Exception do begin
           errMsg := E.Message;
@@ -640,7 +659,9 @@ begin
                                                   false,
                                                   true,
                                                   timeType,
-                                                  FieldOptionDateTimeUnixCheckBox.Checked);
+                                                  FieldOptionTimeUnixRadioButton.Checked,
+                                                  FieldOptionDateFormatEdit.Text,
+                                                  FieldOptionTimeFormatEdit.Text);
       except
         on E : Exception do begin
           errMsg := E.Message;
@@ -664,7 +685,9 @@ begin
                                                   true,
                                                   true,
                                                   timeType,
-                                                  FieldOptionDateTimeUnixCheckBox.Checked);
+                                                  FieldOptionTimeUnixRadioButton.Checked,
+                                                  FieldOptionDateFormatEdit.Text,
+                                                  FieldOptionTimeFormatEdit.Text);
       except
         on E : Exception do begin
           errMsg := E.Message;
@@ -784,9 +807,11 @@ begin
     FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_TIME;
     FieldOptionDateLowCalendar.Enabled := true;
     FieldOptionDateHighCalendar.Enabled := true;
+    FieldOptionDateFormatEdit.Enabled := true;
     FieldOptionDateLowCalendar.Date := now-7;
     FieldOptionDateHighCalendar.Date := now;
     FieldOptionTimeLowEdit.Enabled := false;
+    FieldOptionTimeFormatEdit.Enabled := false;
     FieldOptionTimeHighEdit.Enabled := false;
     FieldOptionTimeLowEdit.Text := '';
     FieldOptionTimeHighEdit.Text := '';
@@ -794,22 +819,26 @@ begin
     FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_TIME;
     FieldOptionDateLowCalendar.Enabled := false;
     FieldOptionDateHighCalendar.Enabled := false;
+    FieldOptionDateFormatEdit.Enabled := false;
     FieldOptionDateLowCalendar.Date := now-7;
     FieldOptionDateHighCalendar.Date := now;
     FieldOptionTimeLowEdit.Enabled := true;
+    FieldOptionTimeFormatEdit.Enabled := true;
     FieldOptionTimeHighEdit.Enabled := true;
-    FieldOptionTimeLowEdit.Text := '00:00:00';
-    FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', now);
+    FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
+    FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, now);
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_DATETIME_NAME) then begin
     FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_TIME;
     FieldOptionDateLowCalendar.Enabled := true;
     FieldOptionDateHighCalendar.Enabled := true;
+    FieldOptionDateFormatEdit.Enabled := true;
     FieldOptionDateLowCalendar.Date := now-7;
     FieldOptionDateHighCalendar.Date := now;
     FieldOptionTimeLowEdit.Enabled := true;
+    FieldOptionTimeFormatEdit.Enabled := true;
     FieldOptionTimeHighEdit.Enabled := true;
-    FieldOptionTimeLowEdit.Text := '00:00:00';
-    FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', now);
+    FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
+    FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, now);
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_FIXEDWORDS_NAME) then begin
     FieldOptionsNotebook.PageIndex := FIELD_OPTIONS_PAGE_IDX_WORDS;
   end else if (FieldSubTypeComboBox.Text = SUBTYPE_RANDOMWORDS_NAME) then begin
@@ -1066,7 +1095,8 @@ begin
           if (totalRecords > 0) and (i > 0) then begin
             SetStatus('Generated ' + IntToStr(i) + ' of ' +
                       IntToStr(totalRecords) + ' records, ETA ' +
-                      FormatDateTime('HH:nn:ss', ((100 * (now - startTime) / (i * 100/ totalRecords)) - (now - startTime))));
+                      FormatDateTime(DefaultFormatSettings.LongTimeFormat,
+                                      ((100 * (now - startTime) / (i * 100/ totalRecords)) - (now - startTime))));
           end;
             Application.ProcessMessages;
         end;
@@ -1247,6 +1277,9 @@ begin
   OutputTypeRadioGroupClick(OutputTypeRadioGroup);
   
   FCancelled := false;
+
+  FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+  FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
   
 {$IFDEF Windows}
   OutputFileNameEdit.Text := 'C:\datagen.txt';
@@ -1451,28 +1484,49 @@ begin
             if (otherStringList.Count >= 3) then begin
               FieldOptionDateLowCalendar.Date := StrToFloatDef(otherStringList.Strings[0], 0);
               FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
-              FieldOptionTimeLowEdit.Text := '00:00:00';
-              FieldOptionTimeHighEdit.Text := '00:00:00';
+              FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
+              FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
               FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionDateTimeUnixCheckBox.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              FieldOptionTimeUnixRadioButton.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              if (otherStringList.Count >= 5) then begin
+                FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
+                FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
+              end else begin
+                FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+                FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+              end;
             end;
           end else if (fieldSubType = SUBTYPE_TIME_NAME) then begin
             if (otherStringList.Count >= 3) then begin
               FieldOptionDateLowCalendar.Date := trunc(now);
               FieldOptionDateHighCalendar.Date := trunc(now);
-              FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[0], 0));
-              FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[1], 0));
+              FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
+              FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
               FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionDateTimeUnixCheckBox.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              FieldOptionTimeUnixRadioButton.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              if (otherStringList.Count >= 5) then begin
+                FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
+                FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
+              end else begin
+                FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+                FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+              end;
             end;
           end else if (fieldSubType = SUBTYPE_DATETIME_NAME) then begin
             if (otherStringList.Count >= 3) then begin
               FieldOptionDateLowCalendar.Date := StrToFloatDef(otherStringList.Strings[0], 0);
               FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
-              FieldOptionTimeLowEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[0], 0));
-              FieldOptionTimeHighEdit.Text := FormatDateTime('HH:nn:ss', StrToFloatDef(otherStringList.Strings[1], 0));
+              FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
+              FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
               FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionDateTimeUnixCheckBox.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              FieldOptionTimeUnixRadioButton.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              if (otherStringList.Count >= 5) then begin
+                FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
+                FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
+              end else begin
+                FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+                FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+              end;
             end;
           end else if (fieldSubType = SUBTYPE_FIXEDWORDS_NAME) then begin
             if (otherStringList.Count >= 1) then begin
