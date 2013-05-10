@@ -1309,7 +1309,9 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Application.OnException := GlobalExceptionHandler;
-  
+
+  self.Caption := 'Spawner ' + SPAWNER_VERSION_STR;
+
   MainPageControl.ActivePage := FieldsTabSheet;
   
   FieldTypeComboBox.Clear;
