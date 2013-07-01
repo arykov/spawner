@@ -424,9 +424,17 @@ begin
       FieldOptionSequenceDupSpinEdit.Value := (theField as TSequenceField).Duplicate;
       FieldOptionSequenceStrideSpinEdit.Value := (theField as TSequenceField).Stride;
     end else if (theField is TStateField) then begin
-      FieldOptionStateFullRadioButton.Checked := (theField as TStateField).Full;
+      if (theField as TStateField).Full then begin
+        FieldOptionStateFullRadioButton.Checked := true;
+      end else begin
+        FieldOptionStateAbbrRadioButton.Checked := true;
+      end;
     end else if (theField is TDateTimeRangeField) then begin
-      FieldOptionTimeUnixRadioButton.Checked := (theField as TDateTimeRangeField).DisplayUnix;
+      if (theField as TDateTimeRangeField).DisplayUnix then begin
+        FieldOptionTimeUnixRadioButton.Checked := true;
+      end else begin
+        FieldOptionTimeFormatRadioButton.Checked := true;
+      end;
       FieldOptionDateFormatEdit.Text := (theField as TDateTimeRangeField).DateFormat;
       FieldOptionTimeFormatEdit.Text := (theField as TDateTimeRangeField).TimeFormat;
       if (FieldOptionDateFormatEdit.Text = '') then FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
@@ -518,8 +526,8 @@ end;
 
 procedure TMainForm.FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
 begin
-  FieldOptionTimeFormatEdit.Enabled := not FieldOptionTimeUnixRadioButton.Checked;
-  FieldOptionDateFormatEdit.Enabled := not FieldOptionTimeUnixRadioButton.Checked;
+  FieldOptionTimeFormatEdit.Enabled := FieldOptionTimeFormatRadioButton.Checked;
+  FieldOptionDateFormatEdit.Enabled := FieldOptionTimeFormatRadioButton.Checked;
 end;
 
 procedure TMainForm.FieldRemoveButtonClick(Sender: TObject);
@@ -1552,7 +1560,11 @@ begin
             end;
           end else if (fieldSubType = SUBTYPE_STATE_NAME) then begin
             if (otherStringList.Count >= 1) then begin
-              FieldOptionStateFullRadioButton.Checked := StrToBoolDef(otherStringList.Strings[0], false);
+              if StrToBoolDef(otherStringList.Strings[0], false) then begin
+                FieldOptionStateFullRadioButton.Checked := true;
+              end else begin
+                FieldOptionStateAbbrRadioButton.Checked := true;
+              end;
             end;
           end else if (fieldSubType = SUBTYPE_DATE_NAME) then begin
             if (otherStringList.Count >= 3) then begin
@@ -1561,7 +1573,11 @@ begin
               FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
               FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
               FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionTimeUnixRadioButton.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              if StrToBoolDef(otherStringList.Strings[3], false) then begin
+                FieldOptionTimeUnixRadioButton.Checked := true;
+              end else begin
+                FieldOptionTimeFormatRadioButton.Checked := true;
+              end;
               if (otherStringList.Count >= 5) then begin
                 FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
                 FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
@@ -1577,7 +1593,11 @@ begin
               FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
               FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
               FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionTimeUnixRadioButton.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              if StrToBoolDef(otherStringList.Strings[3], false) then begin
+                FieldOptionTimeUnixRadioButton.Checked := true;
+              end else begin
+                FieldOptionTimeFormatRadioButton.Checked := true;
+              end;
               if (otherStringList.Count >= 5) then begin
                 FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
                 FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
@@ -1593,7 +1613,11 @@ begin
               FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
               FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
               FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionTimeUnixRadioButton.Checked := StrToBoolDef(otherStringList.Strings[3], false);
+              if StrToBoolDef(otherStringList.Strings[3], false) then begin
+                FieldOptionTimeUnixRadioButton.Checked := true;
+              end else begin
+                FieldOptionTimeFormatRadioButton.Checked := true;
+              end;
               if (otherStringList.Count >= 5) then begin
                 FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
                 FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];

@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 1001
+  Left = 1063
   Height = 623
-  Top = 338
+  Top = 270
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
@@ -14,15 +14,15 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.0.8.0'
+  LCLVersion = '1.0.10.0'
   object MainPageControl: TPageControl
     Left = 0
     Height = 506
     Top = 0
     Width = 792
-    ActivePage = OutputTabSheet
+    ActivePage = FieldsTabSheet
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object FieldsTabSheet: TTabSheet
       Caption = 'Fields'
@@ -920,6 +920,7 @@ object MainForm: TMainForm
                       Width = 74
                       Caption = 'Format:'
                       Checked = True
+                      OnChange = FieldOptionTimeUnixRadioButtonChange
                       TabOrder = 3
                       TabStop = True
                     end
@@ -1238,6 +1239,7 @@ object MainForm: TMainForm
                     Height = 216
                     Top = 27
                     Width = 232
+                    Anchors = [akTop, akLeft, akBottom]
                     ItemHeight = 0
                     ScrollWidth = 230
                     Sorted = True
@@ -1245,11 +1247,10 @@ object MainForm: TMainForm
                     TopIndex = -1
                   end
                   object FieldOptionSetRemoveItemButton: TBitBtn
-                    Left = 258
+                    Left = 259
                     Height = 36
-                    Top = 5
+                    Top = 61
                     Width = 36
-                    Anchors = [akLeft, akBottom]
                     AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
@@ -1332,11 +1333,10 @@ object MainForm: TMainForm
                     TabOrder = 1
                   end
                   object FieldOptionSetAddItemButton: TBitBtn
-                    Left = 258
+                    Left = 259
                     Height = 36
-                    Top = -29
+                    Top = 27
                     Width = 36
-                    Anchors = [akLeft, akBottom]
                     AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
