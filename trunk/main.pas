@@ -27,7 +27,7 @@ interface
 
 uses
   Classes, SysUtils, LResources, LCLType, Forms, Controls,
-  Graphics, Dialogs, ComCtrls, strutils, synaip,
+  Graphics, Dialogs, ComCtrls, strutils,
   StdCtrls, Menus, mysql50conn, sqldb,
   Clipbrd, SynEdit, SynMemo, Buttons, ExtCtrls, Spin, regexpr,
   EditBtn, common;
@@ -1651,7 +1651,7 @@ begin
             end else if (fieldSubType = SUBTYPE_RANDOMALPHA_NAME) then begin
               if (otherStringList.Count >= 6) then begin
                 FieldOptionRandomStringLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-                FieldOptionRandomStringLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
+                FieldOptionRandomStringHighSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
                 FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_ALPHA] := StrToBoolDef(otherStringList.Strings[2], true);
                 FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_NUMBER] := StrToBoolDef(otherStringList.Strings[3], true);
                 FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_SPACE] := StrToBoolDef(otherStringList.Strings[4], true);
@@ -1678,7 +1678,7 @@ begin
               end;
             end else if (fieldSubType = SUBTYPE_IPV6_NAME) then begin
               if (otherStringList.Count >= 6) then begin
-                FieldOptionsIPv6AddressEdit.Text := synaip.ExpandIP6((otherStringList.Strings[0]));
+                FieldOptionsIPv6AddressEdit.Text := trim(otherStringList.Strings[0]);
                 FieldOptionsIPv6RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 112);
                 FieldOptionsIPv6MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 128);
                 FieldOptionsIPv6MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 128);
