@@ -689,7 +689,7 @@ begin
     typeInt := 2
   else
     typeInt := 3;
-  result := Inherited GetAsString + ',' + FloatToStr(FLow) + '|' + FloatToStr(FHigh) + '|' + IntToStr(typeInt) + '|' + BoolToStr(FDisplayUnix) + '|' + FDateFormat + '|' + FTimeFormat;
+  result := Inherited GetAsString + ',' + FloatToStr(FLow) + '|' + FloatToStr(FHigh) + '|' + IntToStr(typeInt) + '|' + BoolToStr(FDisplayUnix, true) + '|' + FDateFormat + '|' + FTimeFormat;
 end;
 
 procedure TDateTimeRangeField.Reset(const TotalRequest : longint = 0);
@@ -888,7 +888,7 @@ end;
 
 function TNameField.GetAsString : string;
 begin
-  result := Inherited GetAsString + ',' + BoolToStr(FFemale) + '|' + BoolToStr(FMale);
+  result := Inherited GetAsString + ',' + BoolToStr(FFemale, true) + '|' + BoolToStr(FMale, true);
 end;
 
 // -City -----------------------------------------------------------------------
@@ -955,7 +955,7 @@ end;
 
 function TStateField.GetAsString : string;
 begin
-  result := Inherited GetAsString + ',' + BoolToStr(FFull);
+  result := Inherited GetAsString + ',' + BoolToStr(FFull, true);
 end;
 
 // -Country -----------------------------------------------------------------------
@@ -1304,7 +1304,7 @@ end;
 
 function TStringField.GetAsString : string;
 begin
-  result := Inherited GetAsString + ',' + IntToStr(FLow) + '|' + IntToStr(FHigh) + '|' + BoolToStr(FAllowAlpha) + '|' + BoolToStr(FAllowNumber) + '|' + BoolToStr(FAllowSpace) + '|' + BoolToStr(FAllowOther);
+  result := Inherited GetAsString + ',' + IntToStr(FLow) + '|' + IntToStr(FHigh) + '|' + BoolToStr(FAllowAlpha, true) + '|' + BoolToStr(FAllowNumber, true) + '|' + BoolToStr(FAllowSpace, true) + '|' + BoolToStr(FAllowOther, true);
 end;
 
 // -IPv4 Address ---------------------------------------------------------------
@@ -1360,8 +1360,8 @@ end;
 function TIPv4Field.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + IntToStr(FAddress) + '|' + IntToStr(FRangeMask) + '|' +
-              IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask) + '|' +
-              BoolToStr(FIPMaskBlocksOnly);
+              IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask, true) + '|' +
+              BoolToStr(FIPMaskBlocksOnly, true);
 end;
 
 // -IPv6 Address ---------------------------------------------------------------
@@ -1433,8 +1433,8 @@ end;
 function TIPv6Field.GetAsString : string;
 begin
   result := Inherited GetAsString + ',' + synaip.Ip6ToStr(FAddress) + '|' + IntToStr(FRangeMask) + '|' +
-              IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask) + '|' +
-              BoolToStr(FIPMaskBlocksOnly);
+              IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask, true) + '|' +
+              BoolToStr(FIPMaskBlocksOnly, true);
 end;
 
 // -MAC Address ---------------------------------------------------------------
