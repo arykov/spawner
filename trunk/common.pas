@@ -1432,7 +1432,7 @@ end;
 
 function TIPv6Field.GetAsString : string;
 begin
-  result := Inherited GetAsString + ',' + synaip.Ip6ToStr(FAddress) + '|' + IntToStr(FRangeMask) + '|' +
+  result := Inherited GetAsString + ',' + synaip.ExpandIP6(synaip.Ip6ToStr(FAddress)) + '|' + IntToStr(FRangeMask) + '|' +
               IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask, true) + '|' +
               BoolToStr(FIPMaskBlocksOnly, true);
 end;
