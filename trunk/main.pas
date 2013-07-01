@@ -1464,14 +1464,14 @@ procedure TMainForm.LoadFields(const FileSpec : string);
 var
   loadContents : TStringList;
   overwriteReply : integer;
-  i : integer;
+  i, j : integer;
   name : string;
   fieldType : string;
   fieldSubType : string;
   itemsStringList : TStringList;
   otherStringList : TStringList;
-  otherRegEx : TRegExpr;
   fileSpecToUse : string;
+  tmpStr : string;
 begin
   if (FieldListBox.Count > 0) then begin
     overwriteReply :=  Application.MessageBox (PChar('This will replace all current fields. Continue?'),
@@ -1496,213 +1496,223 @@ begin
     
     loadContents := TStringList.Create;
     otherStringList := TStringList.Create;
-    otherRegEx := TRegExpr.Create;
     itemsStringList := TStringList.Create;
     try
-      otherRegEx.Expression := '|';
       loadContents.LoadFromFile(fileSpecToUse);
       for i := 0 to loadContents.Count-1 do begin
-      
-        otherRegEx.Expression := ',';
-        itemsStringList.Clear;
-        otherRegEx.Split(loadContents.Strings[i], itemsStringList);
+        try
+          itemsStringList.Clear;
+          itemsStringList.Delimiter := ',';
+          itemsStringList.StrictDelimiter := true;
+          itemsStringList.DelimitedText := loadContents.Strings[i];
 
-        name := '';
-        fieldType := '';
-        fieldSubType := '';
-        if (itemsStringList.Count >= 3) then begin
-          name := itemsStringList.Strings[0];
-          fieldType := itemsStringList.Strings[1];
-          fieldSubType := itemsStringList.Strings[2];
-        end;
-        
-        if (name <> '') and
-           (fieldType <> '') and
-           ((fieldType = TYPE_SET_NAME) or (fieldType = TYPE_GUID_NAME) or (fieldSubType <> '')) then begin
-           
-          otherStringList.Clear;
-          if (itemsStringList.Count >= 4) then begin
-            otherStringList.Delimiter := '|';
-            otherStringList.DelimitedText := itemsStringList.Strings[3];
+          name := '';
+          fieldType := '';
+          fieldSubType := '';
+          if (itemsStringList.Count >= 3) then begin
+            name := itemsStringList.Strings[0];
+            fieldType := itemsStringList.Strings[1];
+            fieldSubType := itemsStringList.Strings[2];
           end;
 
-          (* create a new field according to the info given *)
-          ChangeComboBoxes(fieldType, fieldSubType);
-          fieldNameEdit.Text := name;
-          
-          (* populate the gui from the current line *)
-          if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FIXED) then begin
-            FieldOptionSetListBox.Items.Text := otherStringList.Text;
-          end else if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FILE) then begin
-            if (otherStringList.Count >= 1) then begin
-              FieldOptionsSetFileEdit.FileName := otherStringList.Strings[0];
-              if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
-                ShowString(FieldOptionsSetFileEdit.FileName + ' does not exist, skipping field ' + name);
-                continue;
+          if (name <> '') and
+             (fieldType <> '') and
+             ((fieldType = TYPE_SET_NAME) or (fieldType = TYPE_GUID_NAME) or (fieldSubType <> '')) then begin
+
+            otherStringList.Clear;
+            if (itemsStringList.Count >= 4) then begin
+              otherStringList.StrictDelimiter := true;
+              otherStringList.Delimiter := '|';
+              tmpStr := '';
+              for j := 3 to itemsStringList.Count-1 do begin
+                if (j > 3) then tmpStr := tmpStr + ',';
+                tmpStr := tmpStr + itemsStringList.Strings[j];
               end;
+              otherStringList.DelimitedText := tmpStr;
             end;
-          end else if (fieldSubType = SUBTYPE_INTEGERRANGE_NAME) then begin
-            if (otherStringList.Count >= 2) then begin
-              FieldOptionIntegerRangeLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-              FieldOptionIntegerRangeHighSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
-            end;
-          end else if (fieldSubType = SUBTYPE_REALRANGE_NAME) then begin
-            if (otherStringList.Count >= 3) then begin
-              FieldOptionRealRangeDecimalSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 0);
-              FieldOptionRealRangeLowSpinEdit.Value := StrToFloatDef(otherStringList.Strings[0], 0);
-              FieldOptionRealRangeHighSpinEdit.Value := StrToFloatDef(otherStringList.Strings[1], 0);
-            end;
-          end else if (fieldSubType = SUBTYPE_SEQUENCE_NAME) then begin
-            if (otherStringList.Count >= 3) then begin
-              FieldOptionSequenceStartSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-              FieldOptionSequenceDupSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
-              FieldOptionSequenceStrideSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 0);
-            end;
-          end else if (fieldSubType = SUBTYPE_STATE_NAME) then begin
-            if (otherStringList.Count >= 1) then begin
-              if StrToBoolDef(otherStringList.Strings[0], false) then begin
-                FieldOptionStateFullRadioButton.Checked := true;
-              end else begin
-                FieldOptionStateAbbrRadioButton.Checked := true;
+
+            (* create a new field according to the info given *)
+            ChangeComboBoxes(fieldType, fieldSubType);
+            fieldNameEdit.Text := name;
+
+            (* populate the gui from the current line *)
+            if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FIXED) then begin
+              FieldOptionSetListBox.Items.Text := otherStringList.Text;
+            end else if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FILE) then begin
+              if (otherStringList.Count >= 1) then begin
+                FieldOptionsSetFileEdit.FileName := otherStringList.Strings[0];
+                if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
+                  ShowString(FieldOptionsSetFileEdit.FileName + ' does not exist, skipping field ' + name);
+                  continue;
+                end;
               end;
-            end;
-          end else if (fieldSubType = SUBTYPE_DATE_NAME) then begin
-            if (otherStringList.Count >= 3) then begin
-              FieldOptionDateLowCalendar.Date := StrToFloatDef(otherStringList.Strings[0], 0);
-              FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
-              FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
-              FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
-              FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              if StrToBoolDef(otherStringList.Strings[3], false) then begin
-                FieldOptionTimeUnixRadioButton.Checked := true;
-              end else begin
-                FieldOptionTimeFormatRadioButton.Checked := true;
+            end else if (fieldSubType = SUBTYPE_INTEGERRANGE_NAME) then begin
+              if (otherStringList.Count >= 2) then begin
+                FieldOptionIntegerRangeLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
+                FieldOptionIntegerRangeHighSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
               end;
-              if (otherStringList.Count >= 5) then begin
-                FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
-                FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
-              end else begin
-                FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
-                FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+            end else if (fieldSubType = SUBTYPE_REALRANGE_NAME) then begin
+              if (otherStringList.Count >= 3) then begin
+                FieldOptionRealRangeDecimalSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 0);
+                FieldOptionRealRangeLowSpinEdit.Value := StrToFloatDef(otherStringList.Strings[0], 0);
+                FieldOptionRealRangeHighSpinEdit.Value := StrToFloatDef(otherStringList.Strings[1], 0);
               end;
-            end;
-          end else if (fieldSubType = SUBTYPE_TIME_NAME) then begin
-            if (otherStringList.Count >= 3) then begin
-              FieldOptionDateLowCalendar.Date := trunc(now);
-              FieldOptionDateHighCalendar.Date := trunc(now);
-              FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
-              FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
-              FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              if StrToBoolDef(otherStringList.Strings[3], false) then begin
-                FieldOptionTimeUnixRadioButton.Checked := true;
-              end else begin
-                FieldOptionTimeFormatRadioButton.Checked := true;
+            end else if (fieldSubType = SUBTYPE_SEQUENCE_NAME) then begin
+              if (otherStringList.Count >= 3) then begin
+                FieldOptionSequenceStartSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
+                FieldOptionSequenceDupSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
+                FieldOptionSequenceStrideSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 0);
               end;
-              if (otherStringList.Count >= 5) then begin
-                FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
-                FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
-              end else begin
-                FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
-                FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+            end else if (fieldSubType = SUBTYPE_STATE_NAME) then begin
+              if (otherStringList.Count >= 1) then begin
+                if StrToBoolDef(otherStringList.Strings[0], false) then begin
+                  FieldOptionStateFullRadioButton.Checked := true;
+                end else begin
+                  FieldOptionStateAbbrRadioButton.Checked := true;
+                end;
               end;
-            end;
-          end else if (fieldSubType = SUBTYPE_DATETIME_NAME) then begin
-            if (otherStringList.Count >= 3) then begin
-              FieldOptionDateLowCalendar.Date := StrToFloatDef(otherStringList.Strings[0], 0);
-              FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
-              FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
-              FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
-              FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
-              if StrToBoolDef(otherStringList.Strings[3], false) then begin
-                FieldOptionTimeUnixRadioButton.Checked := true;
-              end else begin
-                FieldOptionTimeFormatRadioButton.Checked := true;
+            end else if (fieldSubType = SUBTYPE_DATE_NAME) then begin
+              if (otherStringList.Count >= 3) then begin
+                FieldOptionDateLowCalendar.Date := StrToFloatDef(otherStringList.Strings[0], 0);
+                FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
+                FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
+                FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, 0.0);
+                FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
+                if StrToBoolDef(otherStringList.Strings[3], false) then begin
+                  FieldOptionTimeUnixRadioButton.Checked := true;
+                end else begin
+                  FieldOptionTimeFormatRadioButton.Checked := true;
+                end;
+                if (otherStringList.Count >= 5) then begin
+                  FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
+                  FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
+                end else begin
+                  FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+                  FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+                end;
               end;
-              if (otherStringList.Count >= 5) then begin
-                FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
-                FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
-              end else begin
-                FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
-                FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+            end else if (fieldSubType = SUBTYPE_TIME_NAME) then begin
+              if (otherStringList.Count >= 3) then begin
+                FieldOptionDateLowCalendar.Date := trunc(now);
+                FieldOptionDateHighCalendar.Date := trunc(now);
+                FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
+                FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
+                FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
+                if StrToBoolDef(otherStringList.Strings[3], false) then begin
+                  FieldOptionTimeUnixRadioButton.Checked := true;
+                end else begin
+                  FieldOptionTimeFormatRadioButton.Checked := true;
+                end;
+                if (otherStringList.Count >= 5) then begin
+                  FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
+                  FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
+                end else begin
+                  FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+                  FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+                end;
               end;
+            end else if (fieldSubType = SUBTYPE_DATETIME_NAME) then begin
+              if (otherStringList.Count >= 3) then begin
+                FieldOptionDateLowCalendar.Date := StrToFloatDef(otherStringList.Strings[0], 0);
+                FieldOptionDateHighCalendar.Date := StrToFloatDef(otherStringList.Strings[1], 0);
+                FieldOptionTimeLowEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[0], 0));
+                FieldOptionTimeHighEdit.Text := FormatDateTime(DefaultFormatSettings.LongTimeFormat, StrToFloatDef(otherStringList.Strings[1], 0));
+                FieldOptionStepRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[2], 0);
+                if StrToBoolDef(otherStringList.Strings[3], false) then begin
+                  FieldOptionTimeUnixRadioButton.Checked := true;
+                end else begin
+                  FieldOptionTimeFormatRadioButton.Checked := true;
+                end;
+                if (otherStringList.Count >= 5) then begin
+                  FieldOptionDateFormatEdit.Text := otherStringList.Strings[4];
+                  FieldOptionTimeFormatEdit.Text := otherStringList.Strings[5];
+                end else begin
+                  FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
+                  FieldOptionTimeFormatEdit.Text := DefaultFormatSettings.LongTimeFormat;
+                end;
+              end;
+            end else if (fieldSubType = SUBTYPE_FIXEDWORDS_NAME) then begin
+              if (otherStringList.Count >= 1) then begin
+                FieldOptionFixedWordSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
+              end;
+            end else if (fieldSubType = SUBTYPE_RANDOMWORDS_NAME) then begin
+              if (otherStringList.Count >= 2) then begin
+                FieldOptionRandomWordLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
+                FieldOptionRandomWordHighSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
+              end;
+            end else if (fieldSubType = SUBTYPE_FIXEDALPHA_NAME) then begin
+              if (otherStringList.Count >= 6) then begin
+                FieldOptionFixedStringSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
+                FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_ALPHA] := StrToBoolDef(otherStringList.Strings[2], true);
+                FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_NUMBER] := StrToBoolDef(otherStringList.Strings[3], true);
+                FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_SPACE] := StrToBoolDef(otherStringList.Strings[4], true);
+                FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_OTHER] := StrToBoolDef(otherStringList.Strings[5], true);
+              end;
+            end else if (fieldSubType = SUBTYPE_RANDOMALPHA_NAME) then begin
+              if (otherStringList.Count >= 6) then begin
+                FieldOptionRandomStringLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
+                FieldOptionRandomStringLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
+                FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_ALPHA] := StrToBoolDef(otherStringList.Strings[2], true);
+                FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_NUMBER] := StrToBoolDef(otherStringList.Strings[3], true);
+                FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_SPACE] := StrToBoolDef(otherStringList.Strings[4], true);
+                FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_OTHER] := StrToBoolDef(otherStringList.Strings[5], true);
+              end
+            end else if (fieldSubType = SUBTYPE_MASK_NAME) then begin
+              if (otherStringList.Count >= 1) then begin
+                FieldOptionsMaskEdit.Text := otherStringList.Strings[0];
+              end;
+            end else if (fieldSubType = SUBTYPE_NAME_NAME) or
+                        (fieldSubType = SUBTYPE_FIRSTNAME_NAME) then begin
+              if (otherStringList.Count >= 2) then begin
+                FieldOptionNameSexCheckGroup.Checked[SEX_FEMALE] := StrToBoolDef(otherStringList.Strings[0], true);
+                FieldOptionNameSexCheckGroup.Checked[SEX_MALE] := StrToBoolDef(otherStringList.Strings[1], true);
+              end;
+            end else if (fieldSubType = SUBTYPE_IP_NAME) then begin
+              if (otherStringList.Count >= 6) then begin
+                FieldOptionsIPv4AddressEdit.Text := IpIntToStr(StrToIntDef(otherStringList.Strings[0], 0));
+                FieldOptionsIPv4RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 24);
+                FieldOptionsIPv4MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 32);
+                FieldOptionsIPv4MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 32);
+                FieldOptionsIPv4MaskCheckBox.Checked := StrToBoolDef(otherStringList.Strings[4], false);
+                FieldOptionsIPv4MaskPrettyCheckBox.Checked := StrToBoolDef(otherStringList.Strings[5], false);
+              end;
+            end else if (fieldSubType = SUBTYPE_IPV6_NAME) then begin
+              if (otherStringList.Count >= 6) then begin
+                FieldOptionsIPv6AddressEdit.Text := synaip.ExpandIP6((otherStringList.Strings[0]));
+                FieldOptionsIPv6RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 112);
+                FieldOptionsIPv6MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 128);
+                FieldOptionsIPv6MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 128);
+                FieldOptionsIPv6MaskCheckBox.Checked := StrToBoolDef(otherStringList.Strings[4], false);
+                FieldOptionsIPv6MaskPrettyCheckBox.Checked := StrToBoolDef(otherStringList.Strings[5], false);
+              end;
+            end else if (fieldType =    TYPE_GUID_NAME) or
+                        (fieldSubType = SUBTYPE_LASTNAME_NAME) or
+                        (fieldSubType = SUBTYPE_EMAIL_NAME) or
+                        (fieldSubType = SUBTYPE_PHONE_NAME) or
+                        (fieldSubType = SUBTYPE_ADDRESS_NAME) or
+                        (fieldSubType = SUBTYPE_CITY_NAME) or
+                        (fieldSubType = SUBTYPE_ZIP_NAME) or
+                        (fieldSubType = SUBTYPE_POSTCODE_NAME) or
+                        (fieldSubType = SUBTYPE_COUNTRY_NAME) or
+                        (fieldSubType = SUBTYPE_SS_NAME) or
+                        (fieldSubType = SUBTYPE_MAC_NAME) then begin
+              (* no configuration, do nothing *)
+            end else begin
+              (* unknown field type/subtype *)
+              ShowString('[' + name + '] is unknown field type/subtype [' + fieldType + '] and [' + fieldSubType + ']');
+              continue;
             end;
-          end else if (fieldSubType = SUBTYPE_FIXEDWORDS_NAME) then begin
-            if (otherStringList.Count >= 1) then begin
-              FieldOptionFixedWordSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-            end;
-          end else if (fieldSubType = SUBTYPE_RANDOMWORDS_NAME) then begin
-            if (otherStringList.Count >= 2) then begin
-              FieldOptionRandomWordLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-              FieldOptionRandomWordHighSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
-            end;
-          end else if (fieldSubType = SUBTYPE_FIXEDALPHA_NAME) then begin
-            if (otherStringList.Count >= 6) then begin
-              FieldOptionFixedStringSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-              FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_ALPHA] := StrToBoolDef(otherStringList.Strings[2], true);
-              FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_NUMBER] := StrToBoolDef(otherStringList.Strings[3], true);
-              FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_SPACE] := StrToBoolDef(otherStringList.Strings[4], true);
-              FieldOptionFixedStringAllowedCheckGroup.Checked[STRING_OTHER] := StrToBoolDef(otherStringList.Strings[5], true);
-            end;
-          end else if (fieldSubType = SUBTYPE_RANDOMALPHA_NAME) then begin
-            if (otherStringList.Count >= 6) then begin
-              FieldOptionRandomStringLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-              FieldOptionRandomStringLowSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
-              FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_ALPHA] := StrToBoolDef(otherStringList.Strings[2], true);
-              FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_NUMBER] := StrToBoolDef(otherStringList.Strings[3], true);
-              FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_SPACE] := StrToBoolDef(otherStringList.Strings[4], true);
-              FieldOptionRandomStringAllowedCheckGroup.Checked[STRING_OTHER] := StrToBoolDef(otherStringList.Strings[5], true);
-            end
-          end else if (fieldSubType = SUBTYPE_MASK_NAME) then begin
-            if (otherStringList.Count >= 1) then begin
-              FieldOptionsMaskEdit.Text := otherStringList.Strings[0];
-            end;
-          end else if (fieldSubType = SUBTYPE_NAME_NAME) or
-                      (fieldSubType = SUBTYPE_FIRSTNAME_NAME) then begin
-            if (otherStringList.Count >= 2) then begin
-              FieldOptionNameSexCheckGroup.Checked[SEX_FEMALE] := StrToBoolDef(otherStringList.Strings[0], true);
-              FieldOptionNameSexCheckGroup.Checked[SEX_MALE] := StrToBoolDef(otherStringList.Strings[1], true);
-            end;
-          end else if (fieldSubType = SUBTYPE_IP_NAME) then begin
-            if (otherStringList.Count >= 6) then begin
-              FieldOptionsIPv4AddressEdit.Text := IpIntToStr(StrToIntDef(otherStringList.Strings[0], 0));
-              FieldOptionsIPv4RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 24);
-              FieldOptionsIPv4MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 32);
-              FieldOptionsIPv4MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 32);
-              FieldOptionsIPv4MaskCheckBox.Checked := StrToBoolDef(otherStringList.Strings[4], false);
-              FieldOptionsIPv4MaskPrettyCheckBox.Checked := StrToBoolDef(otherStringList.Strings[5], false);
-            end;
-          end else if (fieldSubType = SUBTYPE_IPV6_NAME) then begin
-            if (otherStringList.Count >= 6) then begin
-              FieldOptionsIPv6AddressEdit.Text := synaip.ExpandIP6((otherStringList.Strings[0]));
-              FieldOptionsIPv6RangeMaskSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 112);
-              FieldOptionsIPv6MaskMinSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 128);
-              FieldOptionsIPv6MaskMaxSpinEdit.Value := StrToIntDef(otherStringList.Strings[3], 128);
-              FieldOptionsIPv6MaskCheckBox.Checked := StrToBoolDef(otherStringList.Strings[4], false);
-              FieldOptionsIPv6MaskPrettyCheckBox.Checked := StrToBoolDef(otherStringList.Strings[5], false);
-            end;
-          end else if (fieldType =    TYPE_GUID_NAME) or
-                      (fieldSubType = SUBTYPE_LASTNAME_NAME) or
-                      (fieldSubType = SUBTYPE_EMAIL_NAME) or
-                      (fieldSubType = SUBTYPE_PHONE_NAME) or
-                      (fieldSubType = SUBTYPE_ADDRESS_NAME) or
-                      (fieldSubType = SUBTYPE_CITY_NAME) or
-                      (fieldSubType = SUBTYPE_ZIP_NAME) or
-                      (fieldSubType = SUBTYPE_POSTCODE_NAME) or
-                      (fieldSubType = SUBTYPE_COUNTRY_NAME) or
-                      (fieldSubType = SUBTYPE_SS_NAME) or
-                      (fieldSubType = SUBTYPE_MAC_NAME) then begin
-            (* no configuration, do nothing *)
+
+            (* actually create the new field *)
+            FieldSaveButtonClick(FieldSaveButton);
+
           end else begin
-            (* unknown field type/subtype *)
-            ShowString('[' + name + '] is unknown field type/subtype [' + fieldType + '] and [' + fieldSubType + ']');
-            continue;
+            ShowString('Line [' + loadContents.Strings[i] + '] is invalid');
           end;
-          
-          (* actually create the new field *)
-          FieldSaveButtonClick(FieldSaveButton);
-          
-        end else begin
-          ShowString('Line [' + loadContents.Strings[i] + '] is invalid');
+        except
+          on E : Exception do begin
+            ShowString('Line [' + loadContents.Strings[i] + '] is invalid: ' + E.Message);
+          end;
         end;
       end;
       
@@ -1711,7 +1721,6 @@ begin
     finally
       freeAndNil(loadContents);
       freeAndNil(otherStringList);
-      freeAndNil(otherRegEx);
       freeAndNil(itemsStringList);
     end;
   end;
