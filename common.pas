@@ -313,6 +313,7 @@ type
 
   TIPv6Field = class(TField)
   private
+    FAddressStr : string;
     FAddress : synaip.TIp6Bytes;
     FRangeMask : byte;
     FIPMaskMin : byte;
@@ -1374,6 +1375,7 @@ var
 begin
   tmpMask := rangeMask;
   if (tmpMask > 128) then tmpMask := 128;
+  FAddressStr := trim(address);
   FAddress := synaip.StrToIp6(address);
   FRangeMask := tmpMask;
   FIPMaskMin := ipMaskMin;
@@ -1432,7 +1434,7 @@ end;
 
 function TIPv6Field.GetAsString : string;
 begin
-  result := Inherited GetAsString + ',' + synaip.ExpandIP6(synaip.Ip6ToStr(FAddress)) + '|' + IntToStr(FRangeMask) + '|' +
+  result := Inherited GetAsString + ',' + FAddressStr + '|' + IntToStr(FRangeMask) + '|' +
               IntToStr(FIPMaskMin) + '|' + IntToStr(FIPMaskMax) + '|' + BoolToStr(FShowIPMask, true) + '|' +
               BoolToStr(FIPMaskBlocksOnly, true);
 end;

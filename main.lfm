@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 1063
+  Left = 655
   Height = 623
-  Top = 270
+  Top = 70
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
