@@ -288,6 +288,12 @@ const
   FIELD_OPTIONS_PAGE_IDX_IP4 = 14;
   FIELD_OPTIONS_PAGE_IDX_IP6 = 15;
 
+  OUTPUT_OPTIONS_PAGE_IDX_DELIMITED = 0;
+  OUTPUT_OPTIONS_PAGE_IDX_SQL = 1;
+  OUTPUT_OPTIONS_PAGE_IDX_NOT_IMPLEMENTED = 2;
+  OUTPUT_OPTIONS_PAGE_IDX_MYSQL = 3;
+  OUTPUT_OPTIONS_PAGE_IDX_FIXED = 4;
+
 { TMainForm }
 
 procedure TMainForm.MemoMenuItemClick(Sender: TObject);
@@ -1315,6 +1321,9 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  paramVal : ansistring;
+  paramValInt : integer;
 begin
   Application.OnException := GlobalExceptionHandler;
 
@@ -1334,8 +1343,6 @@ begin
   FieldTypeComboBoxSelect(FieldTypeComboBox);
   FieldSubTypeComboBoxSelect(FieldSubTypeComboBox);
   
-  OutputTypeRadioGroupClick(OutputTypeRadioGroup);
-  
   FCancelled := false;
 
   FieldOptionDateFormatEdit.Text := DefaultFormatSettings.ShortDateFormat;
@@ -1347,14 +1354,102 @@ begin
   OutputFileNameEdit.Text := '/tmp/datagen.txt';
 {$ENDIF}
 
-  if (ParamCount >= 1) and (trim(ParamStr(1)) <> '') and FileExists(trim(ParamStr(1))) then begin
-    LoadFields(trim(ParamStr(1)));
+  paramVal := trim(Application.GetOptionValue('i', 'input'));
+  if (paramVal <> '') and FileExists(paramVal) then begin
+    LoadFields(paramVal);
   end;
-  if (ParamCount >= 2) and (trim(ParamStr(2)) <> '') then begin
-    OutputFileNameEdit.Text := trim(ParamStr(2));
+  paramVal := trim(Application.GetOptionValue('o', 'output'));
+  if (paramVal <> '') then begin
+    OutputFileNameEdit.Text := paramVal;
   end;
-  if (ParamCount >= 3) and (StrToIntDef(trim(ParamStr(3)), 0) > 0) then begin
-    OutputNumSpinEdit.Value := StrToIntDef(trim(ParamStr(3)), OutputNumSpinEdit.Value);
+  paramValInt := StrToIntDef(Application.GetOptionValue('n', 'count'), 0);
+  if (paramValInt > 0) then begin
+    OutputNumSpinEdit.Value := paramValInt;
+  end;
+
+  OutputQuoteAlphaOnlyCheckbox.Checked := not Application.HasOption('quote-all');
+  OuptutSqlQuoteOutputOnlyCheckbox.Checked := not Application.HasOption('quote-all');
+  OutputFixedQuoteAlphaOnlyCheckBox.Checked := not Application.HasOption('quote-all');
+
+  OutputIncludeFieldNamesCheckBox.Checked := Application.HasOption('field-names');
+  OutputSqlFieldNamesCheckbox.Checked := Application.HasOption('field-names');
+  OutputMySqlFieldNamesCheckbox.Checked := Application.HasOption('field-names');
+  OutputFixedIncludeFieldNamesCheckBox.Checked := Application.HasOption('field-names');
+
+  paramVal := Application.GetOptionValue('q', 'quote');
+  if (length(paramVal) > 0) then begin
+    OutputQuoteCharEdit.Text := paramVal;
+    OutputFixedQuoteCharEdit.Text := paramVal;
+  end;
+
+  paramVal := Application.GetOptionValue('d', 'delimiter');
+  if (length(paramVal) > 0) then begin
+    OutputDelimiterEdit.Text := paramVal;
+  end;
+
+  paramVal := lowercase(trim(Application.GetOptionValue('output-type')));
+  if (paramVal = 'fixed') then begin
+    OutputTypeRadioGroup.ItemIndex := OUTPUT_TYPE_FIXED;
+  end else if (paramVal = 'sql') then begin
+    OutputTypeRadioGroup.ItemIndex := OUTPUT_OPTIONS_PAGE_IDX_SQL;
+  end else if (paramVal = 'mysql') then begin
+    OutputTypeRadioGroup.ItemIndex := OUTPUT_OPTIONS_PAGE_IDX_MYSQL;
+  end else begin
+    OutputTypeRadioGroup.ItemIndex := OUTPUT_TYPE_DELIMITED;
+  end;
+  OutputTypeRadioGroupClick(OutputTypeRadioGroup);
+
+  paramVal := Application.GetOptionValue('sql-table-name');
+  if (length(paramVal) > 0) then begin
+    OutputSqlTableNameEdit.Text := paramVal;
+    OutputMySQLTableEdit.Text := paramVal;
+  end;
+
+  paramValInt := StrToIntDef(Application.GetOptionValue('sql-recs-per-insert'), 0);
+  if (paramValInt > 0) then begin
+    OutputSqlRecordsPerInsertSpinEdit.Value := paramValInt;
+    OutputMySqlRecordsPerInsertSpinEdit.Value := paramValInt;
+  end;
+
+  paramVal := uppercase(trim(Application.GetOptionValue('sql-operation')));
+  paramValInt := OutputSqlInsertOperationRadioGroup.Items.IndexOf(paramVal);
+  if (paramValInt > -1) then begin
+    OutputSqlInsertOperationRadioGroup.ItemIndex := paramValInt;
+  end;
+  paramValInt := OutputMySqlInsertOperationRadioGroup.Items.IndexOf(paramVal);
+  if (paramValInt > -1) then begin
+    OutputMySqlInsertOperationRadioGroup.ItemIndex := paramValInt;
+  end;
+
+  paramVal := Application.GetOptionValue('mysql-host');
+  if (length(paramVal) > 0) then begin
+    MySQLHostEdit.Text := paramVal;
+  end;
+
+  paramVal := Application.GetOptionValue('mysql-user');
+  if (length(paramVal) > 0) then begin
+    MySQLUserEdit.Text := paramVal;
+  end;
+
+  paramVal := Application.GetOptionValue('mysql-password');
+  if (length(paramVal) > 0) then begin
+    MySQLPasswordEdit.Text := paramVal;
+  end;
+
+  paramVal := Application.GetOptionValue('mysql-database');
+  if (length(paramVal) > 0) then begin
+    MySQLDatabaseEdit.Text := paramVal;
+  end;
+
+  OutputMySQLErrorHaltCheckbox.Checked := Application.HasOption('mysql-halt-on-error');
+  OutputMySQLFileTooCheckBox.Checked := Application.HasOption('mysql-file-output');
+
+  MySQLSleepCheckbox.Checked := Application.HasOption('mysql-sleep-freq') and Application.HasOption('mysql-sleep-ms');
+  if MySQLSleepCheckbox.Checked then begin
+    paramValInt := StrToIntDef(Application.GetOptionValue('mysql-sleep-ms'), 1);
+    MySQLSleepMsSpinEdit.Value := paramValInt;
+    paramValInt := StrToIntDef(Application.GetOptionValue('mysql-sleep-freq'), 1);
+    MySQLSleepRecordsSpinEdit.Value := paramValInt;
   end;
 end;
 
@@ -1380,12 +1475,6 @@ begin
 end;
 
 procedure TMainForm.OutputTypeRadioGroupClick(Sender: TObject);
-const
-  OUTPUT_OPTIONS_PAGE_IDX_DELIMITED = 0;
-  OUTPUT_OPTIONS_PAGE_IDX_SQL = 1;
-  OUTPUT_OPTIONS_PAGE_IDX_NOT_IMPLEMENTED = 2;
-  OUTPUT_OPTIONS_PAGE_IDX_MYSQL = 3;
-  OUTPUT_OPTIONS_PAGE_IDX_FIXED = 4;
 begin
   if ((Sender as TRadioGroup).ItemIndex = OUTPUT_TYPE_DELIMITED) then begin
     OutputOptionsNotebook.PageIndex := OUTPUT_OPTIONS_PAGE_IDX_DELIMITED;
