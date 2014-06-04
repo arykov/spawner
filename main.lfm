@@ -1,11 +1,11 @@
 object MainForm: TMainForm
-  Left = 655
+  Left = 438
   Height = 623
-  Top = 70
+  Top = 266
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
-  ClientHeight = 594
+  ClientHeight = 596
   ClientWidth = 792
   Color = clForm
   Constraints.MinHeight = 480
@@ -14,44 +14,44 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.0.10.0'
+  LCLVersion = '1.2.2.0'
   object MainPageControl: TPageControl
     Left = 0
-    Height = 506
+    Height = 511
     Top = 0
     Width = 792
-    ActivePage = FieldsTabSheet
+    ActivePage = OutputTabSheet
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object FieldsTabSheet: TTabSheet
       Caption = 'Fields'
-      ClientHeight = 467
-      ClientWidth = 786
+      ClientHeight = 476
+      ClientWidth = 782
       object SpacerPanel2: TPanel
         Left = 0
-        Height = 467
+        Height = 476
         Top = 0
-        Width = 786
+        Width = 782
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 467
-        ClientWidth = 786
+        ClientHeight = 476
+        ClientWidth = 782
         TabOrder = 0
         object FieldsLabel: TLabel
           Left = 14
-          Height = 22
+          Height = 21
           Top = 16
-          Width = 40
+          Width = 38
           Caption = 'Fields'
           ParentColor = False
         end
         object FieldAddButton: TBitBtn
           Left = 14
-          Height = 36
+          Height = 40
           Hint = 'Create a new field'
-          Top = 417
-          Width = 36
+          Top = 422
+          Width = 38
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -130,7 +130,6 @@ object MainForm: TMainForm
             0000000000000000000000000000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000
           }
-          NumGlyphs = 0
           OnClick = FieldAddButtonClick
           ParentShowHint = False
           ShowHint = True
@@ -138,10 +137,10 @@ object MainForm: TMainForm
         end
         object FieldRemoveButton: TBitBtn
           Left = 65
-          Height = 36
+          Height = 40
           Hint = 'Remove the selected field'
-          Top = 417
-          Width = 36
+          Top = 422
+          Width = 38
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -220,7 +219,6 @@ object MainForm: TMainForm
             0000000000000000000000000000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000
           }
-          NumGlyphs = 0
           OnClick = FieldRemoveButtonClick
           ParentShowHint = False
           ShowHint = True
@@ -228,10 +226,10 @@ object MainForm: TMainForm
         end
         object FieldUpButton: TBitBtn
           Left = 116
-          Height = 36
+          Height = 40
           Hint = 'Move the selected field up'
-          Top = 417
-          Width = 36
+          Top = 422
+          Width = 38
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -310,7 +308,6 @@ object MainForm: TMainForm
             0000000000000000000000000000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000
           }
-          NumGlyphs = 0
           OnClick = FieldUpButtonClick
           ParentShowHint = False
           ShowHint = True
@@ -318,10 +315,10 @@ object MainForm: TMainForm
         end
         object FieldDownButton: TBitBtn
           Left = 167
-          Height = 36
+          Height = 40
           Hint = 'Move the selected hint down'
-          Top = 417
-          Width = 36
+          Top = 422
+          Width = 38
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -400,7 +397,6 @@ object MainForm: TMainForm
             0000000000000000000000000000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000
           }
-          NumGlyphs = 0
           OnClick = FieldDownButtonClick
           ParentShowHint = False
           ShowHint = True
@@ -408,7 +404,7 @@ object MainForm: TMainForm
         end
         object FieldListBox: TListBox
           Left = 14
-          Height = 381
+          Height = 390
           Hint = 'Select to view or edit options, double click to generate example data'
           Top = 32
           Width = 196
@@ -424,24 +420,24 @@ object MainForm: TMainForm
         end
         object FieldsDetailsGroupBox: TGroupBox
           Left = 222
-          Height = 437
+          Height = 446
           Top = 16
-          Width = 551
+          Width = 547
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Details'
-          ClientHeight = 414
-          ClientWidth = 547
+          ClientHeight = 431
+          ClientWidth = 543
           TabOrder = 5
           object FieldNameLabel: TLabel
             Left = 12
-            Height = 22
+            Height = 21
             Top = 18
-            Width = 74
+            Width = 73
             Caption = 'Field Name'
             ParentColor = False
           end
           object FieldSaveButton: TBitBtn
-            Left = 381
+            Left = 377
             Height = 30
             Top = 7
             Width = 140
@@ -523,42 +519,41 @@ object MainForm: TMainForm
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000
             }
-            NumGlyphs = 0
             OnClick = FieldSaveButtonClick
             TabOrder = 0
           end
           object SpacerPanel3: TPanel
             Left = 0
-            Height = 369
+            Height = 386
             Top = 45
-            Width = 547
+            Width = 543
             Align = alBottom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BevelOuter = bvNone
-            ClientHeight = 369
-            ClientWidth = 547
+            ClientHeight = 386
+            ClientWidth = 543
             TabOrder = 1
             object FieldTypeGroupBox: TGroupBox
               Left = 0
               Height = 88
               Top = 0
-              Width = 547
+              Width = 543
               Align = alTop
               Caption = 'Field Type'
-              ClientHeight = 65
-              ClientWidth = 543
+              ClientHeight = 73
+              ClientWidth = 539
               TabOrder = 0
               object FieldTypeLabel: TLabel
                 Left = 13
-                Height = 22
+                Height = 21
                 Top = 10
-                Width = 33
+                Width = 32
                 Caption = 'Type'
                 ParentColor = False
               end
               object FieldSubtypeLabel: TLabel
                 Left = 222
-                Height = 22
+                Height = 21
                 Top = 10
                 Width = 55
                 Caption = 'Subtype'
@@ -566,7 +561,7 @@ object MainForm: TMainForm
               end
               object FieldTypeComboBox: TComboBox
                 Left = 13
-                Height = 35
+                Height = 39
                 Top = 30
                 Width = 184
                 ItemHeight = 0
@@ -577,7 +572,7 @@ object MainForm: TMainForm
               end
               object FieldSubTypeComboBox: TComboBox
                 Left = 222
-                Height = 35
+                Height = 39
                 Top = 30
                 Width = 288
                 ItemHeight = 0
@@ -589,20 +584,20 @@ object MainForm: TMainForm
             end
             object FieldOptionsGroupBox: TGroupBox
               Left = 0
-              Height = 273
+              Height = 290
               Top = 96
-              Width = 547
+              Width = 543
               Align = alBottom
               Anchors = [akTop, akLeft, akRight, akBottom]
               Caption = 'Field Options'
-              ClientHeight = 250
-              ClientWidth = 543
+              ClientHeight = 275
+              ClientWidth = 539
               TabOrder = 1
               object FieldOptionsNotebook: TNotebook
                 Left = 0
-                Height = 250
+                Height = 275
                 Top = 0
-                Width = 543
+                Width = 539
                 PageIndex = 0
                 Align = alClient
                 TabOrder = 0
@@ -610,9 +605,9 @@ object MainForm: TMainForm
                 object FieldOptionsNonePage: TPage
                   object FieldOptionsNoneLabel: TLabel
                     Left = 20
-                    Height = 22
+                    Height = 21
                     Top = 21
-                    Width = 282
+                    Width = 279
                     Caption = 'There are no options for this type/subtype.'
                     ParentColor = False
                   end
@@ -721,7 +716,7 @@ object MainForm: TMainForm
                     Width = 246
                     Anchors = [akTop, akLeft, akRight]
                     Caption = 'Low'
-                    ClientHeight = 69
+                    ClientHeight = 77
                     ClientWidth = 242
                     TabOrder = 0
                     object FieldOptionTimeLowLabel: TLabel
@@ -797,7 +792,7 @@ object MainForm: TMainForm
                     Width = 246
                     Anchors = [akTop, akLeft, akRight]
                     Caption = 'High'
-                    ClientHeight = 69
+                    ClientHeight = 77
                     ClientWidth = 242
                     TabOrder = 1
                     object FieldOptionTimeHighLabel: TLabel
@@ -882,7 +877,7 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
-                    ClientHeight = 38
+                    ClientHeight = 46
                     ClientWidth = 506
                     Columns = 4
                     ItemIndex = 3
@@ -901,7 +896,7 @@ object MainForm: TMainForm
                     Width = 510
                     Anchors = [akTop, akLeft, akRight, akBottom]
                     Caption = 'Format'
-                    ClientHeight = 65
+                    ClientHeight = 73
                     ClientWidth = 506
                     TabOrder = 3
                     object FieldOptionTimeUnixRadioButton: TRadioButton
@@ -1061,7 +1056,7 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
-                    ClientHeight = 57
+                    ClientHeight = 65
                     ClientWidth = 500
                     Columns = 4
                     Items.Strings = (
@@ -1137,7 +1132,7 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 4
-                    ClientHeight = 57
+                    ClientHeight = 65
                     ClientWidth = 500
                     Columns = 4
                     Items.Strings = (
@@ -1328,7 +1323,6 @@ object MainForm: TMainForm
                       0000000000000000000000000000000000000000000000000000000000000000
                       0000000000000000000000000000000000000000000000000000
                     }
-                    NumGlyphs = 0
                     OnClick = FieldOptionSetRemoveItemButtonClick
                     TabOrder = 1
                   end
@@ -1414,7 +1408,6 @@ object MainForm: TMainForm
                       0000000000000000000000000000000000000000000000000000000000000000
                       0000000000000000000000000000000000000000000000000000
                     }
-                    NumGlyphs = 0
                     OnClick = FieldOptionSetAddItemButtonClick
                     TabOrder = 2
                   end
@@ -1436,7 +1429,7 @@ object MainForm: TMainForm
                     ChildSizing.ShrinkVertical = crsScaleChilds
                     ChildSizing.Layout = cclLeftToRightThenTopToBottom
                     ChildSizing.ControlsPerLine = 1
-                    ClientHeight = 77
+                    ClientHeight = 85
                     ClientWidth = 502
                     Items.Strings = (
                       'Male'
@@ -1497,7 +1490,7 @@ object MainForm: TMainForm
                     FilterIndex = 0
                     HideDirectories = False
                     ButtonWidth = 23
-                    NumGlyphs = 0
+                    NumGlyphs = 1
                     Anchors = [akTop, akLeft, akRight]
                     MaxLength = 0
                     TabOrder = 0
@@ -1678,9 +1671,9 @@ object MainForm: TMainForm
           end
           object FieldNameEdit: TEdit
             Left = 100
-            Height = 31
+            Height = 33
             Top = 9
-            Width = 278
+            Width = 274
             Anchors = [akTop, akLeft, akRight]
             TabOrder = 2
           end
@@ -1689,31 +1682,31 @@ object MainForm: TMainForm
     end
     object OutputTabSheet: TTabSheet
       Caption = 'Output'
-      ClientHeight = 467
-      ClientWidth = 786
+      ClientHeight = 476
+      ClientWidth = 782
       object SpacerPanel1: TPanel
         Left = 0
-        Height = 467
+        Height = 476
         Top = 0
-        Width = 786
+        Width = 782
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 467
-        ClientWidth = 786
+        ClientHeight = 476
+        ClientWidth = 782
         TabOrder = 0
         object OutputNumLabel: TLabel
           Left = 454
-          Height = 22
+          Height = 21
           Top = 18
-          Width = 211
+          Width = 207
           Caption = 'Number of Records to Generate'
           ParentColor = False
         end
         object OutputFileLabel: TLabel
           Left = 14
-          Height = 22
+          Height = 21
           Top = 90
-          Width = 77
+          Width = 74
           Caption = 'Output File'
           ParentColor = False
         end
@@ -1732,7 +1725,7 @@ object MainForm: TMainForm
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 4
-          ClientHeight = 38
+          ClientHeight = 46
           ClientWidth = 420
           Columns = 4
           ItemIndex = 0
@@ -1747,19 +1740,19 @@ object MainForm: TMainForm
         end
         object OutputOptionsGroupBox: TGroupBox
           Left = 14
-          Height = 285
+          Height = 294
           Top = 159
-          Width = 758
+          Width = 754
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Output Options'
-          ClientHeight = 262
-          ClientWidth = 754
+          ClientHeight = 279
+          ClientWidth = 750
           TabOrder = 1
           object OutputOptionsNotebook: TNotebook
             Left = 0
-            Height = 262
+            Height = 279
             Top = 0
-            Width = 754
+            Width = 750
             PageIndex = 0
             Align = alClient
             TabOrder = 0
@@ -1767,7 +1760,7 @@ object MainForm: TMainForm
             object OutputDelimitedPage: TPage
               object OutputDelimiterEdit: TLabeledEdit
                 Left = 100
-                Height = 31
+                Height = 33
                 Hint = 'Fields will be separated with this delimiter'
                 Top = 20
                 Width = 72
@@ -1776,10 +1769,10 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Control = OutputDelimiterEdit
                 EditLabel.AnchorSideBottom.Control = OutputDelimiterEdit
                 EditLabel.AnchorSideBottom.Side = asrBottom
-                EditLabel.Left = 18
-                EditLabel.Height = 22
-                EditLabel.Top = 24
-                EditLabel.Width = 62
+                EditLabel.Left = 21
+                EditLabel.Height = 21
+                EditLabel.Top = 26
+                EditLabel.Width = 59
                 EditLabel.Caption = 'Delimiter'
                 EditLabel.ParentColor = False
                 LabelPosition = lpLeft
@@ -1792,7 +1785,7 @@ object MainForm: TMainForm
               end
               object OutputQuoteCharEdit: TLabeledEdit
                 Left = 100
-                Height = 31
+                Height = 33
                 Hint = 'Each field will be enclosed in this'
                 Top = 59
                 Width = 72
@@ -1801,10 +1794,10 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Control = OutputQuoteCharEdit
                 EditLabel.AnchorSideBottom.Control = OutputQuoteCharEdit
                 EditLabel.AnchorSideBottom.Side = asrBottom
-                EditLabel.Left = 37
-                EditLabel.Height = 22
-                EditLabel.Top = 63
-                EditLabel.Width = 43
+                EditLabel.Left = 39
+                EditLabel.Height = 21
+                EditLabel.Top = 65
+                EditLabel.Width = 41
                 EditLabel.Caption = 'Quote'
                 EditLabel.ParentColor = False
                 LabelPosition = lpLeft
@@ -1818,7 +1811,7 @@ object MainForm: TMainForm
                 Left = 181
                 Height = 25
                 Top = 65
-                Width = 158
+                Width = 155
                 Caption = 'Only for alpha fields'
                 Checked = True
                 State = cbChecked
@@ -1828,7 +1821,7 @@ object MainForm: TMainForm
                 Left = 17
                 Height = 25
                 Top = 104
-                Width = 359
+                Width = 355
                 Caption = 'Include field names as first row of delimited output'
                 TabOrder = 3
               end
@@ -1836,15 +1829,15 @@ object MainForm: TMainForm
             object OutputSqlPage: TPage
               object OutputSqlRecordsPerInsertLabel: TLabel
                 Left = 16
-                Height = 22
+                Height = 21
                 Top = 65
-                Width = 122
+                Width = 118
                 Caption = 'Records per insert'
                 ParentColor = False
               end
               object OutputSqlTableNameEdit: TLabeledEdit
                 Left = 172
-                Height = 31
+                Height = 33
                 Hint = 'Table name for SQL insert statements'
                 Top = 19
                 Width = 160
@@ -1853,10 +1846,10 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Control = OutputSqlTableNameEdit
                 EditLabel.AnchorSideBottom.Control = OutputSqlTableNameEdit
                 EditLabel.AnchorSideBottom.Side = asrBottom
-                EditLabel.Left = 28
-                EditLabel.Height = 22
-                EditLabel.Top = 23
-                EditLabel.Width = 79
+                EditLabel.Left = 30
+                EditLabel.Height = 21
+                EditLabel.Top = 25
+                EditLabel.Width = 77
                 EditLabel.Caption = 'Table Name'
                 EditLabel.ParentColor = False
                 LabelPosition = lpLeft
@@ -1881,7 +1874,7 @@ object MainForm: TMainForm
                 ChildSizing.ShrinkVertical = crsScaleChilds
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 1
-                ClientHeight = 103
+                ClientHeight = 111
                 ClientWidth = 312
                 ItemIndex = 0
                 Items.Strings = (
@@ -1893,7 +1886,7 @@ object MainForm: TMainForm
               end
               object OutputSqlRecordsPerInsertSpinEdit: TSpinEdit
                 Left = 172
-                Height = 31
+                Height = 33
                 Top = 59
                 Width = 130
                 MaxValue = 10000
@@ -1916,7 +1909,7 @@ object MainForm: TMainForm
                 Left = 341
                 Height = 25
                 Top = 200
-                Width = 239
+                Width = 230
                 Caption = 'Use quotes only for alpha fields'
                 Checked = True
                 State = cbChecked
@@ -1926,9 +1919,9 @@ object MainForm: TMainForm
             object OutputNotImplementedPage: TPage
               object OutputNotImplementedLabel: TLabel
                 Left = 28
-                Height = 22
+                Height = 21
                 Top = 19
-                Width = 139
+                Width = 140
                 Caption = 'Not implemented yet'
                 ParentColor = False
               end
@@ -1936,25 +1929,25 @@ object MainForm: TMainForm
             object OutputMySQLPage: TPage
               object OutputSqlRecordsPerInsertLabel1: TLabel
                 Left = 12
-                Height = 22
+                Height = 21
                 Top = 200
-                Width = 122
+                Width = 118
                 Caption = 'Records per insert'
                 ParentColor = False
               end
               object Label1: TLabel
                 Left = 188
-                Height = 22
+                Height = 21
                 Top = 247
-                Width = 121
+                Width = 119
                 Caption = 'milliseconds every'
                 ParentColor = False
               end
               object Label2: TLabel
                 Left = 451
-                Height = 22
+                Height = 21
                 Top = 247
-                Width = 51
+                Width = 48
                 Caption = 'records'
                 ParentColor = False
               end
@@ -1973,7 +1966,7 @@ object MainForm: TMainForm
                 ChildSizing.ShrinkVertical = crsScaleChilds
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 1
-                ClientHeight = 96
+                ClientHeight = 104
                 ClientWidth = 276
                 ItemIndex = 0
                 Items.Strings = (
@@ -1985,7 +1978,7 @@ object MainForm: TMainForm
               end
               object OutputMySqlRecordsPerInsertSpinEdit: TSpinEdit
                 Left = 155
-                Height = 31
+                Height = 33
                 Top = 191
                 Width = 146
                 MaxValue = 10000
@@ -1995,7 +1988,7 @@ object MainForm: TMainForm
               end
               object MySQLHostEdit: TLabeledEdit
                 Left = 12
-                Height = 31
+                Height = 33
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = MySQLHostEdit
@@ -2003,8 +1996,8 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Side = asrBottom
                 EditLabel.AnchorSideBottom.Control = MySQLHostEdit
                 EditLabel.Left = 12
-                EditLabel.Height = 22
-                EditLabel.Top = 7
+                EditLabel.Height = 21
+                EditLabel.Top = 8
                 EditLabel.Width = 136
                 EditLabel.Caption = 'Host'
                 EditLabel.ParentColor = False
@@ -2012,7 +2005,7 @@ object MainForm: TMainForm
               end
               object MySQLUserEdit: TLabeledEdit
                 Left = 156
-                Height = 31
+                Height = 33
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = MySQLUserEdit
@@ -2020,8 +2013,8 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Side = asrBottom
                 EditLabel.AnchorSideBottom.Control = MySQLUserEdit
                 EditLabel.Left = 156
-                EditLabel.Height = 22
-                EditLabel.Top = 7
+                EditLabel.Height = 21
+                EditLabel.Top = 8
                 EditLabel.Width = 136
                 EditLabel.Caption = 'User'
                 EditLabel.ParentColor = False
@@ -2029,7 +2022,7 @@ object MainForm: TMainForm
               end
               object MySQLPasswordEdit: TLabeledEdit
                 Left = 300
-                Height = 31
+                Height = 33
                 Top = 32
                 Width = 136
                 EchoMode = emPassword
@@ -2038,8 +2031,8 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Side = asrBottom
                 EditLabel.AnchorSideBottom.Control = MySQLPasswordEdit
                 EditLabel.Left = 300
-                EditLabel.Height = 22
-                EditLabel.Top = 7
+                EditLabel.Height = 21
+                EditLabel.Top = 8
                 EditLabel.Width = 136
                 EditLabel.Caption = 'Password'
                 EditLabel.ParentColor = False
@@ -2048,7 +2041,7 @@ object MainForm: TMainForm
               end
               object MySQLDatabaseEdit: TLabeledEdit
                 Left = 444
-                Height = 31
+                Height = 33
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = MySQLDatabaseEdit
@@ -2056,8 +2049,8 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Side = asrBottom
                 EditLabel.AnchorSideBottom.Control = MySQLDatabaseEdit
                 EditLabel.Left = 444
-                EditLabel.Height = 22
-                EditLabel.Top = 7
+                EditLabel.Height = 21
+                EditLabel.Top = 8
                 EditLabel.Width = 136
                 EditLabel.Caption = 'Database'
                 EditLabel.ParentColor = False
@@ -2065,7 +2058,7 @@ object MainForm: TMainForm
               end
               object OutputMySQLTableEdit: TLabeledEdit
                 Left = 588
-                Height = 31
+                Height = 33
                 Top = 32
                 Width = 136
                 EditLabel.AnchorSideLeft.Control = OutputMySQLTableEdit
@@ -2073,8 +2066,8 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Side = asrBottom
                 EditLabel.AnchorSideBottom.Control = OutputMySQLTableEdit
                 EditLabel.Left = 588
-                EditLabel.Height = 22
-                EditLabel.Top = 7
+                EditLabel.Height = 21
+                EditLabel.Top = 8
                 EditLabel.Width = 136
                 EditLabel.Caption = 'Table'
                 EditLabel.ParentColor = False
@@ -2084,7 +2077,7 @@ object MainForm: TMainForm
                 Left = 300
                 Height = 25
                 Top = 104
-                Width = 243
+                Width = 240
                 Caption = 'Give up if an error is encountered'
                 TabOrder = 7
               end
@@ -2106,7 +2099,7 @@ object MainForm: TMainForm
                 Height = 25
                 Hint = 'Field names will be included in SQL statements'
                 Top = 136
-                Width = 217
+                Width = 212
                 Caption = 'Also write SQL to output file'
                 ParentShowHint = False
                 ShowHint = True
@@ -2118,11 +2111,12 @@ object MainForm: TMainForm
                 Top = 246
                 Width = 85
                 Caption = 'Sleep for'
+                ParentBidiMode = False
                 TabOrder = 10
               end
               object MySQLSleepMsSpinEdit: TSpinEdit
                 Left = 100
-                Height = 31
+                Height = 33
                 Top = 239
                 Width = 80
                 MaxValue = 10000
@@ -2132,7 +2126,7 @@ object MainForm: TMainForm
               end
               object MySQLSleepRecordsSpinEdit: TSpinEdit
                 Left = 331
-                Height = 31
+                Height = 33
                 Top = 239
                 Width = 112
                 MaxValue = 1000000
@@ -2144,7 +2138,7 @@ object MainForm: TMainForm
             object OutputFixedPage: TPage
               object OutputFixedQuoteCharEdit: TLabeledEdit
                 Left = 100
-                Height = 31
+                Height = 33
                 Hint = 'Each field will be enclosed in this'
                 Top = 59
                 Width = 72
@@ -2153,10 +2147,10 @@ object MainForm: TMainForm
                 EditLabel.AnchorSideRight.Control = OutputFixedQuoteCharEdit
                 EditLabel.AnchorSideBottom.Control = OutputFixedQuoteCharEdit
                 EditLabel.AnchorSideBottom.Side = asrBottom
-                EditLabel.Left = 37
-                EditLabel.Height = 22
-                EditLabel.Top = 63
-                EditLabel.Width = 43
+                EditLabel.Left = 39
+                EditLabel.Height = 21
+                EditLabel.Top = 65
+                EditLabel.Width = 41
                 EditLabel.Caption = 'Quote'
                 EditLabel.ParentColor = False
                 LabelPosition = lpLeft
@@ -2170,7 +2164,7 @@ object MainForm: TMainForm
                 Left = 181
                 Height = 25
                 Top = 65
-                Width = 158
+                Width = 155
                 Caption = 'Only for alpha fields'
                 Checked = True
                 State = cbChecked
@@ -2180,7 +2174,7 @@ object MainForm: TMainForm
                 Left = 17
                 Height = 25
                 Top = 104
-                Width = 331
+                Width = 326
                 Caption = 'Include field names as first row of fixed output'
                 TabOrder = 2
               end
@@ -2189,9 +2183,9 @@ object MainForm: TMainForm
         end
         object OutputNumSpinEdit: TSpinEdit
           Left = 454
-          Height = 31
+          Height = 33
           Top = 48
-          Width = 288
+          Width = 284
           Anchors = [akTop, akLeft, akRight]
           MaxValue = 1000000000
           MinValue = 2
@@ -2200,18 +2194,18 @@ object MainForm: TMainForm
         end
         object OutputFileNameEdit: TEdit
           Left = 14
-          Height = 31
+          Height = 33
           Top = 110
-          Width = 670
+          Width = 666
           Anchors = [akTop, akLeft, akRight]
           TabOrder = 3
           Text = '/tmp/datagen.txt'
         end
         object OutputFileChooseButton: TBitBtn
-          Left = 683
-          Height = 37
+          Left = 677
+          Height = 41
           Top = 107
-          Width = 37
+          Width = 39
           Anchors = [akTop, akRight]
           AutoSize = True
           Glyph.Data = {
@@ -2296,7 +2290,6 @@ object MainForm: TMainForm
             0000000000000000000000000000000000000000000000000000000000000000
             000000000000000000000000000000000000000000000000000000000000
           }
-          NumGlyphs = 0
           OnClick = OutputFileChooseButtonClick
           TabOrder = 4
         end
@@ -2304,14 +2297,14 @@ object MainForm: TMainForm
     end
     object MessagesTabSheet: TTabSheet
       Caption = 'Message Log'
-      ClientHeight = 467
-      ClientWidth = 786
+      ClientHeight = 476
+      ClientWidth = 782
       inline MessagesMemo: TSynMemo
         Cursor = crIBeam
         Left = 2
         Height = 472
         Top = 2
-        Width = 782
+        Width = 778
         Align = alClient
         BorderSpacing.Around = 2
         Font.Height = 10
@@ -2726,12 +2719,14 @@ object MainForm: TMainForm
         Options = [eoBracketHighlight, eoGroupUndo, eoShowSpecialChars, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces]
         ReadOnly = True
         RightEdge = 0
+        SelectedColor.FrameEdges = sfeAround
         SelectedColor.BackPriority = 50
         SelectedColor.ForePriority = 50
         SelectedColor.FramePriority = 50
         SelectedColor.BoldPriority = 50
         SelectedColor.ItalicPriority = 50
         SelectedColor.UnderlinePriority = 50
+        SelectedColor.StrikeOutPriority = 50
         inline TSynGutterPartList
           object TSynGutterMarks
             Width = 24
@@ -2742,6 +2737,7 @@ object MainForm: TMainForm
             MouseActions = <>
             MarkupInfo.Background = clBtnFace
             MarkupInfo.Foreground = clNone
+            MarkupInfo.FrameEdges = sfeAround
             DigitCount = 2
             ShowOnlyLineNumbersMultiplesOf = 1
             ZeroStart = False
@@ -2758,6 +2754,7 @@ object MainForm: TMainForm
             MouseActions = <>
             MarkupInfo.Background = clWhite
             MarkupInfo.Foreground = clGray
+            MarkupInfo.FrameEdges = sfeAround
           end
           object TSynGutterCodeFolding
             MouseActions = <            
@@ -2788,6 +2785,7 @@ object MainForm: TMainForm
               end>
             MarkupInfo.Background = clNone
             MarkupInfo.Foreground = clGray
+            MarkupInfo.FrameEdges = sfeAround
             MouseActionsExpanded = <            
               item
                 ClickCount = ccAny
@@ -2816,15 +2814,15 @@ object MainForm: TMainForm
   end
   object StatusBar: TStatusBar
     Left = 0
-    Height = 25
-    Top = 569
+    Height = 22
+    Top = 574
     Width = 792
     Panels = <>
   end
   object BottomPanel: TPanel
     Left = 0
     Height = 63
-    Top = 506
+    Top = 511
     Width = 792
     Align = alBottom
     BevelOuter = bvNone
@@ -2971,7 +2969,6 @@ object MainForm: TMainForm
         2CFF262626FF0000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      NumGlyphs = 0
       OnClick = GenerateButtonClick
       ParentShowHint = False
       ShowHint = True
@@ -3117,7 +3114,6 @@ object MainForm: TMainForm
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      NumGlyphs = 0
       OnClick = ExitButtonClick
       ParentShowHint = False
       ShowHint = True
@@ -3146,10 +3142,10 @@ object MainForm: TMainForm
       end
       object GenerationCancelButton: TBitBtn
         Left = 8
-        Height = 36
+        Height = 40
         Hint = 'Cancel current data generation process'
         Top = 16
-        Width = 36
+        Width = 38
         AutoSize = True
         Glyph.Data = {
           36090000424D3609000000000000360000002800000018000000180000000100
@@ -3227,7 +3223,6 @@ object MainForm: TMainForm
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000
         }
-        NumGlyphs = 0
         OnClick = GenerationCancelButtonClick
         ParentShowHint = False
         ShowHint = True

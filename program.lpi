@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
     <Version Value="9"/>
@@ -78,15 +78,10 @@
     </Parsing>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>
-      <Optimizations>
-        <OptimizationLevel Value="3"/>
-      </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
-        <UseLineInfoUnit Value="False"/>
-        <StripSymbols Value="True"/>
+        <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
       <LinkSmart Value="True"/>
     </Linking>
