@@ -338,10 +338,12 @@ type
   end;
   
   TGuidField = class(TField)
+  private
+    FDashes : boolean;
   public
     function GetField(const quoteChar : string = '') : string; override;
     function GetMaxWidth(const quoteChar : string = '') : integer; override;
-    constructor Create(const name : string; const theType : string; const theSubType : string);
+    constructor Create(const name : string; const theType : string; const theSubType : string; const dashes : boolean);
   end;
 
   TMaskField = class(TField)
@@ -430,6 +432,9 @@ const
 
   SUBTYPE_SET_FIXED = 'From Fixed List';
   SUBTYPE_SET_FILE = 'From File';
+
+  SUBTYPE_GUID_DASHES = 'With Dashes (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)';
+  SUBTYPE_GUID_NODASHES = 'No Dashes';
 
 implementation
 
@@ -1522,8 +1527,9 @@ begin
 end;
 
 // -GUID ------- ---------------------------------------------------------------
-constructor TGUIDField.Create(const name : string; const theType : string; const theSubType : string);
+constructor TGUIDField.Create(const name : string; const theType : string; const theSubType : string; const dashes : boolean);
 begin
+  FDashes := dashes;
   Inherited Create(name, theType, theSubType);
 end;
 
@@ -1534,11 +1540,21 @@ var
 begin
   CreateGuid(uid);
   tmp := GuidToString(uid);
-  result := Copy(tmp, 2, 8) +
-            Copy(tmp, 11, 4) +
-            Copy(tmp, 16, 4) +
-            Copy(tmp, 21, 4) +
-            Copy(tmp, 26, 12);
+
+  if(FDashes) then begin
+    result := Copy(tmp, 2, 8) + '-' +
+              Copy(tmp, 11, 4) + '-' +
+              Copy(tmp, 16, 4) + '-' +
+              Copy(tmp, 21, 4) + '-' +
+              Copy(tmp, 26, 12);
+  end else begin
+    result := Copy(tmp, 2, 8) +
+              Copy(tmp, 11, 4) +
+              Copy(tmp, 16, 4) +
+              Copy(tmp, 21, 4) +
+              Copy(tmp, 26, 12);
+  end;
+
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
