@@ -616,7 +616,11 @@ begin
         theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, true, FieldOptionsSetFileEdit.FileName);
       end;
     end else if (FieldTypeComboBox.Text = TYPE_GUID_NAME) then begin
-      theNewField := TGuidField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text);
+      if(FieldSubTypeComboBox.Text = SUBTYPE_GUID_DASHES) then begin
+        theNewField := TGuidField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, true);
+      end else if(FieldSubTypeComboBox.Text = SUBTYPE_GUID_NODASHES) then begin
+        theNewField := TGuidField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, false);
+      end;
     end else if (FieldSubTypeComboBox.Text = SUBTYPE_INTEGERRANGE_NAME) then begin
       theNewField := TIntegerRangeField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
                                                FieldOptionIntegerRangeLowSpinEdit.Value,
@@ -928,6 +932,9 @@ begin
     FieldSubTypeComboBox.AddItem(SUBTYPE_IP_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_IPV6_NAME, nil);
     FieldSubTypeComboBox.AddItem(SUBTYPE_MAC_NAME, nil);
+  end else if (FieldTypeComboBox.Text = TYPE_GUID_NAME) then begin
+    FieldSubTypeComboBox.AddItem(SUBTYPE_GUID_DASHES, nil);
+    FieldSubTypeComboBox.AddItem(SUBTYPE_GUID_NODASHES, nil);
   end;
   if (FieldSubTypeComboBox.Items.Count > 0) then FieldSubTypeComboBox.ItemIndex := 0;
   FieldSubTypeComboBoxSelect(FieldSubTypeComboBox);
