@@ -94,6 +94,7 @@ type
     OutputFixedPage : TPage;
     OutputFixedQuoteAlphaOnlyCheckBox : TCheckBox;
     OutputFixedQuoteCharEdit : TLabeledEdit;
+    FieldNameDelimiterRadioGroup: TRadioGroup;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -247,6 +248,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure GlobalExceptionHandler(Sender:TObject; E:Exception);
     procedure OutputFileChooseButtonClick(Sender: TObject);
+    procedure OutputSqlFieldNamesCheckboxChange(Sender: TObject);
     procedure OutputTypeRadioGroupClick(Sender: TObject);
     procedure FieldOptionRealRangeDecimalSpinEditChange(Sender: TObject);
     procedure FileMenuItemClick(Sender: TObject);
@@ -293,6 +295,9 @@ const
   OUTPUT_OPTIONS_PAGE_IDX_NOT_IMPLEMENTED = 2;
   OUTPUT_OPTIONS_PAGE_IDX_MYSQL = 3;
   OUTPUT_OPTIONS_PAGE_IDX_FIXED = 4;
+
+  OUTPUT_SQL_FIELD_DELIMITER_IDX_ACCENT = 0;
+  OUTPUT_SQL_FIELD_DELIMITER_IDX_SQUARE_BRACKETS = 1;
 
 { TMainForm }
 
@@ -1042,7 +1047,15 @@ begin
       sqlBeginLine := sqlBeginLine + ' (';
       for j := 0 to FieldListBox.Items.Count-1 do begin
         theField := TField(FieldListBox.Items.Objects[j]);
-        sqlBeginLine := sqlBeginLine + '`' + theField.Name + '`';
+
+        if(FieldNameDelimiterRadioGroup.ItemIndex = OUTPUT_SQL_FIELD_DELIMITER_IDX_ACCENT) then begin
+           sqlBeginLine := sqlBeginLine + '`' + theField.Name + '`';
+        end else if(FieldNameDelimiterRadioGroup.ItemIndex = OUTPUT_SQL_FIELD_DELIMITER_IDX_SQUARE_BRACKETS) then begin
+           sqlBeginLine := sqlBeginLine + '[' + theField.Name + ']';
+        end else begin
+           sqlBeginLine := sqlBeginLine + theField.Name;
+        end;
+
         if (j < FieldListBox.Items.Count-1) then sqlBeginLine := sqlBeginLine + ',';
       end;
       sqlBeginLine := sqlBeginLine + ')';
@@ -1479,6 +1492,11 @@ begin
   if OutputSaveDialog.Execute then begin
     OutputFileNameEdit.Text := OutputSaveDialog.FileName;
   end;
+end;
+
+procedure TMainForm.OutputSqlFieldNamesCheckboxChange(Sender: TObject);
+begin
+  FieldNameDelimiterRadioGroup.Enabled := OutputSqlFieldNamesCheckbox.Checked;
 end;
 
 procedure TMainForm.OutputTypeRadioGroupClick(Sender: TObject);
