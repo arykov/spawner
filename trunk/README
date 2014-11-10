@@ -1,6 +1,6 @@
-Spawner v0.2.1
-Seth Grover
-2013-07-09
+Spawner v0.2.2
+Seth Grover and Ryan Zuwala
+2014-11-10
 
 Description
 ------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ It can currently generate the following types of data:
      * decrementing within a specified range
      * current time
      * format configurable, see http://www.freepascal.org/docs-html/rtl/sysutils/formatchars.html
-   - GUID
+   - GUID (with or without dashes)
 
 Spawner will currently generate data in the following formats:
    - delimited text

@@ -1,5 +1,13 @@
 Changelog
 
+0.2.2
+--------------------------------------------------------------------------------
+- welcome and thanks to Ryan Zuwala as a developer on the project
+- add ability for use to choose a delimiter for column names if they opt to
+  include the column list in INSERT statements
+- add the ability to choose beween dash-delimited or non-dashed GUIDs, since
+  some DBMSs require dashes
+
 0.2.1
 --------------------------------------------------------------------------------
 - bug fix release
