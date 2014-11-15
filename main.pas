@@ -37,6 +37,14 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    FieldOptionSetNumericalCheckBox: TCheckBox;
+    FieldOptionSetElementDownButton: TBitBtn;
+    FieldOptionSetCorrelateCheckBox: TCheckBox;
+    FieldOptionSetFileCorrelateCheckBox: TCheckBox;
+    FieldOptionSetCorrelateLabel: TLabel;
+    FieldOptionSetCorrelateLabel1: TLabel;
+    FieldOptionSetElementUpButton: TBitBtn;
+    FieldOptionSetFileNumericalCheckBox: TCheckBox;
     OutputIncludeFieldNamesCheckBox : TCheckBox;
     FieldOptionDateFormatEdit : TEdit;
     FieldOptionTimeFormatEdit : TEdit;
@@ -234,13 +242,14 @@ type
     procedure FieldListBoxClick(Sender: TObject);
     procedure FieldListBoxDblClick(Sender: TObject);
     procedure FieldOptionSetAddItemButtonClick(Sender: TObject);
+    procedure FieldOptionSetElementDownButtonClick(Sender: TObject);
     procedure FieldOptionSetRemoveItemButtonClick(Sender: TObject);
     procedure FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
     procedure FieldRemoveButtonClick(Sender: TObject);
     procedure FieldSaveButtonClick(Sender: TObject);
     procedure FieldSubTypeComboBoxSelect(Sender: TObject);
     procedure FieldTypeComboBoxSelect(Sender: TObject);
-    procedure FieldUpButtonClick(Sender: TObject);
+    procedure FieldOptionSetElementUpButtonClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure GenerateButtonClick(Sender: TObject);
     procedure GenerationCancelButtonClick(Sender: TObject);
@@ -423,6 +432,10 @@ begin
       end else begin
         FieldOptionsSetFileEdit.FileName := (theField as TSetField).FileName;
       end;
+      FieldOptionSetCorrelateCheckbox.Checked := (theField as TSetField).GetCorrelationOption;
+      FieldOptionSetNumericalCheckbox.Checked := (theField as TSetField).GetNumericalOption;
+      FieldOptionSetFileCorrelateCheckbox.Checked := (theField as TSetField).GetCorrelationOption;
+      FieldOptionSetFileNumericalCheckbox.Checked := (theField as TSetField).GetNumericalOption;
     end else if (theField is TIntegerRangeField) then begin
       FieldOptionIntegerRangeLowSpinEdit.Value := (theField as TIntegerRangeField).LowVal;
       FieldOptionIntegerRangeHighSpinEdit.Value := (theField as TIntegerRangeField).HighVal;
@@ -527,6 +540,24 @@ begin
   if (trim(newString) <> '') then  FieldOptionSetListBox.Items.Add(newString);
 end;
 
+procedure TMainForm.FieldOptionSetElementDownButtonClick(Sender: TObject);
+var
+  tmpString : string;
+  tmpObject : TObject;
+begin
+  { move the selected element down in order in the list }
+  if (FieldOptionSetListBox.ItemIndex > -1) and
+     (FieldOptionSetListBox.ItemIndex < FieldOptionSetListBox.Items.Count-1) then begin
+    tmpString := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex];
+    tmpObject := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex];
+    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex+1];
+    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex+1];
+    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex+1] := tmpString;
+    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex+1] := tmpObject;
+    FieldOptionSetListBox.ItemIndex := FieldOptionSetListBox.ItemIndex+1;
+  end;
+end;
+
 procedure TMainForm.FieldOptionSetRemoveItemButtonClick(Sender: TObject);
 begin
   { remove an item from the set list }
@@ -612,13 +643,13 @@ begin
       if (FieldOptionSetListBox.Items.Count <= 0) then begin
         errMsg := 'A set must contain at least one item';
       end else begin
-        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, false, FieldOptionSetListBox.Items.Text);
+        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, false, FieldOptionSetListBox.Items.Text, FieldOptionSetCorrelateCheckbox.Checked, FieldOptionSetNumericalCheckbox.Checked);
       end;
     end else if (FieldSubTypeComboBox.Text = SUBTYPE_SET_FILE) then begin
       if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
         errMsg := 'Could not create set: file does not exist';
       end else begin
-        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, true, FieldOptionsSetFileEdit.FileName);
+        theNewField := TSetField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text, true, FieldOptionsSetFileEdit.FileName, FieldOptionSetFileCorrelateCheckbox.Checked, FieldOptionSetFileNumericalCheckbox.Checked);
       end;
     end else if (FieldTypeComboBox.Text = TYPE_GUID_NAME) then begin
       if(FieldSubTypeComboBox.Text = SUBTYPE_GUID_DASHES) then begin
@@ -945,20 +976,20 @@ begin
   FieldSubTypeComboBoxSelect(FieldSubTypeComboBox);
 end;
 
-procedure TMainForm.FieldUpButtonClick(Sender: TObject);
+procedure TMainForm.FieldOptionSetElementUpButtonClick(Sender: TObject);
 var
   tmpString : string;
   tmpObject : TObject;
 begin
-  { move the selected field up in order in the list }
-  if (FieldListBox.ItemIndex > 0) then begin
-    tmpString := FieldListBox.Items.Strings[FieldListBox.ItemIndex];
-    tmpObject := FieldListBox.Items.Objects[FieldListBox.ItemIndex];
-    FieldListBox.Items.Strings[FieldListBox.ItemIndex] := FieldListBox.Items.Strings[FieldListBox.ItemIndex-1];
-    FieldListBox.Items.Objects[FieldListBox.ItemIndex] := FieldListBox.Items.Objects[FieldListBox.ItemIndex-1];
-    FieldListBox.Items.Strings[FieldListBox.ItemIndex-1] := tmpString;
-    FieldListBox.Items.Objects[FieldListBox.ItemIndex-1] := tmpObject;
-    FieldListBox.ItemIndex := FieldListBox.ItemIndex-1;
+  { move the selected element up in order in the list }
+  if (FieldOptionSetListBox.ItemIndex > 0) then begin
+    tmpString := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex];
+    tmpObject := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex];
+    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex-1];
+    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex-1];
+    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex-1] := tmpString;
+    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex-1] := tmpObject;
+    FieldOptionSetListBox.ItemIndex := FieldOptionSetListBox.ItemIndex-1;
   end;
 end;
 
@@ -978,6 +1009,8 @@ procedure TMainForm.GenerateButtonClick(Sender: TObject);
 var
   i : longint;
   j : longint;
+  setFieldCorrelationIndex : int64;
+  smallestSetSize : int64;
   modvalue : longint;
   currentLine : string;
   currentVal : string;
@@ -1175,10 +1208,35 @@ begin
             Application.ProcessMessages;
         end;
 
+        // generate random correlation index from the smallest set field
+        smallestSetSize := 0;
+        for j := 0 to FieldListBox.Items.Count-1 do begin
+            theField := TField(FieldListBox.Items.Objects[j]);
+            if(theField is TSetField) then begin
+              if((theField as TSetField).GetCorrelationOption) then begin
+                if(smallestSetSize = 0) then begin
+                  smallestSetSize := (theField as TSetField).GetElementCount;
+                end else begin
+                  if((theField as TSetField).GetElementCount < smallestSetSize) then begin
+                    smallestSetSize := (theField as TSetField).GetElementCount;
+                  end;
+                end;
+              end;
+            end;
+        end;
+
+        if(smallestSetSize > 0) then begin
+          setFieldCorrelationIndex := RandomRange(0, smallestSetSize-1);
+        end;
+
         // loop through each field in the field list
         for j := 0 to FieldListBox.Items.Count-1 do begin
 
           theField := TField(FieldListBox.Items.Objects[j]);
+
+          if(theField is TSetField) then begin
+            (theField as TSetField).SetCorrelationIndex(setFieldCorrelationIndex);
+          end;
 
           if (outputType = OUTPUT_TYPE_DELIMITED) then begin
             // regular character-delimited output
@@ -1583,6 +1641,7 @@ var
   fieldType : string;
   fieldSubType : string;
   itemsStringList : TStringList;
+  itemsStringListStartIndex : integer;
   otherStringList : TStringList;
   fileSpecToUse : string;
   tmpStr : string;
@@ -1638,8 +1697,15 @@ begin
               otherStringList.StrictDelimiter := true;
               otherStringList.Delimiter := '|';
               tmpStr := '';
-              for j := 3 to itemsStringList.Count-1 do begin
-                if (j > 3) then tmpStr := tmpStr + ',';
+
+              if(fieldType = TYPE_SET_NAME) then begin
+                itemsStringListStartIndex := 5;
+              end else begin
+                itemsStringListStartIndex := 3;
+              end;
+
+              for j := itemsStringListStartIndex to itemsStringList.Count-1 do begin
+                if (j > itemsStringListStartIndex) then tmpStr := tmpStr + ',';
                 tmpStr := tmpStr + itemsStringList.Strings[j];
               end;
               otherStringList.DelimitedText := tmpStr;
@@ -1650,14 +1716,20 @@ begin
             fieldNameEdit.Text := name;
 
             (* populate the gui from the current line *)
-            if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FIXED) then begin
-              FieldOptionSetListBox.Items.Text := otherStringList.Text;
-            end else if (fieldType = TYPE_SET_NAME) and (fieldSubType = SUBTYPE_SET_FILE) then begin
-              if (otherStringList.Count >= 1) then begin
-                FieldOptionsSetFileEdit.FileName := otherStringList.Strings[0];
-                if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
-                  ShowString(FieldOptionsSetFileEdit.FileName + ' does not exist, skipping field ' + name);
-                  continue;
+            if(fieldType = TYPE_SET_NAME) then begin
+              if(fieldSubType = SUBTYPE_SET_FIXED) then begin
+                FieldOptionSetListBox.Items.Text := otherStringList.Text;
+                FieldOptionSetCorrelateCheckBox.Checked := StrToBool(itemsStringList.Strings[3]);
+                FieldOptionSetNumericalCheckBox.Checked := StrToBool(itemsStringList.Strings[4]);
+              end else if (fieldSubType = SUBTYPE_SET_FILE) then begin
+                if (otherStringList.Count >= 1) then begin
+                  FieldOptionsSetFileEdit.FileName := otherStringList.Strings[0];
+                  if not FileExists(FieldOptionsSetFileEdit.FileName) then begin
+                    ShowString(FieldOptionsSetFileEdit.FileName + ' does not exist, skipping field ' + name);
+                    continue;
+                  end;
+                  FieldOptionSetFileCorrelateCheckBox.Checked := StrToBool(itemsStringList.Strings[3]);
+                  FieldOptionSetFileNumericalCheckBox.Checked := StrToBool(itemsStringList.Strings[4]);
                 end;
               end;
             end else if (fieldSubType = SUBTYPE_INTEGERRANGE_NAME) then begin
