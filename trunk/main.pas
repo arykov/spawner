@@ -1064,7 +1064,8 @@ begin
   
   outputType := OutputTypeRadioGroup.ItemIndex;
   delimiter := OutputDelimiterEdit.Text;
-  
+
+  FCancelled := false;
   sleepEnabled := false;
   sleepMSecs := 0;
   sleepRecs := 0;
