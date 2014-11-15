@@ -37,7 +37,6 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
-    BitBtn1: TBitBtn;
     FieldOptionSetNumericalCheckBox: TCheckBox;
     FieldOptionSetElementDownButton: TBitBtn;
     FieldOptionSetCorrelateCheckBox: TCheckBox;
@@ -236,7 +235,6 @@ type
     FieldsTabSheet: TTabSheet;
     MessagesTabSheet: TTabSheet;
     OutputTabSheet: TTabSheet;
-    procedure Button1Click(Sender: TObject);
     procedure ExitButtonClick(Sender: TObject);
     procedure FieldAddButtonClick(Sender: TObject);
     procedure FieldDownButtonClick(Sender: TObject);
@@ -346,11 +344,6 @@ begin
     end;
   except
   end;
-end;
-
-procedure TMainForm.Button1Click(Sender: TObject);
-begin
-
 end;
 
 procedure TMainForm.ExitButtonClick(Sender: TObject);
