@@ -1241,6 +1241,7 @@ object MainForm: TMainForm
                   object FieldOptionSetRemoveItemButton: TBitBtn
                     Left = 81
                     Height = 34
+                    Hint = 'Remove the selected element'
                     Top = 248
                     Width = 54
                     AutoSize = True
@@ -1321,11 +1322,14 @@ object MainForm: TMainForm
                       0000000000000000000000000000000000000000000000000000
                     }
                     OnClick = FieldOptionSetRemoveItemButtonClick
+                    ParentShowHint = False
+                    ShowHint = True
                     TabOrder = 1
                   end
                   object FieldOptionSetAddItemButton: TBitBtn
                     Left = 29
                     Height = 34
+                    Hint = 'Create a new element'
                     Top = 248
                     Width = 54
                     AutoSize = True
@@ -1406,6 +1410,8 @@ object MainForm: TMainForm
                       0000000000000000000000000000000000000000000000000000
                     }
                     OnClick = FieldOptionSetAddItemButtonClick
+                    ParentShowHint = False
+                    ShowHint = True
                     TabOrder = 2
                   end
                   object FieldOptionSetCorrelateCheckBox: TCheckBox
@@ -1524,6 +1530,7 @@ object MainForm: TMainForm
                   object FieldOptionSetElementUpButton: TBitBtn
                     Left = 133
                     Height = 34
+                    Hint = 'Move the selected element up'
                     Top = 248
                     Width = 54
                     Glyph.Data = {
@@ -1603,6 +1610,8 @@ object MainForm: TMainForm
                       0000000000000000000000000000000000000000000000000000
                     }
                     OnClick = FieldOptionSetElementUpButtonClick
+                    ParentShowHint = False
+                    ShowHint = True
                     TabOrder = 6
                   end
                 end
