@@ -125,15 +125,24 @@ type
   private
     FSet : TStringList;
     FFileName : string;
+    FCorrelate : boolean;
+    FNumerical : boolean;
+    FCorrelationIndex : int64;
   public
     property FileName : string read FFileName;
     function GetSetString : string;
+    function GetElementCount : int64;
+    function GetCorrelationOption : boolean;
+    function GetNumericalOption : boolean;
+    procedure SetCorrelationIndex(const correlationIndex : int64);
     function GetField(const quoteChar : string = '') : string; override;
     function GetMaxWidth(const quoteChar : string = '') : integer; override;
     function GetAsString : string; override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const fromFile : boolean;
-                       const textOrFileName : string);
+                       const textOrFileName : string;
+                       const correlate : boolean;
+                       const numericalData : boolean);
     destructor Destroy; override;
   end;
   
@@ -708,7 +717,9 @@ end;
 // -Set ------------------------------------------------------------------------
 constructor TSetField.Create(const name : string; const theType : string; const theSubType : string;
                              const fromFile : boolean;
-                             const textOrFileName : string);
+                             const textOrFileName : string;
+                             const correlate : boolean;
+                             const numericalData : boolean);
 begin
   Inherited Create(name, theType, theSubType);
   FSet := TStringList.Create;
@@ -719,6 +730,8 @@ begin
     FSet.Text := textOrFileName;
     FFileName := '';
   end;
+  FCorrelate := correlate;
+  FNumerical := numericalData;
 end;
 
 destructor TSetField.Destroy;
@@ -733,13 +746,38 @@ begin
   if Assigned(FSet) then result := FSet.Text;
 end;
 
+function TSetField.GetCorrelationOption : boolean;
+begin
+  result := FCorrelate;
+end;
+
+function TSetField.GetNumericalOption : boolean;
+begin
+  result := FNumerical;
+end;
+
+procedure TSetField.SetCorrelationIndex(const correlationIndex : int64);
+begin
+  FCorrelationIndex := correlationIndex;
+end;
+
+function TSetField.GetElementCount : int64;
+begin
+  result := int64(FSet.Count);
+end;
+
 function TSetField.GetField(const quoteChar : string = '') : string;
 var
   index : longint;
 begin
-  index := RandomRange(0, int64(FSet.Count)-1);
+  if (FCorrelate) then begin
+    index := FCorrelationIndex;
+  end else begin
+    index := RandomRange(0, int64(FSet.Count)-1);
+  end;
+
   result := FSet.Strings[index];
-  if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
+  if (not FNumerical) and (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
 function TSetField.GetMaxWidth(const quoteChar : string = '') : integer;
@@ -747,12 +785,17 @@ var
   index : integer;
   tmpLen : integer;
 begin
-  result := 2;
+  if(FNumerical) then result := 0 else result := 2;
   for index := 0 to FSet.Count-1 do begin
     tmpLen := Length(FSet.Strings[index]);
     if (tmpLen > result) then result := tmpLen;
   end;
-  result := result + (Length(quoteChar)*2) + 1;
+
+  if(FNumerical) then begin
+    result := result + (Length(quoteChar)*2) + 1;
+  end else begin
+    result := result + 1;
+  end;
 end;
 
 function TSetField.GetAsString : string;
@@ -760,7 +803,7 @@ var
   i : integer;
   otherPart : string;
 begin
-  result := Inherited GetAsString + ',';
+  result := Inherited GetAsString + ',' + BoolToStr(FCorrelate) + ',' + BoolToStr(FNumerical) + ',';
   if (FFileName = '') then begin
     otherPart := '';
     for i := 0 to FSet.Count-1 do begin

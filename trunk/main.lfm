@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 511
+  Left = 369
   Height = 623
-  Top = 261
+  Top = 118
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
@@ -14,44 +14,44 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.2.4.0'
+  LCLVersion = '1.2.6.0'
   object MainPageControl: TPageControl
     Left = 0
     Height = 517
     Top = 0
     Width = 792
-    ActivePage = OutputTabSheet
+    ActivePage = FieldsTabSheet
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object FieldsTabSheet: TTabSheet
       Caption = 'Fields'
-      ClientHeight = 476
-      ClientWidth = 782
+      ClientHeight = 489
+      ClientWidth = 784
       object SpacerPanel2: TPanel
         Left = 0
-        Height = 476
+        Height = 489
         Top = 0
-        Width = 782
+        Width = 784
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 476
-        ClientWidth = 782
+        ClientHeight = 489
+        ClientWidth = 784
         TabOrder = 0
         object FieldsLabel: TLabel
           Left = 14
-          Height = 21
+          Height = 15
           Top = 16
-          Width = 38
+          Width = 30
           Caption = 'Fields'
           ParentColor = False
         end
         object FieldAddButton: TBitBtn
           Left = 14
-          Height = 40
+          Height = 34
           Hint = 'Create a new field'
-          Top = 422
-          Width = 38
+          Top = 441
+          Width = 54
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -137,10 +137,10 @@ object MainForm: TMainForm
         end
         object FieldRemoveButton: TBitBtn
           Left = 65
-          Height = 40
+          Height = 34
           Hint = 'Remove the selected field'
-          Top = 422
-          Width = 38
+          Top = 441
+          Width = 54
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -226,10 +226,10 @@ object MainForm: TMainForm
         end
         object FieldUpButton: TBitBtn
           Left = 116
-          Height = 40
+          Height = 34
           Hint = 'Move the selected field up'
-          Top = 422
-          Width = 38
+          Top = 441
+          Width = 54
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -308,17 +308,17 @@ object MainForm: TMainForm
             0000000000000000000000000000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000
           }
-          OnClick = FieldUpButtonClick
+          OnClick = FieldOptionSetElementUpButtonClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
         end
         object FieldDownButton: TBitBtn
           Left = 167
-          Height = 40
+          Height = 34
           Hint = 'Move the selected hint down'
-          Top = 422
-          Width = 38
+          Top = 441
+          Width = 54
           Anchors = [akLeft, akBottom]
           AutoSize = True
           Glyph.Data = {
@@ -404,7 +404,7 @@ object MainForm: TMainForm
         end
         object FieldListBox: TListBox
           Left = 14
-          Height = 390
+          Height = 403
           Hint = 'Select to view or edit options, double click to generate example data'
           Top = 32
           Width = 196
@@ -419,24 +419,24 @@ object MainForm: TMainForm
         end
         object FieldsDetailsGroupBox: TGroupBox
           Left = 222
-          Height = 446
+          Height = 459
           Top = 16
-          Width = 547
+          Width = 549
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Details'
-          ClientHeight = 428
-          ClientWidth = 543
+          ClientHeight = 441
+          ClientWidth = 545
           TabOrder = 5
           object FieldNameLabel: TLabel
             Left = 12
-            Height = 21
+            Height = 15
             Top = 18
-            Width = 73
+            Width = 60
             Caption = 'Field Name'
             ParentColor = False
           end
           object FieldSaveButton: TBitBtn
-            Left = 377
+            Left = 379
             Height = 30
             Top = 7
             Width = 140
@@ -523,38 +523,38 @@ object MainForm: TMainForm
           end
           object SpacerPanel3: TPanel
             Left = 0
-            Height = 386
+            Height = 396
             Top = 45
-            Width = 543
+            Width = 545
             Align = alBottom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BevelOuter = bvNone
-            ClientHeight = 386
-            ClientWidth = 543
+            ClientHeight = 396
+            ClientWidth = 545
             TabOrder = 1
             object FieldTypeGroupBox: TGroupBox
               Left = 0
               Height = 88
               Top = 0
-              Width = 543
+              Width = 545
               Align = alTop
               Caption = 'Field Type'
               ClientHeight = 70
-              ClientWidth = 539
+              ClientWidth = 541
               TabOrder = 0
               object FieldTypeLabel: TLabel
                 Left = 13
-                Height = 21
+                Height = 15
                 Top = 10
-                Width = 32
+                Width = 26
                 Caption = 'Type'
                 ParentColor = False
               end
               object FieldSubtypeLabel: TLabel
                 Left = 222
-                Height = 21
+                Height = 15
                 Top = 10
-                Width = 55
+                Width = 43
                 Caption = 'Subtype'
                 ParentColor = False
               end
@@ -583,30 +583,30 @@ object MainForm: TMainForm
             end
             object FieldOptionsGroupBox: TGroupBox
               Left = 0
-              Height = 290
+              Height = 300
               Top = 96
-              Width = 543
+              Width = 545
               Align = alBottom
               Anchors = [akTop, akLeft, akRight, akBottom]
               Caption = 'Field Options'
-              ClientHeight = 272
-              ClientWidth = 539
+              ClientHeight = 282
+              ClientWidth = 541
               TabOrder = 1
               object FieldOptionsNotebook: TNotebook
                 Left = 0
-                Height = 275
+                Height = 282
                 Top = 0
-                Width = 539
-                PageIndex = 0
+                Width = 541
+                PageIndex = 13
                 Align = alClient
                 TabOrder = 0
                 TabStop = True
                 object FieldOptionsNonePage: TPage
                   object FieldOptionsNoneLabel: TLabel
                     Left = 20
-                    Height = 21
+                    Height = 15
                     Top = 21
-                    Width = 279
+                    Width = 225
                     Caption = 'There are no options for this type/subtype.'
                     ParentColor = False
                   end
@@ -1222,29 +1222,27 @@ object MainForm: TMainForm
                 object FieldOptionsSetFixedPage: TPage
                   object FieldOptionSetLabel: TLabel
                     Left = 18
-                    Height = 22
-                    Top = 11
-                    Width = 80
+                    Height = 15
+                    Top = 8
+                    Width = 61
                     Caption = 'Items in Set'
                     ParentColor = False
                   end
                   object FieldOptionSetListBox: TListBox
                     Left = 18
-                    Height = 216
-                    Top = 27
+                    Height = 223
+                    Top = 24
                     Width = 232
                     Anchors = [akTop, akLeft, akBottom]
                     ItemHeight = 0
                     ScrollWidth = 230
-                    Sorted = True
                     TabOrder = 0
-                    TopIndex = -1
                   end
                   object FieldOptionSetRemoveItemButton: TBitBtn
-                    Left = 259
-                    Height = 36
-                    Top = 61
-                    Width = 36
+                    Left = 81
+                    Height = 34
+                    Top = 248
+                    Width = 54
                     AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
@@ -1326,10 +1324,10 @@ object MainForm: TMainForm
                     TabOrder = 1
                   end
                   object FieldOptionSetAddItemButton: TBitBtn
-                    Left = 259
-                    Height = 36
-                    Top = 27
-                    Width = 36
+                    Left = 29
+                    Height = 34
+                    Top = 248
+                    Width = 54
                     AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
@@ -1410,6 +1408,208 @@ object MainForm: TMainForm
                     OnClick = FieldOptionSetAddItemButtonClick
                     TabOrder = 2
                   end
+                  object FieldOptionSetCorrelateCheckBox: TCheckBox
+                    Left = 259
+                    Height = 19
+                    Top = 44
+                    Width = 174
+                    Caption = 'Correlate with other set fields'
+                    TabOrder = 3
+                  end
+                  object FieldOptionSetCorrelateLabel: TLabel
+                    Left = 259
+                    Height = 120
+                    Top = 67
+                    Width = 256
+                    Caption = 'NOTE: For correlation to work, correlated items '#13#10'need to be placed in the same position in each'#13#10'set. You should ensure that all correlated sets'#13#10'have the same number of elements. '#13#10'Correlation randomly chooses an index from the'#13#10'smallest set, so elements at the end of larger sets'#13#10'would not ever be selected.'#13#10' '
+                    ParentColor = False
+                  end
+                  object FieldOptionSetElementUpButton: TBitBtn
+                    Left = 133
+                    Height = 34
+                    Hint = 'Move the selected element up'
+                    Top = 248
+                    Width = 54
+                    Anchors = [akLeft, akBottom]
+                    AutoSize = True
+                    Glyph.Data = {
+                      36090000424D3609000000000000360000002800000018000000180000000100
+                      2000000000000009000064000000640000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      000000000000000000000000000000000000257A25FF4F934FFF4F914FFF4F91
+                      4FFF4F924FFF4F924FFF4F924FFF4F924FFF4F914FFF4F914FFF4C924CFF1A69
+                      19FF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000052A553FFB4DDB5FFB4DCB4FFB3DB
+                      B4FFB3DCB4FFB3DCB4FFB3DCB4FFB3DCB4FFB3DCB4FFB4DCB5FFAFDBAFFF378A
+                      36FF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000051A755FFB1DCB4FFB0DBB3FFB0DB
+                      B3FFB0DBB3FFB0DCB3FFB0DCB3FFB0DBB3FFB0DBB3FFB0DBB4FFACDBAFFF368C
+                      3AFF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000004CA953FFA6D8AAFFA5D8AAFFA4D9
+                      AAFFA4D9AAFFA4D9AAFFA4D9AAFFA4D9AAFFA4D9AAFFA5D8ABFFA1D8A6FF338F
+                      39FF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000046AB52FF9AD7A2FF99D6A2FF98D6
+                      A3FF98D7A3FF98D7A3FF98D7A3FF98D7A3FF98D7A3FF99D6A2FF95D69EFF2F92
+                      3AFF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000040AE51FF8CD598FF8BD599FF8AD5
+                      99FF8AD69AFF8AD69AFF8AD69AFF8AD69AFF8AD599FF8BD599FF87D596FF2A95
+                      3AFF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000003AB150FF7FD490FF7ED491FF7ED5
+                      92FF7ED593FF7ED693FF7ED693FF7ED693FF7ED592FF7ED492FF7CD58EFF2798
+                      3BFF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000034B34FFF74D48AFF73D48AFF73D5
+                      8CFF73D68CFF73D68CFF73D68CFF73D68CFF73D58CFF73D48BFF70D589FF2299
+                      3AFF000000000000000000000000000000000000000000000000000000000E76
+                      1BFF178026FF168328FF16852BFF15892AFF38BF59FF67D483FF67D584FF67D6
+                      86FF67D786FF67D887FF67D887FF67D786FF67D686FF67D585FF65D382FF29B4
+                      4BFF16872CFF16862BFF168328FF168025FF0B7017FF00000000000000001AA8
+                      35FF41BF59FF50C86AFF4FCC6DFF4ECF6FFF54D075FF5AD47CFF5AD67EFF5AD8
+                      80FF5AD981FF5AD982FF5AD982FF5AD981FF5AD880FF5AD67EFF5AD47CFF52D0
+                      75FF4ECF6FFF4ECC6CFF50C86AFF40C059FF149D2DFF00000000000000000392
+                      25FF10B037FF34BF54FF4CCB6BFF52D074FF4FD376FF4ED677FF4ED979FF4EDA
+                      7BFF4EDC7CFF4EDC7DFF4EDC7DFF4EDC7CFF4EDB7BFF4ED879FF4ED677FF4FD4
+                      76FF4FD073FF51CD70FF47C664FF14B13DFF038720FF0000000000000000006D
+                      14FF00992FFF00B738FF09BE3BFF1EC84FFF33D265FF3AD86DFF3EDB72FF41DE
+                      76FF44DF7AFF46E07BFF46E07BFF44E07AFF42DE77FF40DC74FF3FD971FF3FD5
+                      6EFF3FD169FF2FC95BFF0BBA44FF00912AFF006411FF00000000000000000000
+                      0000006E19FF00A93CFF02C245FF01C73EFF06CE47FF10D451FF1FD95FFF33DD
+                      6EFF3FDF77FF47E07CFF49E17EFF46E07CFF40DF77FF35DD6FFF2DDA68FF29D6
+                      61FF20D05AFF0BC24EFF00A238FF006415FF0000000000000000000000000000
+                      000000000000007722FF06B047FF0DCE57FF01D347FF0DD752FF1DDA5EFF2EDC
+                      6CFF39DE74FF40DF78FF42DF7AFF3EDF77FF35DE70FF25DB65FF13D857FF08D6
+                      4FFF11CB5BFF04A841FF006A1DFF000000000000000000000000000000000000
+                      00000000000000000000007324FF0BAF4DFF24D86DFF25DB66FF34DD70FF48E1
+                      7FFF54E287FF5BE48CFF5BE48CFF55E288FF49E17FFF36DD71FF2ADC6BFF25D4
+                      70FF06A644FF00681FFF00000000000000000000000000000000000000000000
+                      0000000000000000000000000000007C2BFF1AC362FF3EDD7FFF48E180FF5AE4
+                      8CFF69E697FF72E79DFF72E79EFF6AE697FF5BE48CFF4DE284FF3DDA80FF13BA
+                      58FF007127FF0000000000000000000000000000000000000000000000000000
+                      000000000000000000000000000000000000038436FF22C96BFF62E49AFF70E7
+                      9CFF7EEAA6FF8BECB0FF8BECB1FF7FE9A7FF77E9A2FF5AE196FF17C060FF0277
+                      2EFF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000000000000007D32FF1AC567FF81EB
+                      B2FF9DEFBDFFA7F0C5FFA9F0C6FFA1EFC2FF73E9ABFF0BBB5BFF006E2CFF0000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000007B33FF29D0
+                      78FF8FF0BEFFC1F4D7FFC2F5D8FF7CEEB5FF19C56BFF006D2DFF000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      000000000000000000000000000000000000000000000000000000000000047D
+                      3AFF26D37BFF95F4C6FF7DF2B9FF15C76EFF017033FF00000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      00000000000000C663FF00BC5DFF000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000
+                    }
+                    OnClick = FieldOptionSetElementUpButtonClick
+                    ParentShowHint = False
+                    ShowHint = True
+                    TabOrder = 4
+                  end
+                  object FieldOptionSetElementDownButton: TBitBtn
+                    Left = 185
+                    Height = 34
+                    Hint = 'Move the selected element down'
+                    Top = 248
+                    Width = 54
+                    Anchors = [akLeft, akBottom]
+                    AutoSize = True
+                    Glyph.Data = {
+                      36090000424D3609000000000000360000002800000018000000180000000100
+                      2000000000000009000064000000640000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      00000000000000BC5DFF00C663FF000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000170
+                      33FF15C76EFF7DF2B9FF95F4C6FF26D37BFF047D3AFF00000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000006D2DFF19C5
+                      6BFF7CEEB5FFC2F5D8FFC1F4D7FF8FF0BEFF29D078FF007B33FF000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000000000000006E2CFF0BBB5BFF73E9
+                      ABFFA1EFC2FFA9F0C6FFA7F0C5FF9DEFBDFF81EBB2FF1AC567FF007D32FF0000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000002772EFF17C060FF5AE196FF77E9
+                      A2FF7FE9A7FF8BECB1FF8BECB0FF7EEAA6FF70E79CFF62E49AFF22C96BFF0384
+                      36FF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000007127FF13BA58FF3DDA80FF4DE284FF5BE4
+                      8CFF6AE697FF72E79EFF72E79DFF69E697FF5AE48CFF48E180FF3EDD7FFF1AC3
+                      62FF007C2BFF0000000000000000000000000000000000000000000000000000
+                      0000000000000000000000681FFF06A644FF25D470FF2ADC6BFF36DD71FF49E1
+                      7FFF55E288FF5BE48CFF5BE48CFF54E287FF48E17FFF34DD70FF25DB66FF24D8
+                      6DFF0BAF4DFF007324FF00000000000000000000000000000000000000000000
+                      000000000000006A1DFF04A841FF11CB5BFF08D64FFF13D857FF25DB65FF35DE
+                      70FF3EDF77FF42DF7AFF40DF78FF39DE74FF2EDC6CFF1DDA5EFF0DD752FF01D3
+                      47FF0DCE57FF06B047FF007722FF000000000000000000000000000000000000
+                      0000006415FF00A238FF0BC24EFF20D05AFF29D661FF2DDA68FF35DD6FFF40DF
+                      77FF46E07CFF49E17EFF47E07CFF3FDF77FF33DD6EFF1FD95FFF10D451FF06CE
+                      47FF01C73EFF02C245FF00A93CFF006E19FF0000000000000000000000000064
+                      11FF00912AFF0BBA44FF2FC95BFF3FD169FF3FD56EFF3FD971FF40DC74FF42DE
+                      77FF44E07AFF46E07BFF46E07BFF44DF7AFF41DE76FF3EDB72FF3AD86DFF33D2
+                      65FF1EC84FFF09BE3BFF00B738FF00992FFF006D14FF00000000000000000387
+                      20FF14B13DFF47C664FF51CD70FF4FD073FF4FD476FF4ED677FF4ED879FF4EDB
+                      7BFF4EDC7CFF4EDC7DFF4EDC7DFF4EDC7CFF4EDA7BFF4ED979FF4ED677FF4FD3
+                      76FF52D074FF4CCB6BFF34BF54FF10B037FF039225FF0000000000000000149D
+                      2DFF40C059FF50C86AFF4ECC6CFF4ECF6FFF52D075FF5AD47CFF5AD67EFF5AD8
+                      80FF5AD981FF5AD982FF5AD982FF5AD981FF5AD880FF5AD67EFF5AD47CFF54D0
+                      75FF4ECF6FFF4FCC6DFF50C86AFF41BF59FF1AA835FF00000000000000000B70
+                      17FF168025FF168328FF16862BFF16872CFF29B44BFF65D382FF67D585FF67D6
+                      86FF67D786FF67D887FF67D887FF67D786FF67D686FF67D584FF67D483FF38BF
+                      59FF15892AFF16852BFF168328FF178026FF0E761BFF00000000000000000000
+                      00000000000000000000000000000000000022993AFF70D589FF73D48BFF73D5
+                      8CFF73D68CFF73D68CFF73D68CFF73D68CFF73D58CFF73D48AFF74D48AFF34B3
+                      4FFF000000000000000000000000000000000000000000000000000000000000
+                      00000000000000000000000000000000000027983BFF7CD58EFF7ED492FF7ED5
+                      92FF7ED693FF7ED693FF7ED693FF7ED593FF7ED592FF7ED491FF7FD490FF3AB1
+                      50FF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000002A953AFF87D596FF8BD599FF8AD5
+                      99FF8AD69AFF8AD69AFF8AD69AFF8AD69AFF8AD599FF8BD599FF8CD598FF40AE
+                      51FF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000002F923AFF95D69EFF99D6A2FF98D7
+                      A3FF98D7A3FF98D7A3FF98D7A3FF98D7A3FF98D6A3FF99D6A2FF9AD7A2FF46AB
+                      52FF000000000000000000000000000000000000000000000000000000000000
+                      000000000000000000000000000000000000338F39FFA1D8A6FFA5D8ABFFA4D9
+                      AAFFA4D9AAFFA4D9AAFFA4D9AAFFA4D9AAFFA4D9AAFFA5D8AAFFA6D8AAFF4CA9
+                      53FF000000000000000000000000000000000000000000000000000000000000
+                      000000000000000000000000000000000000368C3AFFACDBAFFFB0DBB4FFB0DB
+                      B3FFB0DBB3FFB0DCB3FFB0DCB3FFB0DBB3FFB0DBB3FFB0DBB3FFB1DCB4FF51A7
+                      55FF000000000000000000000000000000000000000000000000000000000000
+                      000000000000000000000000000000000000378A36FFAFDBAFFFB4DCB5FFB3DC
+                      B4FFB3DCB4FFB3DCB4FFB3DCB4FFB3DCB4FFB3DBB4FFB4DCB4FFB4DDB5FF52A5
+                      53FF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000001A6919FF4C924CFF4F914FFF4F91
+                      4FFF4F924FFF4F924FFF4F924FFF4F924FFF4F914FFF4F914FFF4F934FFF257A
+                      25FF000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000000000000000
+                      0000000000000000000000000000000000000000000000000000
+                    }
+                    OnClick = FieldOptionSetElementDownButtonClick
+                    ParentShowHint = False
+                    ShowHint = True
+                    TabOrder = 5
+                  end
+                  object FieldOptionSetNumericalCheckBox: TCheckBox
+                    Left = 259
+                    Height = 19
+                    Top = 24
+                    Width = 259
+                    Caption = 'Treat as numerical data (no quotes in output)'
+                    TabOrder = 6
+                  end
                 end
                 object FieldOptionsNamePage: TPage
                   object FieldOptionNameSexCheckGroup: TCheckGroup
@@ -1474,15 +1674,15 @@ object MainForm: TMainForm
                 object FieldOptionsSetFilePage: TPage
                   object FieldOptionsSetFileNameLabel: TLabel
                     Left = 10
-                    Height = 22
+                    Height = 15
                     Top = 13
-                    Width = 156
+                    Width = 122
                     Caption = 'File (one value per line)'
                     ParentColor = False
                   end
                   object FieldOptionsSetFileEdit: TFileNameEdit
                     Left = 10
-                    Height = 31
+                    Height = 23
                     Top = 37
                     Width = 494
                     DialogOptions = [ofFileMustExist, ofShareAware]
@@ -1493,6 +1693,30 @@ object MainForm: TMainForm
                     Anchors = [akTop, akLeft, akRight]
                     MaxLength = 0
                     TabOrder = 0
+                  end
+                  object FieldOptionSetFileCorrelateCheckBox: TCheckBox
+                    Left = 10
+                    Height = 19
+                    Top = 93
+                    Width = 174
+                    Caption = 'Correlate with other set fields'
+                    TabOrder = 1
+                  end
+                  object FieldOptionSetCorrelateLabel1: TLabel
+                    Left = 10
+                    Height = 120
+                    Top = 117
+                    Width = 256
+                    Caption = 'NOTE: For correlation to work, correlated items '#13#10'need to be placed in the same position in each'#13#10'set. You should ensure that all correlated sets'#13#10'have the same number of elements. '#13#10'Correlation randomly chooses an index from the'#13#10'smallest set, so elements at the end of larger sets'#13#10'would not ever be selected.'#13#10' '
+                    ParentColor = False
+                  end
+                  object FieldOptionSetFileNumericalCheckBox: TCheckBox
+                    Left = 10
+                    Height = 19
+                    Top = 72
+                    Width = 259
+                    Caption = 'Treat as numerical data (no quotes in output)'
+                    TabOrder = 2
                   end
                 end
                 object FieldOptionsIPPage: TPage
@@ -1670,9 +1894,9 @@ object MainForm: TMainForm
           end
           object FieldNameEdit: TEdit
             Left = 100
-            Height = 33
+            Height = 23
             Top = 9
-            Width = 274
+            Width = 276
             Anchors = [akTop, akLeft, akRight]
             TabOrder = 2
           end
@@ -1752,7 +1976,7 @@ object MainForm: TMainForm
             Height = 289
             Top = 0
             Width = 752
-            PageIndex = 1
+            PageIndex = 0
             Align = alClient
             TabOrder = 0
             TabStop = True
@@ -1873,8 +2097,8 @@ object MainForm: TMainForm
                 ChildSizing.ShrinkVertical = crsScaleChilds
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 1
-                ClientHeight = 108
-                ClientWidth = 312
+                ClientHeight = 126
+                ClientWidth = 316
                 ItemIndex = 0
                 Items.Strings = (
                   'INSERT'
@@ -1929,8 +2153,8 @@ object MainForm: TMainForm
                 ChildSizing.ShrinkVertical = crsScaleChilds
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 1
-                ClientHeight = 86
-                ClientWidth = 276
+                ClientHeight = 104
+                ClientWidth = 280
                 Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
