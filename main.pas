@@ -37,13 +37,13 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    BitBtn1: TBitBtn;
     FieldOptionSetNumericalCheckBox: TCheckBox;
     FieldOptionSetElementDownButton: TBitBtn;
     FieldOptionSetCorrelateCheckBox: TCheckBox;
     FieldOptionSetFileCorrelateCheckBox: TCheckBox;
     FieldOptionSetCorrelateLabel: TLabel;
     FieldOptionSetCorrelateLabel1: TLabel;
-    FieldOptionSetElementUpButton: TBitBtn;
     FieldOptionSetFileNumericalCheckBox: TCheckBox;
     OutputIncludeFieldNamesCheckBox : TCheckBox;
     FieldOptionDateFormatEdit : TEdit;
@@ -236,6 +236,7 @@ type
     FieldsTabSheet: TTabSheet;
     MessagesTabSheet: TTabSheet;
     OutputTabSheet: TTabSheet;
+    procedure Button1Click(Sender: TObject);
     procedure ExitButtonClick(Sender: TObject);
     procedure FieldAddButtonClick(Sender: TObject);
     procedure FieldDownButtonClick(Sender: TObject);
@@ -243,13 +244,14 @@ type
     procedure FieldListBoxDblClick(Sender: TObject);
     procedure FieldOptionSetAddItemButtonClick(Sender: TObject);
     procedure FieldOptionSetElementDownButtonClick(Sender: TObject);
+    procedure FieldOptionSetElementUpButtonClick(Sender: TObject);
     procedure FieldOptionSetRemoveItemButtonClick(Sender: TObject);
     procedure FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
     procedure FieldRemoveButtonClick(Sender: TObject);
     procedure FieldSaveButtonClick(Sender: TObject);
     procedure FieldSubTypeComboBoxSelect(Sender: TObject);
     procedure FieldTypeComboBoxSelect(Sender: TObject);
-    procedure FieldOptionSetElementUpButtonClick(Sender: TObject);
+    procedure FieldUpButtonClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure GenerateButtonClick(Sender: TObject);
     procedure GenerationCancelButtonClick(Sender: TObject);
@@ -344,6 +346,11 @@ begin
     end;
   except
   end;
+end;
+
+procedure TMainForm.Button1Click(Sender: TObject);
+begin
+
 end;
 
 procedure TMainForm.ExitButtonClick(Sender: TObject);
@@ -555,6 +562,23 @@ begin
     FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex+1] := tmpString;
     FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex+1] := tmpObject;
     FieldOptionSetListBox.ItemIndex := FieldOptionSetListBox.ItemIndex+1;
+  end;
+end;
+
+procedure TMainForm.FieldOptionSetElementUpButtonClick(Sender: TObject);
+var
+  tmpString : string;
+  tmpObject : TObject;
+begin
+   { move the selected element down in order in the list }
+  if (FieldOptionSetListBox.ItemIndex > 0) then begin
+    tmpString := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex];
+    tmpObject := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex];
+    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex-1];
+    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex-1];
+    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex-1] := tmpString;
+    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex-1] := tmpObject;
+    FieldOptionSetListBox.ItemIndex := FieldOptionSetListBox.ItemIndex-1;
   end;
 end;
 
@@ -976,20 +1000,20 @@ begin
   FieldSubTypeComboBoxSelect(FieldSubTypeComboBox);
 end;
 
-procedure TMainForm.FieldOptionSetElementUpButtonClick(Sender: TObject);
+procedure TMainForm.FieldUpButtonClick(Sender: TObject);
 var
   tmpString : string;
   tmpObject : TObject;
 begin
-  { move the selected element up in order in the list }
-  if (FieldOptionSetListBox.ItemIndex > 0) then begin
-    tmpString := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex];
-    tmpObject := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex];
-    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex-1];
-    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex] := FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex-1];
-    FieldOptionSetListBox.Items.Strings[FieldOptionSetListBox.ItemIndex-1] := tmpString;
-    FieldOptionSetListBox.Items.Objects[FieldOptionSetListBox.ItemIndex-1] := tmpObject;
-    FieldOptionSetListBox.ItemIndex := FieldOptionSetListBox.ItemIndex-1;
+  { move the selected field up in order in the list }
+  if (FieldListBox.ItemIndex > 0) then begin
+    tmpString := FieldListBox.Items.Strings[FieldListBox.ItemIndex];
+    tmpObject := FieldListBox.Items.Objects[FieldListBox.ItemIndex];
+    FieldListBox.Items.Strings[FieldListBox.ItemIndex] := FieldListBox.Items.Strings[FieldListBox.ItemIndex-1];
+    FieldListBox.Items.Objects[FieldListBox.ItemIndex] := FieldListBox.Items.Objects[FieldListBox.ItemIndex-1];
+    FieldListBox.Items.Strings[FieldListBox.ItemIndex-1] := tmpString;
+    FieldListBox.Items.Objects[FieldListBox.ItemIndex-1] := tmpObject;
+    FieldListBox.ItemIndex := FieldListBox.ItemIndex-1;
   end;
 end;
 
