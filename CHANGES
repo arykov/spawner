@@ -1,5 +1,12 @@
 Changelog
 
+0.2.3
+--------------------------------------------------------------------------------
+- add custom data correlation for set fields
+- sets can either be strings or treated as numerical data (numerical data is not quoted in output)
+- fixed bug that prevents records from being generated the first time
+  after the modifying the schema and then spawning
+
 0.2.2
 --------------------------------------------------------------------------------
 - welcome and thanks to Ryan Zuwala as a developer on the project

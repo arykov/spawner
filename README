@@ -13,8 +13,12 @@ It can currently generate the following types of data:
    - a sequence of integers (with the ability to specify starting location,
      number of times to duplicate an entry before moving on to the next one,
      and the stride or increment value)
-   - randomly chosen value from a fixed set (enumerated type)
-   - randomly chosen line from a file
+   - chosen value from a fixed set (enumerated type)
+     * can be randomly chosen for each set or correlated with a value chosen from another set
+	 * can be treated as a string value or numerical (numerical data is not quoted in output)
+   - chosen line from a file
+     * can be randomly chosen for each set or correlated with a value chosen from another set
+	 * can be treated as a string value or numerical (numerical data is not quoted in output)
    - words (randomly chosen from a bank of 100 or so Latin words), including:
      * fixed number of words (ie., 10 words)
      * random number of words (ie., 4 to 8 words)
