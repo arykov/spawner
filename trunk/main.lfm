@@ -1223,28 +1223,26 @@ object MainForm: TMainForm
                   object FieldOptionSetLabel: TLabel
                     Left = 18
                     Height = 15
-                    Top = 8
+                    Top = 5
                     Width = 61
                     Caption = 'Items in Set'
                     ParentColor = False
                   end
                   object FieldOptionSetListBox: TListBox
                     Left = 18
-                    Height = 223
-                    Top = 24
+                    Height = 213
+                    Top = 21
                     Width = 232
                     Anchors = [akTop, akLeft, akBottom]
                     ItemHeight = 0
-                    ScrollWidth = 230
                     TabOrder = 0
                   end
                   object FieldOptionSetRemoveItemButton: TBitBtn
                     Left = 81
                     Height = 34
                     Hint = 'Remove the selected element'
-                    Top = 248
+                    Top = 240
                     Width = 54
-                    AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
                       2000000000000009000064000000640000000000000000000000000000000000
@@ -1330,9 +1328,8 @@ object MainForm: TMainForm
                     Left = 29
                     Height = 34
                     Hint = 'Create a new element'
-                    Top = 248
+                    Top = 240
                     Width = 54
-                    AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
                       2000000000000009000064000000640000000000000000000000000000000000
@@ -1417,7 +1414,7 @@ object MainForm: TMainForm
                   object FieldOptionSetCorrelateCheckBox: TCheckBox
                     Left = 259
                     Height = 19
-                    Top = 44
+                    Top = 41
                     Width = 174
                     Caption = 'Correlate with other set fields'
                     TabOrder = 3
@@ -1425,7 +1422,7 @@ object MainForm: TMainForm
                   object FieldOptionSetCorrelateLabel: TLabel
                     Left = 259
                     Height = 120
-                    Top = 67
+                    Top = 64
                     Width = 256
                     Caption = 'NOTE: For correlation to work, correlated items '#13#10'need to be placed in the same position in each'#13#10'set. You should ensure that all correlated sets'#13#10'have the same number of elements. '#13#10'Correlation randomly chooses an index from the'#13#10'smallest set, so elements at the end of larger sets'#13#10'would not ever be selected.'#13#10' '
                     ParentColor = False
@@ -1434,10 +1431,8 @@ object MainForm: TMainForm
                     Left = 185
                     Height = 34
                     Hint = 'Move the selected element down'
-                    Top = 248
+                    Top = 240
                     Width = 54
-                    Anchors = [akLeft, akBottom]
-                    AutoSize = True
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
                       2000000000000009000064000000640000000000000000000000000000000000
@@ -1522,7 +1517,7 @@ object MainForm: TMainForm
                   object FieldOptionSetNumericalCheckBox: TCheckBox
                     Left = 259
                     Height = 19
-                    Top = 24
+                    Top = 21
                     Width = 259
                     Caption = 'Treat as numerical data (no quotes in output)'
                     TabOrder = 5
@@ -1531,7 +1526,7 @@ object MainForm: TMainForm
                     Left = 133
                     Height = 34
                     Hint = 'Move the selected element up'
-                    Top = 248
+                    Top = 240
                     Width = 54
                     Glyph.Data = {
                       36090000424D3609000000000000360000002800000018000000180000000100
