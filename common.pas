@@ -392,7 +392,7 @@ procedure LogSystemMessage (S : string;
                             T : string = '');
 
 const
-  SPAWNER_VERSION_STR = '0.2.3';
+  SPAWNER_VERSION_STR = '0.2.4';
 
   OUTPUT_TYPE_DELIMITED = 0;
   OUTPUT_TYPE_FIXED = 1;

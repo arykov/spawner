@@ -1,5 +1,10 @@
 Changelog
 
+0.2.4
+--------------------------------------------------------------------------------
+- Fix bug in sequence duplication where numbers were being chosen more times than the duplication amount specified.
+- Implement repetition in sequences
+
 0.2.3
 --------------------------------------------------------------------------------
 - add custom data correlation for set fields

@@ -11,7 +11,7 @@ It can currently generate the following types of data:
    - random integer in a specified range
    - random floating point number in a specified range
    - a sequence of integers (with the ability to specify starting location,
-     number of times to duplicate an entry before moving on to the next one,
+     number of times to duplicate an entry before moving on to the next one or when to restart the sequence,
      and the stride or increment value)
    - chosen value from a fixed set (enumerated type)
      * can be randomly chosen for each set or correlated with a value chosen from another set
