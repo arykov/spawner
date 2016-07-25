@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 369
+  Left = 561
   Height = 623
-  Top = 118
+  Top = 231
   Width = 792
   ActiveControl = MainPageControl
   Caption = 'Spawner'
@@ -14,7 +14,7 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.2.6.0'
+  LCLVersion = '1.6.0.4'
   object MainPageControl: TPageControl
     Left = 0
     Height = 517
@@ -424,7 +424,7 @@ object MainForm: TMainForm
           Width = 549
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Details'
-          ClientHeight = 441
+          ClientHeight = 439
           ClientWidth = 545
           TabOrder = 5
           object FieldNameLabel: TLabel
@@ -523,13 +523,13 @@ object MainForm: TMainForm
           end
           object SpacerPanel3: TPanel
             Left = 0
-            Height = 396
+            Height = 394
             Top = 45
             Width = 545
             Align = alBottom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BevelOuter = bvNone
-            ClientHeight = 396
+            ClientHeight = 394
             ClientWidth = 545
             TabOrder = 1
             object FieldTypeGroupBox: TGroupBox
@@ -539,7 +539,7 @@ object MainForm: TMainForm
               Width = 545
               Align = alTop
               Caption = 'Field Type'
-              ClientHeight = 70
+              ClientHeight = 68
               ClientWidth = 541
               TabOrder = 0
               object FieldTypeLabel: TLabel
@@ -583,21 +583,21 @@ object MainForm: TMainForm
             end
             object FieldOptionsGroupBox: TGroupBox
               Left = 0
-              Height = 300
+              Height = 298
               Top = 96
               Width = 545
               Align = alBottom
               Anchors = [akTop, akLeft, akRight, akBottom]
               Caption = 'Field Options'
-              ClientHeight = 282
+              ClientHeight = 278
               ClientWidth = 541
               TabOrder = 1
               object FieldOptionsNotebook: TNotebook
                 Left = 0
-                Height = 282
+                Height = 278
                 Top = 0
                 Width = 541
-                PageIndex = 10
+                PageIndex = 8
                 Align = alClient
                 TabOrder = 0
                 TabStop = True
@@ -753,7 +753,6 @@ object MainForm: TMainForm
                       CancelCaption = 'False'
                       DateOrder = doNone
                       ButtonWidth = 23
-                      CharCase = ecNormal
                       Glyph.Data = {
                         D6020000424DD60200000000000036000000280000000E0000000C0000000100
                         200000000000A002000064000000640000000000000000000000000000000000
@@ -829,7 +828,6 @@ object MainForm: TMainForm
                       CancelCaption = 'Cancel'
                       DateOrder = doNone
                       ButtonWidth = 23
-                      CharCase = ecNormal
                       Glyph.Data = {
                         D6020000424DD60200000000000036000000280000000E0000000C0000000100
                         200000000000A002000064000000640000000000000000000000000000000000
@@ -977,31 +975,31 @@ object MainForm: TMainForm
                 object FieldOptionsRandomWordsPage: TPage
                   object FieldOptionRandomWordToLabel: TLabel
                     Left = 220
-                    Height = 22
+                    Height = 15
                     Top = 30
-                    Width = 15
+                    Width = 11
                     Caption = 'to'
                     ParentColor = False
                   end
                   object FieldOptionRandomWordFromLabel: TLabel
                     Left = 12
-                    Height = 22
+                    Height = 15
                     Top = 30
-                    Width = 34
+                    Width = 28
                     Caption = 'From'
                     ParentColor = False
                   end
                   object FieldOptionRandomWordsLabel: TLabel
                     Left = 396
-                    Height = 22
+                    Height = 15
                     Top = 30
-                    Width = 42
+                    Width = 32
                     Caption = 'words'
                     ParentColor = False
                   end
                   object FieldOptionRandomWordLowSpinEdit: TSpinEdit
                     Left = 76
-                    Height = 31
+                    Height = 23
                     Top = 21
                     Width = 130
                     MaxValue = 10000
@@ -1011,7 +1009,7 @@ object MainForm: TMainForm
                   end
                   object FieldOptionRandomWordHighSpinEdit: TSpinEdit
                     Left = 252
-                    Height = 31
+                    Height = 23
                     Top = 21
                     Width = 130
                     MaxValue = 10000
@@ -1147,56 +1145,83 @@ object MainForm: TMainForm
                   end
                 end
                 object FieldOptionsSequencePage: TPage
+                  OnBeforeShow = FieldOptionsSequencePageBeforeShow
                   object FieldOptionSequenceStartLabel: TLabel
                     Left = 26
-                    Height = 22
+                    Height = 15
                     Top = 27
-                    Width = 52
+                    Width = 37
                     Caption = 'Start at'
-                    ParentColor = False
-                  end
-                  object FieldOptionSequenceDupLabel: TLabel
-                    Left = 26
-                    Height = 22
-                    Top = 67
-                    Width = 64
-                    Caption = 'Duplicate'
                     ParentColor = False
                   end
                   object FieldOptionSequenceStrideLabel: TLabel
                     Left = 26
-                    Height = 22
-                    Top = 107
-                    Width = 68
+                    Height = 15
+                    Top = 57
+                    Width = 54
                     Caption = 'Increment'
                     ParentColor = False
                   end
                   object FieldOptionSequenceStartSpinEdit: TSpinEdit
                     Left = 122
-                    Height = 31
+                    Height = 23
                     Top = 18
                     Width = 160
                     MaxValue = 1000000000
                     MinValue = -1000000000
                     TabOrder = 0
                   end
-                  object FieldOptionSequenceDupSpinEdit: TSpinEdit
-                    Left = 122
-                    Height = 31
-                    Top = 58
-                    Width = 160
-                    MaxValue = 1000000000
-                    TabOrder = 1
-                  end
                   object FieldOptionSequenceStrideSpinEdit: TSpinEdit
                     Left = 122
-                    Height = 31
-                    Top = 98
+                    Height = 23
+                    Top = 48
                     Width = 160
                     MaxValue = 1000000
                     MinValue = -1000000
-                    TabOrder = 2
+                    TabOrder = 1
                     Value = 1
+                  end
+                  object FieldOptionSequenceDupRestartRadioGroup: TRadioGroup
+                    Left = 26
+                    Height = 96
+                    Top = 88
+                    Width = 257
+                    AutoFill = False
+                    Caption = 'Repetition Options'
+                    ChildSizing.LeftRightSpacing = 6
+                    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+                    ChildSizing.ControlsPerLine = 1
+                    ClientHeight = 76
+                    ClientWidth = 253
+                    ItemIndex = 0
+                    Items.Strings = (
+                      'Duplicate'
+                      'Restart after'
+                    )
+                    OnClick = FieldOptionSequenceDupRestartRadioGroupClick
+                    OnSelectionChanged = FieldOptionSequenceDupRestartRadioGroupSelectionChanged
+                    TabOrder = 2
+                    object FieldOptionSequenceRepetitionSpinEdit: TSpinEdit
+                      Left = 16
+                      Height = 23
+                      Top = 49
+                      Width = 160
+                      Anchors = []
+                      AutoSize = False
+                      MaxValue = 1000000000
+                      TabOrder = 0
+                    end
+                    object FieldOptionSequenceRepetitionTimesLabel: TLabel
+                      Left = 184
+                      Height = 15
+                      Top = 56
+                      Width = 48
+                      Anchors = []
+                      AutoSize = False
+                      Caption = 'times'
+                      ParentBidiMode = False
+                      ParentColor = False
+                    end
                   end
                 end
                 object FieldOptionsStatePage: TPage
@@ -1947,7 +1972,7 @@ object MainForm: TMainForm
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 4
-          ClientHeight = 43
+          ClientHeight = 41
           ClientWidth = 420
           Columns = 4
           ItemIndex = 0
@@ -1967,7 +1992,7 @@ object MainForm: TMainForm
           Width = 756
           Anchors = [akTop, akLeft, akRight, akBottom]
           Caption = 'Output Options'
-          ClientHeight = 289
+          ClientHeight = 287
           ClientWidth = 752
           TabOrder = 1
           object OutputOptionsNotebook: TNotebook
@@ -2959,15 +2984,16 @@ object MainForm: TMainForm
             ShiftMask = [ssShift, ssAlt, ssCtrl]
             Command = emcMouseLink
           end>
+        MouseTextActions = <>
         MouseSelActions = <        
           item
             ClickDir = cdDown
             Command = emcStartDragMove
           end>
         Options = [eoBracketHighlight, eoGroupUndo, eoShowSpecialChars, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces]
+        VisibleSpecialChars = [vscSpace, vscTabAtLast]
         ReadOnly = True
         RightEdge = 0
-        SelectedColor.FrameEdges = sfeAround
         SelectedColor.BackPriority = 50
         SelectedColor.ForePriority = 50
         SelectedColor.FramePriority = 50
@@ -2985,7 +3011,6 @@ object MainForm: TMainForm
             MouseActions = <>
             MarkupInfo.Background = clBtnFace
             MarkupInfo.Foreground = clNone
-            MarkupInfo.FrameEdges = sfeAround
             DigitCount = 2
             ShowOnlyLineNumbersMultiplesOf = 1
             ZeroStart = False
@@ -3002,7 +3027,6 @@ object MainForm: TMainForm
             MouseActions = <>
             MarkupInfo.Background = clWhite
             MarkupInfo.Foreground = clGray
-            MarkupInfo.FrameEdges = sfeAround
           end
           object TSynGutterCodeFolding
             MouseActions = <            
@@ -3033,7 +3057,6 @@ object MainForm: TMainForm
               end>
             MarkupInfo.Background = clNone
             MarkupInfo.Foreground = clGray
-            MarkupInfo.FrameEdges = sfeAround
             MouseActionsExpanded = <            
               item
                 ClickCount = ccAny
