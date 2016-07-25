@@ -844,15 +844,21 @@ function TSequenceField.GetField(const quoteChar : string = '') : string;
 var
   resultNumber : longint;
 begin
-  if (FDuplicate = 0) or (FCurrentDuplicate >= FDuplicate) then begin
-    resultNumber := FLastNumber + FStride;
-    FCurrentDuplicate := 0;
+  if(FDuplicate = 0) then begin
+     resultNumber := FLastNumber + FStride;
+     FLastNumber := resultNumber;
   end else begin
-    resultNumber := FLastNumber;
-    inc(FCurrentDuplicate);
+     if (FCurrentDuplicate >= FDuplicate) then begin
+        resultNumber := FLastNumber;
+        FLastNumber := FLastNumber + FStride;
+        FCurrentDuplicate := 0;
+     end else begin
+        resultNumber := FLastNumber;
+        inc(FCurrentDuplicate);
+     end;
   end;
-  FLastNumber := resultNumber;
-  result := IntToStr(FLastNumber);
+
+  result := IntToStr(resultNumber);
   if (Length(quoteChar) > 0) then result := quoteChar + result + quoteChar;
 end;
 
