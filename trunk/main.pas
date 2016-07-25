@@ -37,6 +37,7 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    FieldOptionSetElementUpButton: TBitBtn;
     FieldOptionSetNumericalCheckBox: TCheckBox;
     FieldOptionSetElementDownButton: TBitBtn;
     FieldOptionSetCorrelateCheckBox: TCheckBox;
@@ -44,6 +45,7 @@ type
     FieldOptionSetCorrelateLabel: TLabel;
     FieldOptionSetCorrelateLabel1: TLabel;
     FieldOptionSetFileNumericalCheckBox: TCheckBox;
+    FieldOptionSequenceRepetitionTimesLabel: TLabel;
     OutputIncludeFieldNamesCheckBox : TCheckBox;
     FieldOptionDateFormatEdit : TEdit;
     FieldOptionTimeFormatEdit : TEdit;
@@ -102,6 +104,7 @@ type
     OutputFixedQuoteAlphaOnlyCheckBox : TCheckBox;
     OutputFixedQuoteCharEdit : TLabeledEdit;
     FieldNameDelimiterRadioGroup: TRadioGroup;
+    FieldOptionSequenceDupRestartRadioGroup: TRadioGroup;
     SaveMenuItem: TMenuItem;
     ClearAllMenuItem: TMenuItem;
     QuitMenuItem: TMenuItem;
@@ -185,7 +188,6 @@ type
     FieldsDetailsGroupBox: TGroupBox;
     FieldsLabel: TLabel;
     FieldOptionSequenceStartLabel: TLabel;
-    FieldOptionSequenceDupLabel: TLabel;
     FieldOptionSequenceStrideLabel: TLabel;
     FieldOptionSetLabel: TLabel;
     FieldOptionSetListBox: TListBox;
@@ -220,7 +222,7 @@ type
     PasteMenuItem: TMenuItem;
     OutputNumSpinEdit: TSpinEdit;
     FieldOptionSequenceStartSpinEdit: TSpinEdit;
-    FieldOptionSequenceDupSpinEdit: TSpinEdit;
+    FieldOptionSequenceRepetitionSpinEdit: TSpinEdit;
     FieldOptionSequenceStrideSpinEdit: TSpinEdit;
     FieldOptionRealRangeDecimalSpinEdit: TSpinEdit;
     OutputSqlRecordsPerInsertSpinEdit: TSpinEdit;
@@ -240,10 +242,15 @@ type
     procedure FieldDownButtonClick(Sender: TObject);
     procedure FieldListBoxClick(Sender: TObject);
     procedure FieldListBoxDblClick(Sender: TObject);
+    procedure FieldOptionSequenceDupRestartRadioGroupClick(Sender: TObject);
+    procedure FieldOptionSequenceDupRestartRadioGroupSelectionChanged(
+      Sender: TObject);
     procedure FieldOptionSetAddItemButtonClick(Sender: TObject);
     procedure FieldOptionSetElementDownButtonClick(Sender: TObject);
     procedure FieldOptionSetElementUpButtonClick(Sender: TObject);
     procedure FieldOptionSetRemoveItemButtonClick(Sender: TObject);
+    procedure FieldOptionsSequencePageBeforeShow(ASender: TObject;
+      ANewPage: TPage; ANewIndex: Integer);
     procedure FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
     procedure FieldRemoveButtonClick(Sender: TObject);
     procedure FieldSaveButtonClick(Sender: TObject);
@@ -445,8 +452,9 @@ begin
       FieldOptionRealRangeDecimalSpinEdit.Value := (theField as TRealRangeField).DecimalPlaces;
     end else if (theField is TSequenceField) then begin
       FieldOptionSequenceStartSpinEdit.Value := (theField as TSequenceField).Start;
-      FieldOptionSequenceDupSpinEdit.Value := (theField as TSequenceField).Duplicate;
+      FieldOptionSequenceRepetitionSpinEdit.Value := (theField as TSequenceField).RepetitionValue;
       FieldOptionSequenceStrideSpinEdit.Value := (theField as TSequenceField).Stride;
+      FieldOptionSequenceDupRestartRadioGroup.ItemIndex := (theField as TSequenceField).RepetitionMode;
     end else if (theField is TStateField) then begin
       if (theField as TStateField).Full then begin
         FieldOptionStateFullRadioButton.Checked := true;
@@ -529,6 +537,18 @@ begin
   end;
 end;
 
+procedure TMainForm.FieldOptionSequenceDupRestartRadioGroupClick(Sender: TObject
+  );
+begin
+
+end;
+
+procedure TMainForm.FieldOptionSequenceDupRestartRadioGroupSelectionChanged(
+  Sender: TObject);
+begin
+   FieldOptionSequenceRepetitionTimesLabel.Visible := FieldOptionSequenceDupRestartRadioGroup.Items[FieldOptionSequenceDupRestartRadioGroup.ItemIndex] = 'Duplicate';
+end;
+
 procedure TMainForm.FieldOptionSetAddItemButtonClick(Sender: TObject);
 var
   newString : string;
@@ -581,6 +601,12 @@ begin
   if (FieldOptionSetListBox.ItemIndex >= 0) then begin
     FieldOptionSetListBox.Items.Delete(FieldOptionSetListBox.ItemIndex);
   end;
+end;
+
+procedure TMainForm.FieldOptionsSequencePageBeforeShow(ASender: TObject;
+  ANewPage: TPage; ANewIndex: Integer);
+begin
+
 end;
 
 procedure TMainForm.FieldOptionTimeUnixRadioButtonChange(Sender : TObject);
@@ -686,7 +712,8 @@ begin
     end else if (FieldSubTypeComboBox.Text = SUBTYPE_SEQUENCE_NAME) then begin
       theNewField := TSequenceField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
                                            FieldOptionSequenceStartSpinEdit.Value,
-                                           FieldOptionSequenceDupSpinEdit.Value,
+                                           FieldOptionSequenceRepetitionSpinEdit.Value,
+                                           FieldOptionSequenceDupRestartRadioGroup.ItemIndex,
                                            FieldOptionSequenceStrideSpinEdit.Value);
     end else if (FieldSubTypeComboBox.Text = SUBTYPE_STATE_NAME) then begin
       theNewField := TStateField.Create(FieldNameEdit.Text, FieldTypeComboBox.Text, FieldSubTypeComboBox.Text,
@@ -1764,8 +1791,13 @@ begin
             end else if (fieldSubType = SUBTYPE_SEQUENCE_NAME) then begin
               if (otherStringList.Count >= 3) then begin
                 FieldOptionSequenceStartSpinEdit.Value := StrToIntDef(otherStringList.Strings[0], 0);
-                FieldOptionSequenceDupSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
+                FieldOptionSequenceRepetitionSpinEdit.Value := StrToIntDef(otherStringList.Strings[1], 0);
                 FieldOptionSequenceStrideSpinEdit.Value := StrToIntDef(otherStringList.Strings[2], 0);
+                try
+                    FieldOptionSequenceDupRestartRadioGroup.ItemIndex := StrToIntDef(otherStringList.Strings[3], 0);
+                except
+                    FieldOptionSequenceDupRestartRadioGroup.ItemIndex := 0;
+                end;
               end;
             end else if (fieldSubType = SUBTYPE_STATE_NAME) then begin
               if (otherStringList.Count >= 1) then begin

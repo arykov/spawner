@@ -149,13 +149,18 @@ type
   TSequenceField = class(TField)
   private
     FStart : longint;
-    FDuplicate : longint;
+    FRepetitionValue : longint;
     FStride : longint;
     FLastNumber : longint;
-    FCurrentDuplicate : longint;
+    FCurrentRepetition : longint;
+    FRepetitionMode : longint;
+    const
+         REPETITION_MODE_DUPLICATE = 0;
+         REPETITION_MODE_RESTART = 1;
   public
     property Start : longint read FStart;
-    property Duplicate : longint read FDuplicate;
+    property RepetitionValue : longint read FRepetitionValue;
+    property RepetitionMode : longint read FRepetitionMode;
     property Stride : longint read FStride;
     function GetField(const quoteChar : string = '') : string; override;
     function GetMaxWidth(const quoteChar : string = '') : integer; override;
@@ -163,7 +168,8 @@ type
     procedure Reset(const TotalRequest : longint = 0); override;
     constructor Create(const name : string; const theType : string; const theSubType : string;
                        const start : longint;
-                       const duplicate : longint;
+                       const repetitionValue : longint;
+                       const repetitionMode : longint;
                        const stride : longint);
   end;
   
@@ -819,12 +825,14 @@ end;
 // -Sequence--------------------------------------------------------------------
 constructor TSequenceField.Create(const name : string; const theType : string; const theSubType : string;
                                   const start : longint;
-                                  const duplicate : longint;
+                                  const repetitionValue : longint;
+                                  const repetitionMode : longint;
                                   const stride : longint);
 begin
   Inherited Create(name, theType, theSubType);
   FStart := start;
-  FDuplicate := duplicate;
+  FRepetitionValue := repetitionValue;
+  FRepetitionMode := repetitionMode;
   FStride := stride;
   Reset;
 end;
@@ -832,29 +840,46 @@ end;
 procedure TSequenceField.Reset(const TotalRequest : longint = 0);
 begin
   Inherited Reset(TotalRequest);
-  if (FDuplicate = 0) then begin
+  if (FRepetitionValue = 0) then begin
     FLastNumber := FStart - FStride;
   end else begin
     FLastNumber := FStart;
   end;
-  FCurrentDuplicate := 0;
+
+  if(FRepetitionMode = REPETITION_MODE_RESTART) then begin
+    FCurrentRepetition := FStart;
+  end else begin
+     FCurrentRepetition := 0;
+  end;
 end;
 
 function TSequenceField.GetField(const quoteChar : string = '') : string;
 var
   resultNumber : longint;
 begin
-  if(FDuplicate = 0) then begin
+  if(FRepetitionValue = 0) then begin
      resultNumber := FLastNumber + FStride;
      FLastNumber := resultNumber;
   end else begin
-     if (FCurrentDuplicate >= FDuplicate) then begin
-        resultNumber := FLastNumber;
-        FLastNumber := FLastNumber + FStride;
-        FCurrentDuplicate := 0;
+     // duplicate
+     if(FRepetitionMode = REPETITION_MODE_DUPLICATE) then begin
+         if (FCurrentRepetition >= FRepetitionValue) then begin
+            resultNumber := FLastNumber;
+            FLastNumber := FLastNumber + FStride;
+            FCurrentRepetition := 0;
+         end else begin
+            resultNumber := FLastNumber;
+            inc(FCurrentRepetition);
+         end;
      end else begin
-        resultNumber := FLastNumber;
-        inc(FCurrentDuplicate);
+         // repeat after number
+         resultNumber := FCurrentRepetition;
+
+         if (FCurrentRepetition >= FRepetitionValue) then begin
+            FCurrentRepetition := FStart;
+         end else begin
+            inc(FCurrentRepetition, FStride);
+         end;
      end;
   end;
 
@@ -869,7 +894,7 @@ end;
 
 function TSequenceField.GetAsString : string;
 begin
-  result := Inherited GetAsString + ',' + IntToStr(FStart) + '|' + IntToStr(FDuplicate) + '|' + IntToStr(FStride);
+  result := Inherited GetAsString + ',' + IntToStr(FStart) + '|' + IntToStr(FRepetitionValue) + '|' + IntToStr(FStride) + '|' + IntToStr(FRepetitionMode);
 end;
 
 // -Name -----------------------------------------------------------------------
